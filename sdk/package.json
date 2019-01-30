@@ -1,0 +1,25 @@
+{
+  "name": "cellery-typecript",
+  "version": "0.1.0",
+  "description": "Cellery for TypeScript",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "Apache-2.0",
+  "bin": {
+    "cellery-scripts": "./dist/scripts/index.js"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist/",
+    "format:check": "prettier --check ./src/**/*.ts",
+    "format:fix": "prettier --write ./src/**/*.ts",
+    "lint": "tslint --fix -c tslint.json -p ./",
+    "build": "tsc",
+    "build:prod": "npm run format:fix && npm run lint && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.20",
+    "prettier": "^1.16.2",
+    "tslint": "^5.12.1",
+    "typescript": "^3.2.4"
+  }
+}

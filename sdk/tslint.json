@@ -1,0 +1,133 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rulesDirectory": [],
+    "rules": {
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "public-instance-field",
+                    "protected-instance-field",
+                    "private-instance-field",
+                    "public-static-field",
+                    "protected-static-field",
+                    "private-static-field",
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method",
+                    "public-static-method",
+                    "protected-static-method",
+                    "private-static-method"
+                ]
+            }
+        ],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "never",
+                "singleline": "never"
+            }
+        ],
+        "prefer-const": [
+            true,
+            {
+                "destructuring": "all"
+            }
+        ],
+        "ban-ts-ignore": true,
+        "member-access": true,
+        "no-any": true,
+        "no-empty-interface": true,
+        "no-import-side-effect": true,
+        "no-inferrable-types": [
+            true,
+            "ignore-params",
+            "ignore-properties"
+        ],
+        "no-internal-module": true,
+        "adjacent-overload-signatures": true,
+        "no-magic-numbers": true,
+        "no-non-null-assertion": true,
+        "no-parameter-reassignment": true,
+        "no-reference": true,
+        "no-var-requires": true,
+        "no-require-imports": true,
+        "only-arrow-functions": [
+            true,
+            "allow-declarations",
+            "allow-named-functions"
+        ],
+        "prefer-readonly": true,
+        "comment-format": [
+            true,
+            "check-space",
+            "check-uppercase"
+        ],
+        "completed-docs": [
+            true,
+            {
+                "classes": {
+                    "visibilities": "all"
+                },
+                "enums": {
+                    "visibilities": "all"
+                },
+                "interfaces": {
+                    "visibilities": "all"
+                },
+                "functions": {
+                    "visibilities": "all"
+                },
+                "methods": {
+                    "privacies": "all",
+                    "locations": "all"
+                },
+                "types": {
+                    "visibilities": "all"
+                }
+            }
+        ],
+        "class-name": true,
+        "import-spacing": true,
+        "file-name-casing": [
+            true,
+            {
+                "index\\.ts": "camel-case",
+                ".*\\.ts": "pascal-case"
+            }
+        ],
+        "increment-decrement": [
+            true,
+            "allow-post"
+        ],
+        "no-consecutive-blank-lines": true,
+        "no-redundant-jsdoc": true,
+        "no-trailing-whitespace": true,
+        "number-literal-format": true,
+        "object-literal-shorthand": [
+            true,
+            "never"
+        ],
+        "one-variable-per-declaration": [
+            true,
+            "ignore-for-loop"
+        ],
+        "ordered-imports": true,
+        "prefer-switch": true,
+        "prefer-template": true,
+        "unnecessary-bind": true,
+        "variable-name": [
+            true,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore"
+        ]
+    }
+}
