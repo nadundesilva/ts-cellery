@@ -1,5 +1,5 @@
 {
-  "name": "cellery-typecript",
+  "name": "ts-cellery",
   "version": "0.1.0",
   "description": "Cellery for TypeScript",
   "main": "./dist/index.js",
@@ -14,12 +14,13 @@
     "format:fix": "prettier --write ./src/**/*.ts",
     "lint": "tslint --fix -c tslint.json -p ./",
     "build": "tsc",
-    "build:prod": "npm run format:fix && npm run lint && npm run build"
+    "build:prod": "npm run clean && npm run format:fix && npm run lint && npm run build"
   },
   "devDependencies": {
     "@types/node": "^10.12.20",
     "commander": "^2.19.0",
     "prettier": "^1.16.2",
+    "rimraf": "^2.6.3",
     "tslint": "^5.12.1",
     "typescript": "^3.2.4"
   },

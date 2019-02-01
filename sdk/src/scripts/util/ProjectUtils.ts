@@ -19,18 +19,24 @@
 import * as fs from "fs";
 import * as path from "path";
 import CelleryConfig from "./CelleryConfig";
+import Constants from "./Constants";
 
+/**
+ * Cellery Project related Utilities.
+ */
 class ProjectUtils {
-    private static readonly PACKAGE_JSON_FILE_NAME = "package.json";
-    private static readonly CELLERY_CONFIG_SECTION_KEY = "cellery";
-
+    /**
+     * Read the Cellery config in the package.json file.
+     *
+     * @param projectPath The root directory of the project which contains the cell
+     */
     public static readCelleryConfig(projectPath: string): CelleryConfig {
         // Resolving the package JSON file
         let packageJsonFile;
-        if (path.basename(projectPath) === ProjectUtils.PACKAGE_JSON_FILE_NAME) {
+        if (path.basename(projectPath) === Constants.PACKAGE_JSON_FILE_NAME) {
             packageJsonFile = projectPath;
         } else {
-            packageJsonFile = path.resolve(path.join(projectPath, "package.json"));
+            packageJsonFile = path.resolve(path.join(projectPath, Constants.PACKAGE_JSON_FILE_NAME));
         }
         if (!fs.existsSync(packageJsonFile)) {
             throw Error(`Unable to locate ${packageJsonFile} file`);
@@ -43,14 +49,14 @@ class ProjectUtils {
         } catch {
             throw Error(`Unable to read malformed ${packageJsonFile} file`);
         }
-        if (!packageJsonContent.hasOwnProperty(ProjectUtils.CELLERY_CONFIG_SECTION_KEY)) {
-            throw Error(`Cellery expects the ${ProjectUtils.CELLERY_CONFIG_SECTION_KEY} section to be present in `
+        if (!packageJsonContent.hasOwnProperty(Constants.CELLERY_CONFIG_SECTION_KEY)) {
+            throw Error(`Cellery expects the ${Constants.CELLERY_CONFIG_SECTION_KEY} section to be present in `
                 + `the ${packageJsonFile} file`);
         }
-        const celleryConfig = packageJsonContent[ProjectUtils.CELLERY_CONFIG_SECTION_KEY];
+        const celleryConfig = packageJsonContent[Constants.CELLERY_CONFIG_SECTION_KEY];
 
         // Building Cellery config object
-        return new CelleryConfig(celleryConfig);
+        return new CelleryConfig(celleryConfig, projectPath);
     }
 }
 

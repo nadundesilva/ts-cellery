@@ -16,11 +16,19 @@
  * under the License.
  */
 
+import * as path from "path";
+import Constants from "./Constants";
+
+/**
+ * Value Holder for the Cellery configuration.
+ */
 class CelleryConfig {
     public cell: string;
+    public outputDir: string;
 
-    constructor(config) {
-        this.cell = config.cell;
+    constructor(config: {cell: string}, projectPath: string) {
+        this.cell = path.resolve(projectPath, config.cell);
+        this.outputDir = path.resolve(projectPath, Constants.CELLERY_PROJECT_OUTPUT_DIR);
     }
 }
 

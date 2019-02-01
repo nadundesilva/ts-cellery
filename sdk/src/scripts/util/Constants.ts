@@ -16,23 +16,15 @@
  * under the License.
  */
 
-import chalk from "chalk";
-import * as log from "log";
-import ProjectUtils from "./util/ProjectUtils";
-
 /**
- * Cellery Cell Lifecycle Invoker.
+ * Constants related to Cellery Scripts.
  */
-class CelleryInvoker {
-    /**
-     * Invoke the build lifecycle of a Cell.
-     *
-     * @param project Project containing the Cell
-     */
-    public static build(project: string): void {
-        const celleryConfig = ProjectUtils.readCelleryConfig(project);
-        log.info(chalk.green(`Building Cell from ${celleryConfig.cell} file`));
-    }
+class Constants {
+    public static readonly CELLERY_PROJECT_OUTPUT_DIR = "./dist";
+    public static readonly PACKAGE_JSON_FILE_NAME = "package.json";
+    public static readonly CELLERY_CONFIG_SECTION_KEY = "cellery";
+    public static readonly RESOURCES_DIR = "../../resources";
+    public static readonly TS_CONFIG_FILE_NAME = "tsconfig.json";
 }
 
-export default CelleryInvoker;
+export default Constants;

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "declaration": true,
+    "outDir": "<Filled by Cellery Typescript Compiler>"
+  },
+  "include": []
+}
