@@ -6,6 +6,7 @@
     "jsRules": {},
     "rulesDirectory": [],
     "rules": {
+        "max-classes-per-file": false,
         "member-ordering": [
             true,
             {
