@@ -16,8 +16,22 @@
  * under the License.
  */
 
-import BaseComponentIngress from "./BaseComponentIngress";
-import HTTPComponentIngress from "./HTTPComponentIngress";
-import TCPComponentIngress from "./TCPComponentIngress";
+import {CellEgress} from "../cell";
+import {BaseComponentAPI} from "./api";
 
-export {BaseComponentIngress, TCPComponentIngress, HTTPComponentIngress};
+type ComponentEgressTarget = CellEgress | BaseComponentAPI;
+
+/**
+ * Cellery Component Egress.
+ *
+ * This defines outgoing traffic from a Component.
+ */
+class ComponentEgress {
+    private readonly target: ComponentEgressTarget;
+
+    constructor(target: ComponentEgressTarget) {
+        this.target = target;
+    }
+}
+
+export default ComponentEgress;

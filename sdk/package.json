@@ -2,8 +2,8 @@
   "name": "ts-cellery",
   "version": "0.1.0",
   "description": "Cellery for TypeScript",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/lang/index.js",
+  "types": "./dist/lang/index.d.ts",
   "license": "Apache-2.0",
   "bin": {
     "cellery-scripts": "./dist/scripts/index.js"

@@ -16,14 +16,25 @@
  * under the License.
  */
 
+import BaseComponentAPI from "./BaseComponentAPI";
+
 /**
- * Base Component Ingress.
+ * Component TCP API.
  */
-abstract class BaseComponentIngress {
+class TCPComponentAPI extends BaseComponentAPI {
+    private readonly port: number;
+
+    constructor(port: number) {
+        super();
+        this.port = Math.round(port);
+    }
+
     /**
-     * Expose Component Ingress Globally.
+     * Expose the Component API Globally
      */
-    public abstract exposeGlobally(): void;
+    public exposeGlobally(): void {
+        // TODO: Expose API Globally
+    }
 }
 
-export default BaseComponentIngress;
+export default TCPComponentAPI;

@@ -16,25 +16,6 @@
  * under the License.
  */
 
-import BaseComponentIngress from "./BaseComponentIngress";
+import BaseCellAPI from "./BaseCellAPI";
 
-/**
- * Component Ingress for TCP traffic.
- */
-class TCPComponentIngress extends BaseComponentIngress {
-    public readonly port: number;
-
-    constructor(port: number) {
-        super();
-        this.port = Math.round(port);
-    }
-
-    /**
-     * Expose the Component API Globally
-     */
-    public exposeGlobally(): void {
-        // TODO: Expose Ingress Globally
-    }
-}
-
-export default TCPComponentIngress;
+export {BaseCellAPI};

@@ -17,12 +17,12 @@
  */
 
 import HTTPMethod from "../../util/HTTPMethod";
-import BaseComponentIngress from "./BaseComponentIngress";
+import BaseComponentAPI from "./BaseComponentAPI";
 
 /**
- * HTTP Ingress API Definitions.
+ * HTTP API API Definitions.
  */
-class HTTPIngressDefinition {
+class HTTPAPIDefinition {
     private readonly path: string;
     private readonly method: HTTPMethod;
 
@@ -33,14 +33,14 @@ class HTTPIngressDefinition {
 }
 
 /**
- * Component Ingress HTTP traffic.
+ * Component HTTP API.
  */
-class HTTPComponentIngress extends BaseComponentIngress {
-    public readonly port: number;
-    public readonly basePath: string;
-    public readonly definitions: HTTPIngressDefinition[];
+class HTTPComponentAPI extends BaseComponentAPI {
+    private readonly port: number;
+    private readonly basePath: string;
+    private readonly definitions: HTTPAPIDefinition[];
 
-    constructor(port: number, basePath: string, definitions: HTTPIngressDefinition[]) {
+    constructor(port: number, basePath: string, definitions: HTTPAPIDefinition[]) {
         super();
         this.port = Math.round(port);
         this.basePath = basePath;
@@ -51,9 +51,9 @@ class HTTPComponentIngress extends BaseComponentIngress {
      * Expose the Component API Globally
      */
     public exposeGlobally(): void {
-        // TODO: Expose Ingress Globally
+        // TODO: Expose API Globally
     }
 }
 
-export default HTTPComponentIngress;
-export {HTTPIngressDefinition};
+export default HTTPComponentAPI;
+export {HTTPAPIDefinition};
