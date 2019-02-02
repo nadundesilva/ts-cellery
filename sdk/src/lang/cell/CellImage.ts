@@ -16,25 +16,22 @@
  * under the License.
  */
 
-import BaseComponentAPI from "./BaseComponentAPI";
+import {Component} from "../component";
+import {BaseCellAPI} from "./api";
+import CellEgress from "./CellEgress";
 
 /**
- * Component TCP API.
+ * Class for defining Cell image.
  */
-class TCPComponentAPI extends BaseComponentAPI {
-    private readonly port: number;
+abstract class CellImage {
+    protected readonly name: string;
+    protected readonly components: Component[] = [];
+    protected readonly apis: BaseCellAPI[] = [];
+    protected readonly egresses: CellEgress[] = [];
 
-    constructor(port: number) {
-        super();
-        this.port = Math.round(port);
-    }
-
-    /**
-     * Expose the Component API Globally
-     */
-    public exposeInCellAPI(): void {
-        // TODO: Expose API Globally
+    protected constructor(name: string) {
+        this.name = name;
     }
 }
 
-export default TCPComponentAPI;
+export default CellImage;

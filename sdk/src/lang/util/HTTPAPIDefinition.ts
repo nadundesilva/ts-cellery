@@ -16,25 +16,19 @@
  * under the License.
  */
 
-import BaseComponentAPI from "./BaseComponentAPI";
+import HTTPMethod from "./HTTPMethod";
 
 /**
- * Component TCP API.
+ * HTTP API API Definitions.
  */
-class TCPComponentAPI extends BaseComponentAPI {
-    private readonly port: number;
+class HTTPAPIDefinition {
+    private readonly path: string;
+    private readonly method: HTTPMethod;
 
-    constructor(port: number) {
-        super();
-        this.port = Math.round(port);
-    }
-
-    /**
-     * Expose the Component API Globally
-     */
-    public exposeInCellAPI(): void {
-        // TODO: Expose API Globally
+    constructor(path: string, method: HTTPMethod) {
+        this.path = path;
+        this.method = method;
     }
 }
 
-export default TCPComponentAPI;
+export default HTTPAPIDefinition;

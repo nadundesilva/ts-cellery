@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import DockerImage from "../../util/DockerImage";
+import {DockerImage} from "../../util";
 
 /**
  * Base source for Cellery Component.

@@ -16,25 +16,24 @@
  * under the License.
  */
 
-import BaseComponentAPI from "./BaseComponentAPI";
+import {Component, TCPComponentAPI} from "../../component";
+import BaseCellAPI from "./BaseCellAPI";
 
 /**
  * Component TCP API.
  */
-class TCPComponentAPI extends BaseComponentAPI {
-    private readonly port: number;
+class TCPCellAPI extends BaseCellAPI {
 
-    constructor(port: number) {
-        super();
-        this.port = Math.round(port);
+    constructor(targetComponent: Component, targetAPI: TCPComponentAPI, global: boolean) {
+        super(targetComponent, targetAPI, global);
     }
 
     /**
      * Expose the Component API Globally
      */
-    public exposeInCellAPI(): void {
+    public exposeGlobally(): void {
         // TODO: Expose API Globally
     }
 }
 
-export default TCPComponentAPI;
+export default TCPCellAPI;

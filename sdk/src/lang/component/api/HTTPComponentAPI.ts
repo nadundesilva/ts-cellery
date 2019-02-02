@@ -16,21 +16,8 @@
  * under the License.
  */
 
-import HTTPMethod from "../../util/HTTPMethod";
+import {HTTPAPIDefinition} from "../../util";
 import BaseComponentAPI from "./BaseComponentAPI";
-
-/**
- * HTTP API API Definitions.
- */
-class HTTPAPIDefinition {
-    private readonly path: string;
-    private readonly method: HTTPMethod;
-
-    constructor(path: string, method: HTTPMethod) {
-        this.path = path;
-        this.method = method;
-    }
-}
 
 /**
  * Component HTTP API.
@@ -50,10 +37,9 @@ class HTTPComponentAPI extends BaseComponentAPI {
     /**
      * Expose the Component API Globally
      */
-    public exposeGlobally(): void {
+    public exposeInCellAPI(): void {
         // TODO: Expose API Globally
     }
 }
 
 export default HTTPComponentAPI;
-export {HTTPAPIDefinition};

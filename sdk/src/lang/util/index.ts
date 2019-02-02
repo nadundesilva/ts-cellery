@@ -16,25 +16,8 @@
  * under the License.
  */
 
-import BaseComponentAPI from "./BaseComponentAPI";
+import DockerImage from "./DockerImage";
+import HTTPAPIDefinition from "./HTTPAPIDefinition";
+import HTTPMethod from "./HTTPMethod";
 
-/**
- * Component TCP API.
- */
-class TCPComponentAPI extends BaseComponentAPI {
-    private readonly port: number;
-
-    constructor(port: number) {
-        super();
-        this.port = Math.round(port);
-    }
-
-    /**
-     * Expose the Component API Globally
-     */
-    public exposeInCellAPI(): void {
-        // TODO: Expose API Globally
-    }
-}
-
-export default TCPComponentAPI;
+export {DockerImage, HTTPAPIDefinition, HTTPMethod};

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import DockerImage from "../../util/DockerImage";
+import {DockerImage} from "../../util";
 import BaseComponentSource from "./BaseComponentSource";
 
 /**

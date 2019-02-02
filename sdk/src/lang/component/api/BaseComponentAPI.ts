@@ -21,9 +21,9 @@
  */
 abstract class BaseComponentAPI {
     /**
-     * Expose Component API Globally.
+     * Expose Component API at Cell Level.
      */
-    public abstract exposeGlobally(): void;
+    public abstract exposeInCellAPI(): void;
 }
 
 export default BaseComponentAPI;

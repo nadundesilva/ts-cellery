@@ -16,10 +16,26 @@
  * under the License.
  */
 
-import {Component} from "../../component";
+import {BaseComponentAPI, Component} from "../../component";
 
-class BaseCellAPI {
-    protected target: Component;
+/**
+ * Represents a Cell API.
+ */
+abstract class BaseCellAPI {
+    protected targetComponent: Component;
+    protected targetAPI: BaseComponentAPI;
+    protected global: boolean;
+
+    protected constructor(targetComponent: Component, targetAPI: BaseComponentAPI, global: boolean) {
+        this.targetComponent = targetComponent;
+        this.targetAPI = targetAPI;
+        this.global = global;
+    }
+
+    /**
+     * Expose Component API Globally.
+     */
+    public abstract exposeGlobally(): void;
 }
 
 export default BaseCellAPI;
