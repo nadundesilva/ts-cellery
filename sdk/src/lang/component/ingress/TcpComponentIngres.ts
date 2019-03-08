@@ -16,19 +16,11 @@
  * under the License.
  */
 
-import HTTPMethod from "./HTTPMethod";
-
 /**
- * HTTP API API Definitions.
+ * Component TCP Ingress.
  */
-class HTTPAPIDefinition {
-    private readonly path: string;
-    private readonly method: HTTPMethod;
-
-    constructor(path: string, method: HTTPMethod) {
-        this.path = path;
-        this.method = method;
-    }
+interface TcpComponentIngres {
+    readonly port: number;
 }
 
-export default HTTPAPIDefinition;
+export default TcpComponentIngres;

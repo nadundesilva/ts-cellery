@@ -16,24 +16,10 @@
  * under the License.
  */
 
-import {Component, HTTPComponentAPI} from "../../component";
-import BaseCellAPI from "./BaseCellAPI";
+import HttpComponentIngress from "./http";
+import TcpComponentIngres from "./TcpComponentIngres";
 
-/**
- * Component HTTP API.
- */
-class HTTPCellAPI extends BaseCellAPI {
+type ComponentIngress = HttpComponentIngress | TcpComponentIngres;
 
-    constructor(targetComponent: Component, targetAPI: HTTPComponentAPI, global: boolean) {
-        super(targetComponent, targetAPI, global);
-    }
-
-    /**
-     * Expose the Component API Globally
-     */
-    public exposeGlobally(): void {
-        // TODO: Expose API Globally
-    }
-}
-
-export default HTTPCellAPI;
+export {TcpComponentIngres, HttpComponentIngress};
+export default ComponentIngress;

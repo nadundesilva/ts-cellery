@@ -17,8 +17,7 @@
  */
 
 import Component from "./Component";
-import ComponentEgress from "./ComponentEgress";
 
-export {Component, ComponentEgress};
+export default Component;
 export * from "./source";
-export * from "./api";
+export * from "./ingress";

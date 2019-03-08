@@ -16,18 +16,16 @@
  * under the License.
  */
 
-import {DockerImage} from "../../util";
-
 /**
  * Base source for Cellery Component.
  */
-abstract class BaseComponentSource {
+interface BaseComponentSource {
     /**
      * Build a docker image if required and return the fully name of the docker image.
      *
      * @returns The docker image
      */
-    public abstract getDockerImage(): DockerImage;
+    getDockerImage(): string;
 }
 
 export default BaseComponentSource;

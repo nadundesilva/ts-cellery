@@ -16,22 +16,14 @@
  * under the License.
  */
 
+import HttpMethod from "./HttpMethod";
+
 /**
- * Used to store a docker image which had been already built.
+ * Component HTTP Ingress API Definition
  */
-class DockerImage {
-    private readonly name: string;
-
-    constructor(name: string) {
-        this.name = name;
-    }
-
-    /**
-     * Get the name of the docker image with tag.
-     */
-    public getImageName(): string {
-        return this.name;
-    }
+interface HTTPAPIDefinition {
+    readonly path: string;
+    readonly method: HttpMethod;
 }
 
-export default DockerImage;
+export default HTTPAPIDefinition;

@@ -16,6 +16,15 @@
  * under the License.
  */
 
-import BaseCellAPI from "./BaseCellAPI";
+import HTTPAPIDefinition from "./HttpApiDefinitions";
 
-export {BaseCellAPI};
+/**
+ * Component HTTP Ingress.
+ */
+interface HttpComponentIngress {
+    readonly port: number;
+    readonly basePath: string;
+    readonly definitions: HTTPAPIDefinition[];
+}
+
+export default HttpComponentIngress;

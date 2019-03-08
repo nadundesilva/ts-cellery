@@ -16,22 +16,14 @@
  * under the License.
  */
 
-import {Component} from "../component";
-import {BaseCellAPI} from "./api";
-import CellEgress from "./CellEgress";
-
 /**
- * Class for defining Cell image.
+ * HTTP Methods.
  */
-abstract class CellImage {
-    protected readonly name: string;
-    protected readonly components: Component[] = [];
-    protected readonly apis: BaseCellAPI[] = [];
-    protected readonly egresses: CellEgress[] = [];
-
-    protected constructor(name: string) {
-        this.name = name;
-    }
+enum HttpMethod {
+    GET,
+    POST,
+    PUT,
+    DELETE
 }
 
-export default CellImage;
+export default HttpMethod;

@@ -16,8 +16,26 @@
  * under the License.
  */
 
-import CellEgress from "./CellEgress";
-import CellImage from "./CellImage";
+import BaseComponentSource from "./BaseComponentSource";
 
-export {CellImage, CellEgress};
-export * from "./api";
+/**
+ * This is a Cellery Component Source which can be used for building components from docker images.
+ */
+class DockerImageSource implements BaseComponentSource {
+    private readonly image: string;
+
+    constructor(image: string) {
+        this.image = image;
+    }
+
+    /**
+     * Returns the docker image which is represented by this docker image source.
+     *
+     * @returns The docker image
+     */
+    public getDockerImage(): string {
+        return this.image;
+    }
+}
+
+export default DockerImageSource;
