@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import * as fs from "fs";
-import * as path from "path";
 import CelleryConfig from "./CelleryConfig";
 import Constants from "./Constants";
+import * as fs from "fs";
+import * as path from "path";
 
 /**
  * Cellery Project related Utilities.

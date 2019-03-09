@@ -34,7 +34,6 @@ class CellBuilder {
     private readonly version: string;
     private readonly components: Component[] = [];
     private readonly exposedIngresses: CellIngress[] = [];
-    private labels: object = {};
 
     constructor(orgName: string, name: string, version: string) {
         this.orgName = orgName;
@@ -80,7 +79,8 @@ class CellBuilder {
         this.components.forEach((component) => {
             services.push({
                 metadata: {
-                    name: component.name
+                    name: component.name,
+                    labels: (component.labels ? component.labels : {})
                 },
                 spec: {
                     container: {
@@ -135,8 +135,7 @@ class CellBuilder {
                     [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_ORG]: this.orgName,
                     [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_NAME]: this.name,
                     [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn]: this.version
-                },
-                labels: this.labels
+                }
             },
             spec: {
                 gatewayTemplate: {

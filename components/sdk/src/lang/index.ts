@@ -16,5 +16,10 @@
  * under the License.
  */
 
+import Labels from "./Labels";
+
+export {
+    Labels
+};
 export * from "./component";
 export * from "./cell";

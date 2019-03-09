@@ -24,6 +24,7 @@ import * as fs from "fs";
 import * as log from "log";
 import * as path from "path";
 import * as ts from "typescript";
+import * as rimraf from "rimraf";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -38,6 +39,9 @@ class Compiler {
     public static compile(project): void {
         const celleryConfig = ProjectUtils.readCelleryConfig(project);
         log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
+
+        rimraf.sync(celleryConfig.outputDir);
+        fs.mkdirSync(celleryConfig.outputDir, {recursive: true});
 
         const tsConfigFile = path.resolve(
             __dirname,

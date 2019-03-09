@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import Container from "../container";
-
 /**
- * Kubernetes Service Resource Spec model.
+ * Labels that can be used in Cell Components.
  */
-class ServiceSpec {
-    readonly container: Container;
-    readonly replicas: number;
-    readonly servicePort?: number;
+class Labels {
+    public static readonly TEAM: string = "TEAM";
+    public static readonly OWNER: string = "OWNER";
+    public static readonly MAINTAINER: string = "MAINTAINER";
 }
 
-export default ServiceSpec;
+export default Labels;

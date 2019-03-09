@@ -27,7 +27,7 @@ interface Component {
     readonly source: ComponentSource;
     readonly ingresses: { [key: string]: ComponentIngress };
     readonly replicas?: number;
-    readonly labels?: { [key: string]: number };
+    readonly labels?: { [key: string]: string };
 }
 
 export default Component;

@@ -22,7 +22,6 @@ import Constants from "../../scripts/util/Constants";
 import * as fs from "fs";
 import * as kubernetes from "../../kubernetes";
 import * as path from "path";
-import * as rimraf from "rimraf";
 
 /**
  * Cell Image model.
@@ -99,8 +98,6 @@ abstract class CellImage {
             .build();
 
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
-        rimraf.sync(outputDir);
-        fs.mkdirSync(outputDir, {recursive: true});
 
         const celleryDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_CELLERY);
         fs.mkdirSync(celleryDir, {recursive: true});
