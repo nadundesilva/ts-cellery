@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import Method from "./Method";
-
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes container environment variable model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface EnvVar {
+    readonly name: string;
+    readonly value: string;
 }
 
-export default APIDefinition;
+export default EnvVar;

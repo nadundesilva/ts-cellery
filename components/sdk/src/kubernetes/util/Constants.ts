@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import Method from "./Method";
-
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes related constants.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+class Constants {
+    public static readonly CELL_RESOURCE_API_VERSION = "mesh.cellery.io/v1alpha1";
+    public static readonly CELL_RESOURCE_KIND = "Cell";
+    public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_ORG = "mesh.cellery.io/cell-image-org";
+    public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_NAME = "mesh.cellery.io/cell-image-name";
+    public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn = "mesh.cellery.io/cell-image-version";
 }
 
-export default APIDefinition;
+export default Constants;

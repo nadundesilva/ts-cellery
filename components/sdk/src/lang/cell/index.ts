@@ -17,5 +17,9 @@
  */
 
 import CellImage from "./CellImage";
+import CellIngress from "./CellIngress";
 
-export {CellImage};
+export {
+    CellImage,
+    CellIngress
+}

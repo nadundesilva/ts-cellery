@@ -40,13 +40,15 @@ if (program.verbose) {
 logNode();
 
 // Build command
-program.command("build <projectDir>").action((projectDir) => {
-    try {
-        Compiler.compile(projectDir);
-        Invoker.build(projectDir);
-    } catch (e) {
-        log.error(chalk.red(e));
+program.command("build <projectDir> <orgName> <imageName> <imageVersion>").action(
+    (projectDir, orgName, imageName, imageVersion) => {
+        try {
+            Compiler.compile(projectDir);
+            Invoker.build(projectDir, orgName, imageName, imageVersion);
+        } catch (e) {
+            log.error(chalk.red(e));
+        }
     }
-});
+);
 
 program.parse(process.argv);

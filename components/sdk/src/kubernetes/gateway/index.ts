@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import Method from "./Method";
+import GatewaySpec from "./GatewaySpec";
 
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes Gateway Resource model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+class Index {
+    spec: GatewaySpec
 }
 
-export default APIDefinition;
+export default Index;

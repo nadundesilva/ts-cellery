@@ -16,14 +16,10 @@
  * under the License.
  */
 
-import Method from "./Method";
+import CellBuilder from "./CellBuilder";
+import Constants from "./Constants";
 
-/**
- * Component HTTP Ingress API Definition
- */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
-}
-
-export default APIDefinition;
+export {
+    CellBuilder,
+    Constants
+};

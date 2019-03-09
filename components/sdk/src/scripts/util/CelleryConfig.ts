@@ -29,7 +29,7 @@ class CelleryConfig {
 
     constructor(config: {cell: string}, projectPath: string) {
         this.cell = path.resolve(projectPath, config.cell);
-        this.outputDir = path.resolve(projectPath, Constants.CELLERY_PROJECT_OUTPUT_DIR);
+        this.outputDir = path.resolve(projectPath, `./${Constants.Project.Build.OUTPUT_DIR}`);
         this.compiledCell = path.resolve(this.outputDir, config.cell.replace(/.ts$/, ".js"));
     }
 }

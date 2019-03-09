@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import Method from "./Method";
-
 /**
- * Component HTTP Ingress API Definition
+ * Cell Level Ingress.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface CellIngress {
+    readonly componentIngressName: string;
+    readonly isGlobal: boolean;
 }
 
-export default APIDefinition;
+export default CellIngress;

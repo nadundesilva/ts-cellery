@@ -20,11 +20,19 @@
  * Constants related to Cellery Scripts.
  */
 class Constants {
-    public static readonly CELLERY_PROJECT_OUTPUT_DIR = "./dist";
-    public static readonly PACKAGE_JSON_FILE_NAME = "package.json";
-    public static readonly CELLERY_CONFIG_SECTION_KEY = "cellery";
     public static readonly RESOURCES_DIR = "../../resources";
-    public static readonly TS_CONFIG_FILE_NAME = "tsconfig.json";
+    public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
+
+    public static readonly Project = class Project {
+        public static readonly PACKAGE_JSON_FILE_NAME = "package.json";
+        public static readonly TS_CONFIG_FILE_NAME = "tsconfig.json";
+        public static readonly CELLERY_CONFIG_SECTION_KEY = "cellery";
+
+        public static readonly Build = class Build {
+            public static readonly OUTPUT_DIR = "target";
+            public static readonly OUTPUT_DIR_CELLERY = "cellery";
+        }
+    };
 }
 
 export default Constants;

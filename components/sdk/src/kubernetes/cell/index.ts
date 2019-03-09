@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import Method from "./Method";
+import CellSpec from "./CellSpec";
+import Metadata from "../Metadata";
 
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes Cell Resource model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface Cell {
+    readonly apiVersion: string;
+    readonly kind: string;
+    readonly metadata: Metadata;
+    readonly spec: CellSpec;
 }
 
-export default APIDefinition;
+export default Cell;

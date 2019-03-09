@@ -16,14 +16,9 @@
  * under the License.
  */
 
-import Method from "./Method";
+import Cell from "./cell";
 
-/**
- * Component HTTP Ingress API Definition
- */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
-}
-
-export default APIDefinition;
+export {
+    Cell
+};
+export * from "./util";

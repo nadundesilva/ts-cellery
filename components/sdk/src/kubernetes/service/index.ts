@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import Method from "./Method";
+import Metadata from "../Metadata";
+import ServiceSpec from "./ServiceSpec";
 
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes Service Resource model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+class Service {
+    readonly metadata: Metadata;
+    readonly spec: ServiceSpec;
 }
 
-export default APIDefinition;
+export default Service;

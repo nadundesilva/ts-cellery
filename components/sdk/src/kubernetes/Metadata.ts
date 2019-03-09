@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import Method from "./Method";
-
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes metadata model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface Metadata {
+    readonly name: string;
+    readonly annotations?: object;
+    readonly labels?: object
 }
 
-export default APIDefinition;
+export default Metadata;

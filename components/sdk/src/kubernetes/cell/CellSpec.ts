@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import Method from "./Method";
+import Gateway from "../gateway";
+import Service from "../service";
 
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes Cell resource spec model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface CellSpec {
+    gatewayTemplate: Gateway;
+    servicesTemplates: Service[];
 }
 
-export default APIDefinition;
+export default CellSpec;

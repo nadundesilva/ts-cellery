@@ -33,10 +33,10 @@ class ProjectUtils {
     public static readCelleryConfig(projectPath: string): CelleryConfig {
         // Resolving the package JSON file
         let packageJsonFile;
-        if (path.basename(projectPath) === Constants.PACKAGE_JSON_FILE_NAME) {
+        if (path.basename(projectPath) === Constants.Project.PACKAGE_JSON_FILE_NAME) {
             packageJsonFile = projectPath;
         } else {
-            packageJsonFile = path.resolve(path.join(projectPath, Constants.PACKAGE_JSON_FILE_NAME));
+            packageJsonFile = path.resolve(path.join(projectPath, Constants.Project.PACKAGE_JSON_FILE_NAME));
         }
         if (!fs.existsSync(packageJsonFile)) {
             throw Error(`Unable to locate ${packageJsonFile} file`);
@@ -49,11 +49,11 @@ class ProjectUtils {
         } catch {
             throw Error(`Unable to read malformed ${packageJsonFile} file`);
         }
-        if (!packageJsonContent.hasOwnProperty(Constants.CELLERY_CONFIG_SECTION_KEY)) {
-            throw Error(`Cellery expects the ${Constants.CELLERY_CONFIG_SECTION_KEY} section to be present in `
+        if (!packageJsonContent.hasOwnProperty(Constants.Project.CELLERY_CONFIG_SECTION_KEY)) {
+            throw Error(`Cellery expects the ${Constants.Project.CELLERY_CONFIG_SECTION_KEY} section to be present in `
                 + `the ${packageJsonFile} file`);
         }
-        const celleryConfig = packageJsonContent[Constants.CELLERY_CONFIG_SECTION_KEY];
+        const celleryConfig = packageJsonContent[Constants.Project.CELLERY_CONFIG_SECTION_KEY];
 
         // Building Cellery config object
         return new CelleryConfig(celleryConfig, projectPath);

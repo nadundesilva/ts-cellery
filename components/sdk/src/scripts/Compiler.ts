@@ -42,7 +42,7 @@ class Compiler {
         const tsConfigFile = path.resolve(
             __dirname,
             Constants.RESOURCES_DIR,
-            Constants.TS_CONFIG_FILE_NAME
+            Constants.Project.TS_CONFIG_FILE_NAME
         );
         const typescriptConfig = Compiler.readTypescriptConfig(
             tsConfigFile,

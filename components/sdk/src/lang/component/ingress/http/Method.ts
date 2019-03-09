@@ -19,11 +19,11 @@
 /**
  * HTTP Methods.
  */
-enum Method {
-    GET,
-    POST,
-    PUT,
-    DELETE
+class Method {
+    public static readonly GET = "GET";
+    public static readonly POST = "POST";
+    public static readonly PUT = "PUT";
+    public static readonly DELETE = "DELETE";
 }
 
 export default Method;

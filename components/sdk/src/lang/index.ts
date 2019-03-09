@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./cell";
 export * from "./component";
+export * from "./cell";

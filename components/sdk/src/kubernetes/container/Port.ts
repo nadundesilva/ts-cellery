@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import Method from "./Method";
-
 /**
- * Component HTTP Ingress API Definition
+ * Kubernetes container port model.
  */
-interface APIDefinition {
-    readonly path: string;
-    readonly method: Method;
+interface Port {
+    readonly containerPort: number;
 }
 
-export default APIDefinition;
+export default Port;

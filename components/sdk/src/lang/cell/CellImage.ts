@@ -16,13 +16,98 @@
  * under the License.
  */
 
+import {Component} from "../component";
+import CellIngress from "./CellIngress";
+import Constants from "../../scripts/util/Constants";
+import * as fs from "fs";
+import * as kubernetes from "../../kubernetes";
+import * as path from "path";
+import * as rimraf from "rimraf";
+
 /**
  * Cell Image model.
  *
  * This should be extended and implemented when creating Cells.
  */
 abstract class CellImage {
-    public abstract build(): void;
+    private readonly components: Component[] = [];
+    private readonly exposedIngresses: CellIngress[] = [];
+
+    /**
+     * Cellery Lifecycle method which will be called during the build.
+     *
+     * @param orgName The Cell organization name
+     * @param imageName The Cell image name
+     * @param imageVersion The Cell image version
+     */
+    public abstract build(orgName: string, imageName: string, imageVersion: string): void;
+
+    /**
+     * Add a component to this cell image.
+     *
+     * @param component The component to be added
+     */
+    protected addComponent(component: Component): void {
+        const matchCount = this.components.filter(
+            (existingComponent) => existingComponent.name === component.name).length;
+        if (matchCount === 0) {
+            this.components.push(component);
+        } else {
+            throw Error(`Component ${component.name} already exists`);
+        }
+    }
+
+    /**
+     * Expose all the ingresses of a component at Cell Level.
+     *
+     * @param component Component of which the ingresses should be exposed.
+     */
+    protected expose(component: Component): void {
+        Object.keys(component.ingresses).forEach((ingressName) => {
+            this.exposedIngresses.push({
+                componentIngressName: ingressName,
+                isGlobal: false
+            });
+        });
+    }
+
+    /**
+     * Expose all the ingresses of a component globally.
+     *
+     * @param component Component of which the ingresses should be exposed.
+     */
+    protected exposeGlobal(component: Component): void {
+        Object.keys(component.ingresses).forEach((ingressName) => {
+            this.exposedIngresses.push({
+                componentIngressName: ingressName,
+                isGlobal: true
+            });
+        });
+    }
+
+    /**
+     * Build the image artifacts.
+     *
+     * @param orgName The Cell organization name
+     * @param imageName The Cell image name
+     * @param imageVersion The Cell image version
+     */
+    protected buildArtifacts(orgName: string, imageName: string, imageVersion: string): void {
+        const cellFileContent = new kubernetes.CellBuilder(orgName, imageName, imageVersion)
+            .withComponents(this.components)
+            .withExposedIngresses(this.exposedIngresses)
+            .build();
+
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+        rimraf.sync(outputDir);
+        fs.mkdirSync(outputDir, {recursive: true});
+
+        const celleryDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_CELLERY);
+        fs.mkdirSync(celleryDir, {recursive: true});
+
+        const cellFile = path.resolve(celleryDir, `${imageName}.yaml`);
+        fs.writeFileSync(cellFile, cellFileContent);
+    }
 }
 
 export default CellImage;
