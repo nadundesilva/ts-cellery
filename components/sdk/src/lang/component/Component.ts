@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import ComponentIngress from "./ingress";
-import ComponentSource from "./source";
+import {ComponentIngress} from "./ingress";
+import {ComponentSource} from "./source";
 
 /**
  * Cellery Component.
@@ -25,9 +25,9 @@ import ComponentSource from "./source";
 interface Component {
     readonly name: string;
     readonly source: ComponentSource;
-    readonly replicas: number;
     readonly ingresses: { [key: string]: ComponentIngress };
-    readonly labels: { [key: string]: number };
+    readonly replicas?: number;
+    readonly labels?: { [key: string]: number };
 }
 
 export default Component;

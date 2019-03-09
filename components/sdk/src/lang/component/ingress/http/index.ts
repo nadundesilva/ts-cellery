@@ -16,23 +16,8 @@
  * under the License.
  */
 
-import chalk from "chalk";
-import * as log from "log";
-import ProjectUtils from "./util/ProjectUtils";
+import ApiDefinitions from "./ApiDefinitions";
+import ComponentIngress from "./ComponentIngress";
+import Method from "./Method";
 
-/**
- * Cellery Cell Lifecycle Invoker.
- */
-class CelleryInvoker {
-    /**
-     * Invoke the build lifecycle of a Cell.
-     *
-     * @param project Project containing the Cell
-     */
-    public static build(project: string): void {
-        const celleryConfig = ProjectUtils.readCelleryConfig(project);
-        log.info(chalk.green(`Building Cell from ${celleryConfig.cell} file`));
-    }
-}
-
-export default CelleryInvoker;
+export {ApiDefinitions, ComponentIngress, Method};

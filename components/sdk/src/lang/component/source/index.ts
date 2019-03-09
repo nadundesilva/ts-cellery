@@ -16,14 +16,9 @@
  * under the License.
  */
 
-/**
- * HTTP Methods.
- */
-enum HttpMethod {
-    GET,
-    POST,
-    PUT,
-    DELETE
-}
+import BaseComponentSource from "./BaseComponentSource";
+import DockerImageSource from "./DockerImageSource";
 
-export default HttpMethod;
+type ComponentSource = BaseComponentSource;
+
+export {ComponentSource, BaseComponentSource, DockerImageSource};

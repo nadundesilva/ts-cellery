@@ -16,10 +16,5 @@
  * under the License.
  */
 
-import BaseComponentSource from "./BaseComponentSource";
-import DockerImageSource from "./DockerImageSource";
-
-type ComponentSource = BaseComponentSource;
-
-export default ComponentSource;
-export {BaseComponentSource, DockerImageSource};
+export * from "./cell";
+export * from "./component";

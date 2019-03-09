@@ -25,10 +25,12 @@ import Constants from "./Constants";
 class CelleryConfig {
     public cell: string;
     public outputDir: string;
+    public compiledCell: string;
 
     constructor(config: {cell: string}, projectPath: string) {
         this.cell = path.resolve(projectPath, config.cell);
         this.outputDir = path.resolve(projectPath, Constants.CELLERY_PROJECT_OUTPUT_DIR);
+        this.compiledCell = path.resolve(this.outputDir, config.cell.replace(/.ts$/, ".js"));
     }
 }
 

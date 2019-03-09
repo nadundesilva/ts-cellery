@@ -1,0 +1,24 @@
+{
+  "name": "@ts-cellery/parent",
+  "private": true,
+  "description": "Cellery Typescript",
+  "keywords": [
+    "Cellery",
+    "Typescript"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "clean": "lerna run clean && lerna clean",
+    "install": "lerna bootstrap",
+    "format:check": "lerna run format:check",
+    "format:fix": "lerna run format:fix",
+    "lint": "lerna run lint",
+    "build": "lerna run build",
+    "build:prod": "lerna run build:prod",
+    "test": "lerna run test",
+    "publish": "lerna publish"
+  },
+  "devDependencies": {
+    "lerna": "^3.10.7"
+  }
+}

@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import HttpComponentIngress from "./http";
-import TcpComponentIngres from "./TcpComponentIngres";
+/**
+ * HTTP Methods.
+ */
+enum Method {
+    GET,
+    POST,
+    PUT,
+    DELETE
+}
 
-type ComponentIngress = HttpComponentIngress | TcpComponentIngres;
-
-export {TcpComponentIngres, HttpComponentIngress};
-export default ComponentIngress;
+export default Method;

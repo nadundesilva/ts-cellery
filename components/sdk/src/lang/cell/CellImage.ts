@@ -16,4 +16,13 @@
  * under the License.
  */
 
-export * from "./component";
+/**
+ * Cell Image model.
+ *
+ * This should be extended and implemented when creating Cells.
+ */
+abstract class CellImage {
+    public abstract build(): void;
+}
+
+export default CellImage;

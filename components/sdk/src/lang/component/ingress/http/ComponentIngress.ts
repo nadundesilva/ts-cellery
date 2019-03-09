@@ -16,8 +16,15 @@
  * under the License.
  */
 
-import Component from "./Component";
+import HTTPAPIDefinition from "./ApiDefinitions";
 
-export default Component;
-export * from "./source";
-export * from "./ingress";
+/**
+ * Component HTTP Ingress.
+ */
+interface ComponentIngress {
+    readonly port: number;
+    readonly basePath: string;
+    readonly definitions: HTTPAPIDefinition[];
+}
+
+export default ComponentIngress;

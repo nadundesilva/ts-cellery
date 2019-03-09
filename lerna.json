@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "message": "TS Cellery: Release %s"
+    }
+  },
+  "packages": [
+    "components/*",
+    "samples/*"
+  ]
+}

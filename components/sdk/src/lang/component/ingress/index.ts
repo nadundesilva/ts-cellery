@@ -16,14 +16,9 @@
  * under the License.
  */
 
-import HttpMethod from "./HttpMethod";
+import * as http from "./http";
+import * as tcp from "./tcp";
 
-/**
- * Component HTTP Ingress API Definition
- */
-interface HTTPAPIDefinition {
-    readonly path: string;
-    readonly method: HttpMethod;
-}
+type ComponentIngress = http.ComponentIngress | tcp.ComponentIngres;
 
-export default HTTPAPIDefinition;
+export {ComponentIngress, tcp, http};

@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import CelleryConfig from "./util/CelleryConfig";
+import Constants from "./util/Constants";
+import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as log from "log";
 import * as path from "path";
 import * as ts from "typescript";
-import CelleryConfig from "./util/CelleryConfig";
-import Constants from "./util/Constants";
-import ProjectUtils from "./util/ProjectUtils";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -65,6 +65,8 @@ class Compiler {
         if (emitResult.emitSkipped) {
             throw Error("Failed to Compile Cell");
         }
+
+        log.info(chalk.green(`Saved compiled Cell into ${celleryConfig.compiledCell}`));
     }
 
     /**
@@ -73,7 +75,7 @@ class Compiler {
      * @param configFileName The Typescript config file name
      * @param celleryConfig The Cellery Configuration
      */
-    private static readTypescriptConfig(
+    public static readTypescriptConfig(
         configFileName: string,
         celleryConfig: CelleryConfig
     ) {
