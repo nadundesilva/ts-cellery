@@ -17,7 +17,7 @@
  */
 
 import * as path from "path";
-import Constants from "./Constants";
+import Constants from "../../util/Constants";
 
 /**
  * Value Holder for the Cellery configuration.

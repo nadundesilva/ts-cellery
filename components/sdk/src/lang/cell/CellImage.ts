@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import {Component} from "../component";
+import {Component, ComponentIngress} from "../component";
 import CellIngress from "./CellIngress";
-import Constants from "../../scripts/util/Constants";
+import Constants from "../../util/Constants";
+import * as Handlebars from "handlebars";
 import * as fs from "fs";
 import * as kubernetes from "../../kubernetes";
 import * as path from "path";
@@ -92,6 +93,18 @@ abstract class CellImage {
      * @param imageVersion The Cell image version
      */
     protected buildArtifacts(orgName: string, imageName: string, imageVersion: string): void {
+        this.buildCellFile(orgName, imageName, imageVersion);
+        this.buildCellReferenceFile(orgName, imageName, imageVersion);
+    }
+
+    /**
+     * Build the Cell File to be deployed in the runtime.
+     *
+     * @param orgName Organization name of the Cell Image
+     * @param imageName Name of the Cell Image
+     * @param imageVersion Version of the Cell Image
+     */
+    private buildCellFile(orgName: string, imageName: string, imageVersion: string): void {
         const cellFileContent = new kubernetes.CellBuilder(orgName, imageName, imageVersion)
             .withComponents(this.components)
             .withExposedIngresses(this.exposedIngresses)
@@ -104,6 +117,90 @@ abstract class CellImage {
 
         const cellFile = path.resolve(celleryDir, `${imageName}.yaml`);
         fs.writeFileSync(cellFile, cellFileContent);
+    }
+
+    /**
+     * Build the Cell Reference File to be used by the Cell consumers.
+     *
+     * @param orgName Organization name of the Cell Image
+     * @param imageName Name of the Cell Image
+     * @param imageVersion Version of the Cell Image
+     */
+    private buildCellReferenceFile(orgName: string, imageName: string, imageVersion: string): void {
+        // Finding the exposed ingresses
+        const ingresses: {isGlobal: boolean, protocol: string, ingress: ComponentIngress}[] = [];
+        this.exposedIngresses.forEach((exposedIngress) => {
+            const matches = this.components.filter(
+                (component) => component.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
+
+            if (matches.length === 1) {
+                let ingress = matches[0].ingresses[exposedIngress.componentIngressName];
+
+                let protocol: string;
+                if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {
+                    protocol = "http";
+                } else {
+                    protocol = "tcp";
+                }
+
+                ingresses.push({
+                    ingress: ingress,
+                    protocol: protocol,
+                    isGlobal: exposedIngress.isGlobal
+                });
+            }
+        });
+
+        const templateContext = {
+            [Constants.CellReferenceTemplate.CONTEXT_ORGANIZATION_NAME]: orgName,
+            [Constants.CellReferenceTemplate.CONTEXT_NAME]: imageName,
+            [Constants.CellReferenceTemplate.CONTEXT_VERSION]: imageVersion,
+            [Constants.CellReferenceTemplate.CONTEXT_GATEWAY_PORT]: Constants.DEFAULT_GATEWAY_PORT,
+            [Constants.CellReferenceTemplate.CONTEXT_INGRESSES]: ingresses
+        };
+
+        const convertToTitleCase = (text: string, separator: string | RegExp): string => {
+            const wordsArray: string[] = text.split(separator);
+            let convertedText = "";
+            wordsArray.forEach((word) => {
+                if (word.length >= 1) {
+                    convertedText += word.substring(0, 1).toUpperCase();
+                }
+                if (word.length >= 2) {
+                    convertedText += word.substring(1).toLowerCase();
+                }
+            });
+            return convertedText;
+        };
+
+        Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_API_NAME,
+            (text) => convertToTitleCase(text, /\/|-/g));
+        Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_TYPE_NAME,
+            (text) => convertToTitleCase(text, /-/g));
+
+        const rawTemplate = fs.readFileSync(path.resolve(
+            __dirname,
+            "../../../",
+            Constants.RESOURCES_DIR,
+            Constants.CellReferenceTemplate.FILE
+        )).toString();
+        const template = Handlebars.compile(rawTemplate);
+        const cellReferenceFileContent = template(templateContext);
+
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+
+        const celleryDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
+        fs.mkdirSync(celleryDir, {recursive: true});
+
+        const cellReferenceFile = path.resolve(celleryDir, `${imageName}-ref.ts`);
+        fs.writeFileSync(cellReferenceFile, cellReferenceFileContent);
+
+        const packageJson = {
+            name: imageName,
+            version: imageVersion
+        };
+        const cellReferencePackageJsonFile = path.resolve(celleryDir, "package.json");
+        fs.writeFileSync(cellReferencePackageJsonFile, JSON.stringify(packageJson));
     }
 }
 

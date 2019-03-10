@@ -25,6 +25,7 @@ class ServiceSpec {
     readonly container: Container;
     readonly replicas: number;
     readonly servicePort?: number;
+    readonly protocol?: string;
 }
 
 export default ServiceSpec;

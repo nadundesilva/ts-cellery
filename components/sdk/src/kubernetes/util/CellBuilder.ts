@@ -17,7 +17,7 @@
  */
 
 import CellIngress from "../../lang/cell/CellIngress";
-import Constants from "./Constants";
+import Constants from "../../util/Constants";
 import HttpGateway from "../gateway/http";
 import HttpComponentIngress from "../../../dist/lang/component/ingress/http/HttpComponentIngress";
 import Index from "../cell";
@@ -127,14 +127,14 @@ class CellBuilder {
         });
 
         const cell: Index = {
-            apiVersion: Constants.CELL_RESOURCE_API_VERSION,
-            kind: Constants.CELL_RESOURCE_KIND,
+            apiVersion: Constants.Kubernetes.CELL_RESOURCE_API_VERSION,
+            kind: Constants.Kubernetes.CELL_RESOURCE_KIND,
             metadata: {
                 name: this.name,
                 annotations: {
-                    [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_ORG]: this.orgName,
-                    [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_NAME]: this.name,
-                    [Constants.CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn]: this.version
+                    [Constants.Kubernetes.CELL_RESOURCE_ANNOTATION_IMAGE_ORG]: this.orgName,
+                    [Constants.Kubernetes.CELL_RESOURCE_ANNOTATION_IMAGE_NAME]: this.name,
+                    [Constants.Kubernetes.CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn]: this.version
                 }
             },
             spec: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Constants from "./util/Constants";
+import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
 import * as log from "log";
@@ -42,7 +42,7 @@ class CelleryInvoker {
         try {
             cellModule = await import(celleryConfig.compiledCell);
         } catch (e) {
-            throw Error(`Failed to find compiled Cell file ${celleryConfig.compiledCell}`);
+            throw Error(`Failed to find compiled Cell file ${celleryConfig.compiledCell} due to ${e}`);
         }
 
         // Invoking the build life cycle method of the Cell Image

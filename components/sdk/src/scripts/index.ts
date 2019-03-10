@@ -18,15 +18,14 @@
  * under the License.
  */
 
-import chalk from "chalk";
-import * as program from "commander";
-import * as log from "log";
-import * as logNode from "log-node";
 import Compiler from "./Compiler";
 import Invoker from "./Invoker";
+import chalk from "chalk";
+import * as log from "log";
+import * as logNode from "log-node";
+import * as program from "commander";
 
 program
-    .version("0.1.0")
     .option("-v, --verbose", "increase the verbosity of the output")
     .parseOptions(process.argv);
 
@@ -40,15 +39,18 @@ if (program.verbose) {
 logNode();
 
 // Build command
-program.command("build <projectDir> <orgName> <imageName> <imageVersion>").action(
-    (projectDir, orgName, imageName, imageVersion) => {
-        try {
-            Compiler.compile(projectDir);
-            Invoker.build(projectDir, orgName, imageName, imageVersion);
-        } catch (e) {
-            log.error(chalk.red(e));
+program
+    .command("build <projectDir> <orgName> <imageName> <imageVersion>")
+    .action(
+        async (projectDir, orgName, imageName, imageVersion) => {
+            // Invoking the life cycle method
+            try {
+                Compiler.compile(projectDir);
+                await Invoker.build(projectDir, orgName, imageName, imageVersion);
+            } catch (e) {
+                log.error(chalk.red(e));
+            }
         }
-    }
-);
+    );
 
 program.parse(process.argv);

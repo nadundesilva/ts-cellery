@@ -17,8 +17,9 @@
  */
 
 import Cell from "./cell";
+import CellBuilder from "./util/CellBuilder";
 
 export {
-    Cell
+    Cell,
+    CellBuilder
 };
-export * from "./util";

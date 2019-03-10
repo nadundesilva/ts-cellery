@@ -1,0 +1,91 @@
+{{!
+   Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+
+   WSO2 Inc. licenses this file to you under the Apache License,
+   Version 2.0 (the "License"); you may not use this file except
+   in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+}}
+/**
+ * Reference to the {{cellOrg}} organization's {{cellName}} cell image instance which can be used
+ * to get details about the APIs exposed by the the cell. This information is only relevant for calls
+ * within the cellery system.
+ */
+export class {{handleTypeName cellName}}Reference {
+    private readonly cellOrg: string = "{{cellOrg}}";
+    private readonly cellName: string = "{{cellName}}";
+    private readonly cellVersion: string = "{{cellVersion}}";
+    private readonly instanceName: string = "";
+
+    constructor(instanceName: string) {
+        this.instanceName = instanceName;
+    }
+
+    /**
+     * Get the Host name of the Cell Gateway. This hostname can be used when accessing the APIs.
+     *
+     * @returns The host name of the Cell Gateway
+     */
+    public getHost(): string {
+        return this.instanceName + "--gateway-service";
+    }
+
+{{#ingresses}}
+    /**
+     * Get the complete URL of the "{{ingress.basePath}}" API exposed by the cell gateway.
+     * This URL can be used when accessing the "{{ingress.basePath}}" API.
+     * The URL of the "{{ingress.basePath}}" API
+     */
+    public get{{handleApiName ingress.basePath}}ApiUrl(): string {
+{{#if ingress.basePath}}
+        return this.get{{handleApiName ingress.basePath}}ApiProtocol() + "://" + this.getHost() + ":"
+                + this.get{{handleApiName ingress.basePath}}ApiPort()
+                + this.get{{handleApiName ingress.basePath}}ApiContext();
+{{else}}
+            return this.get{{handleApiName ingress.basePath}}ApiProtocol() + "://" + this.getHost() + ":"
+                + this.get{{handleApiName ingress.basePath}}ApiPort();
+{{/if}}
+    }
+
+    /**
+     * Get the protocol of the "{{ingress.basePath}}" API exposed by the cell gateway.
+     * This protocol can be used when accessing the "{{ingress.basePath}}" API.
+     *
+     * @returns The protocol of the "{{ingress.basePath}}" API
+     */
+    public get{{handleApiName ingress.basePath}}ApiProtocol(): string {
+        return "{{protocol}}";
+    }
+
+    /**
+     * Get the port which exposes the "{{ingress.basePath}}" API exposed by the cell gateway.
+     * This port can be used when accessing the "{{ingress.basePath}}" API.
+     *
+     * @returns The port which exposes the "{{ingress.basePath}}" API
+     */
+    public get{{handleApiName ingress.basePath}}ApiPort(): number {
+        return {{../cellGatewayPort}};
+    }
+
+{{#if ingress.basePath}}
+    /**
+     * Get the context of the "{{ingress.basePath}}" API exposed by the cell gateway.
+     * This context path can be used when accessing the "{{ingress.basePath}}" API.
+     *
+     * @returns The context of the "{{ingress.basePath}}" API
+     */
+    public get{{handleApiName ingress.basePath}}ApiContext(): string {
+        return "{{ingress.basePath}}";
+    }
+{{/if}}
+{{/ingresses}}
+}

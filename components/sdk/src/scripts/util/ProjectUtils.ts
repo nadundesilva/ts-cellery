@@ -17,7 +17,7 @@
  */
 
 import CelleryConfig from "./CelleryConfig";
-import Constants from "./Constants";
+import Constants from "../../util/Constants";
 import * as fs from "fs";
 import * as path from "path";
 

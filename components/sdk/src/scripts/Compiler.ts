@@ -17,7 +17,7 @@
  */
 
 import CelleryConfig from "./util/CelleryConfig";
-import Constants from "./util/Constants";
+import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
 import * as fs from "fs";
@@ -36,7 +36,7 @@ class Compiler {
      * @param project The project root dir or project package.json file from which the build information
      *                should be inferred
      */
-    public static compile(project): void {
+    public static compile(project: string): void {
         const celleryConfig = ProjectUtils.readCelleryConfig(project);
         log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
 
@@ -45,8 +45,9 @@ class Compiler {
 
         const tsConfigFile = path.resolve(
             __dirname,
+            "../../",
             Constants.RESOURCES_DIR,
-            Constants.Project.TS_CONFIG_FILE_NAME
+            Constants.TS_CONFIG_FILE_NAME
         );
         const typescriptConfig = Compiler.readTypescriptConfig(
             tsConfigFile,
@@ -69,6 +70,11 @@ class Compiler {
         if (emitResult.emitSkipped) {
             throw Error("Failed to Compile Cell");
         }
+
+        fs.copyFileSync(
+            path.resolve(project, Constants.Project.PACKAGE_JSON_FILE_NAME),
+            path.resolve(celleryConfig.outputDir, Constants.Project.PACKAGE_JSON_FILE_NAME)
+        );
 
         log.info(chalk.green(`Saved compiled Cell into ${celleryConfig.compiledCell}`));
     }
