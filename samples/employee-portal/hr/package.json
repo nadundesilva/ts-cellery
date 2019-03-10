@@ -1,0 +1,19 @@
+{
+  "name": "@ts-cellery/samples-hr-portal",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "Apache-2.0",
+  "cellery": {
+    "cell": "./hr.cell.ts"
+  },
+  "scripts": {
+    "cellery:build": "cellery-scripts build ."
+  },
+  "dependencies": {
+    "employee": "0.1.0",
+    "stock": "0.1.0",
+    "@ts-cellery/sdk": "0.1.0",
+    "log": "^3.2.0"
+  }
+}

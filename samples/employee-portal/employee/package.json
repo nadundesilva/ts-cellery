@@ -1,0 +1,18 @@
+{
+  "name": "@ts-cellery/samples-employee-portal",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "Apache-2.0",
+  "cellery": {
+    "cell": "./employee.cell.ts"
+  },
+  "scripts": {
+    "cellery:build": "cellery-scripts build .",
+    "cellery:run": "cellery-scripts run ./target/"
+  },
+  "dependencies": {
+    "@ts-cellery/sdk": "0.1.0",
+    "log": "^3.2.0"
+  }
+}
