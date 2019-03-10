@@ -23,9 +23,9 @@ import Constants from "./Constants";
  * Value Holder for the Cellery configuration.
  */
 class CelleryConfig {
-    public cell: string;
-    public outputDir: string;
-    public compiledCell: string;
+    public readonly cell: string;
+    public readonly outputDir: string;
+    public readonly compiledCell: string;
 
     constructor(config: {cell: string}, projectPath: string) {
         this.cell = path.resolve(projectPath, config.cell);

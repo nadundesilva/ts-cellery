@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import BaseComponentSource from "./BaseComponentSource";
 import DockerImageSource from "./DockerImageSource";
 
-type ComponentSource = BaseComponentSource;
+type ComponentSource = DockerImageSource;
 
-export {ComponentSource, BaseComponentSource, DockerImageSource};
+export {ComponentSource, DockerImageSource};

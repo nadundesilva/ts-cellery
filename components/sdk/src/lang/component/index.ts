@@ -17,7 +17,8 @@
  */
 
 import Component from "./Component";
+import * as params from "./params";
 
-export {Component};
+export {Component, params};
 export * from "./source";
 export * from "./ingress";

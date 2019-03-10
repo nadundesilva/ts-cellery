@@ -84,7 +84,7 @@ class CellBuilder {
                 },
                 spec: {
                     container: {
-                        image: component.source.getDockerImage(),
+                        image: component.source.image,
                         ports: Object.keys(component.ingresses).map((componentIngressName) => {
                             const componentIngress = component.ingresses[componentIngressName];
                             return {

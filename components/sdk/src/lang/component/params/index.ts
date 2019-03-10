@@ -16,16 +16,11 @@
  * under the License.
  */
 
-/**
- * Base source for Cellery Component.
- */
-interface BaseComponentSource {
-    /**
-     * Build a docker image if required and return the fully name of the docker image.
-     *
-     * @returns The docker image
-     */
-    getDockerImage(): string;
-}
+import Env from "./Env";
 
-export default BaseComponentSource;
+type Param = Env;
+
+export {
+    Param,
+    Env
+};

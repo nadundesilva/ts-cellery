@@ -16,26 +16,8 @@
  * under the License.
  */
 
-import BaseComponentSource from "./BaseComponentSource";
-
-/**
- * This is a Cellery Component Source which can be used for building components from docker images.
- */
-class DockerImageSource implements BaseComponentSource {
-    private readonly image: string;
-
-    constructor(image: string) {
-        this.image = image;
-    }
-
-    /**
-     * Returns the docker image which is represented by this docker image source.
-     *
-     * @returns The docker image
-     */
-    public getDockerImage(): string {
-        return this.image;
-    }
+interface DockerImageSource {
+    readonly image: string;
 }
 
 export default DockerImageSource;

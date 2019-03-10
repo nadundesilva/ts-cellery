@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import Gateway from "../gateway";
-import Service from "../service";
-
 /**
- * Kubernetes Cell resource spec model.
+ * Cell Environment variable parameter model.
  */
-interface CellSpec {
-    readonly gatewayTemplate: Gateway;
-    readonly servicesTemplates: Service[];
+class Env {
+    public value: any;
+
+    constructor(defaultValue: any = undefined) {
+        this.value = defaultValue;
+    }
 }
 
-export default CellSpec;
+export default Env;

@@ -18,6 +18,7 @@
 
 import {ComponentIngress} from "./ingress";
 import {ComponentSource} from "./source";
+import {Param} from "./params";
 
 /**
  * Cellery Component.
@@ -28,6 +29,7 @@ interface Component {
     readonly ingresses: { [key: string]: ComponentIngress };
     readonly replicas?: number;
     readonly labels?: { [key: string]: string };
+    readonly parameters?: {[key: string]: Param }
 }
 
 export default Component;
