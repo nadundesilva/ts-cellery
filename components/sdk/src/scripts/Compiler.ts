@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import CelleryConfig from "./util/CelleryConfig";
-import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import * as nodeExternals from "webpack-node-externals";
+import * as webpack from "webpack";
 import * as fs from "fs";
 import * as log from "log";
-import * as path from "path";
 import * as ts from "typescript";
 import * as rimraf from "rimraf";
+import * as path from "path";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -35,115 +36,73 @@ class Compiler {
      *
      * @param project The project root dir or project package.json file from which the build information
      *                should be inferred
+     * @param imageName The name of the Cell Image
      */
-    public static compile(project: string): void {
-        const celleryConfig = ProjectUtils.readCelleryConfig(project);
-        log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
+    public static compile(project: string, imageName: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const celleryConfig = ProjectUtils.readCelleryConfig(project, imageName);
+            log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
 
-        rimraf.sync(celleryConfig.outputDir);
-        fs.mkdirSync(celleryConfig.outputDir, {recursive: true});
+            rimraf.sync(celleryConfig.outputDir);
+            fs.mkdirSync(celleryConfig.outputDir, {recursive: true});
 
-        const tsConfigFile = path.resolve(
-            __dirname,
-            "../../",
-            Constants.RESOURCES_DIR,
-            Constants.TS_CONFIG_FILE_NAME
-        );
-        const typescriptConfig = Compiler.readTypescriptConfig(
-            tsConfigFile,
-            celleryConfig
-        );
+            const compiler = webpack({
+                mode: "development",
+                entry: {
+                    [imageName]: celleryConfig.cell
+                },
+                context: __dirname,
+                output: {
+                    filename: path.relative(__dirname, celleryConfig.compiledCell),
+                    path: path.resolve(__dirname),
+                    libraryTarget: "commonjs"
+                },
+                watch: false,
+                optimization: {
+                    splitChunks: {
+                        chunks: "initial"
+                    }
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.tsx?$/,
+                            loader: 'ts-loader',
+                            options: {
+                                context: path.resolve("."),
+                                configFile: path.resolve(__dirname, "../../resources/tsconfig.json")
+                            }
+                        }
+                    ]
+                },
+                resolve: {
+                    extensions: [ '.tsx', '.ts', '.js' ],
+                    plugins: [
+                        new TsconfigPathsPlugin({
+                            baseUrl: path.resolve("."),
+                            configFile: path.resolve(__dirname, "../../resources/tsconfig.json")
+                        })
+                    ]
+                },
+                target: 'node',
+                node: {
+                    __dirname: false,
+                    process: false
+                },
+                externals: nodeExternals()
+            });
 
-        // Compile
-        const program = ts.createProgram(
-            typescriptConfig.fileNames,
-            typescriptConfig.options
-        );
-        const emitResult = program.emit();
+            compiler.run((err: Error, stats: webpack.Stats) => {
+                if (err) {
+                    reject(err);
+                } else if (stats.hasErrors()) {
+                    reject(stats.compilation.errors.map((error) => error.message).join(", "));
+                } else {
+                    resolve();
+                }
+            });
 
-        // Report errors
-        Compiler.reportDiagnostics(
-            ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
-        );
-
-        // Fail if compilation failed
-        if (emitResult.emitSkipped) {
-            throw Error("Failed to Compile Cell");
-        }
-
-        fs.copyFileSync(
-            path.resolve(project, Constants.Project.PACKAGE_JSON_FILE_NAME),
-            path.resolve(celleryConfig.outputDir, Constants.Project.PACKAGE_JSON_FILE_NAME)
-        );
-
-        log.info(chalk.green(`Saved compiled Cell into ${celleryConfig.compiledCell}`));
-    }
-
-    /**
-     * Read the type script config file and properly alter to fit the Cellery Cell Build.
-     *
-     * @param configFileName The Typescript config file name
-     * @param celleryConfig The Cellery Configuration
-     */
-    public static readTypescriptConfig(
-        configFileName: string,
-        celleryConfig: CelleryConfig
-    ) {
-        // Read config file
-        const configFileText = fs.readFileSync(configFileName).toString();
-
-        // Parse JSON, after removing comments. Just fancier JSON.parse
-        const result = ts.parseConfigFileTextToJson(
-            configFileName,
-            configFileText
-        );
-
-        // Injecting config from Cellery config
-        result.config.include.push(celleryConfig.cell);
-        result.config.compilerOptions.outDir = celleryConfig.outputDir;
-
-        const configObject = result.config;
-        if (!configObject) {
-            Compiler.reportDiagnostics([result.error]);
-            process.exit(1);
-        }
-
-        // Extract config information
-        const configParseResult = ts.parseJsonConfigFileContent(
-            configObject,
-            ts.sys,
-            path.dirname(configFileName)
-        );
-        if (configParseResult.errors.length > 0) {
-            Compiler.reportDiagnostics(configParseResult.errors);
-            process.exit(1);
-        }
-        return configParseResult;
-    }
-
-    /**
-     * Report diagnostic information to the user.
-     *
-     * @param diagnostics Typescript compiler diagnostics to report
-     */
-    private static reportDiagnostics(diagnostics: ts.Diagnostic[]): void {
-        diagnostics.forEach((diagnostic) => {
-            let message = "Error";
-            if (diagnostic.file) {
-                const {
-                    line,
-                    character
-                } = diagnostic.file.getLineAndCharacterOfPosition(
-                    diagnostic.start
-                );
-                message += ` ${diagnostic.file.fileName} (${line +
-                    1},${character + 1})`;
-            }
-            message += `: ${ts.flattenDiagnosticMessageText(
-                diagnostic.messageText,
-                "\n"
-            )}`;
-            log.info(message);
+            log.info(chalk.green(`Saved compiled Cell into ${celleryConfig.compiledCell}`));
         });
     }
 }

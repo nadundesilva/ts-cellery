@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import * as path from "path";
 import Constants from "../../util/Constants";
+import * as path from "path";
 
 /**
  * Value Holder for the Cellery configuration.
@@ -27,10 +27,10 @@ class CelleryConfig {
     public readonly outputDir: string;
     public readonly compiledCell: string;
 
-    constructor(config: {cell: string}, projectPath: string) {
+    constructor(config: {cell: string, imageName: string}, projectPath: string) {
         this.cell = path.resolve(projectPath, config.cell);
         this.outputDir = path.resolve(projectPath, `./${Constants.Project.Build.OUTPUT_DIR}`);
-        this.compiledCell = path.resolve(this.outputDir, config.cell.replace(/.ts$/, ".js"));
+        this.compiledCell = path.resolve(this.outputDir, `${config.imageName}.cell.js`);
     }
 }
 

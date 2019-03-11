@@ -29,8 +29,9 @@ class ProjectUtils {
      * Read the Cellery config in the package.json file.
      *
      * @param projectPath The root directory of the project which contains the cell
+     * @param imageName The name of the image
      */
-    public static readCelleryConfig(projectPath: string): CelleryConfig {
+    public static readCelleryConfig(projectPath: string, imageName: string): CelleryConfig {
         // Resolving the package JSON file
         let packageJsonFile;
         if (path.basename(projectPath) === Constants.Project.PACKAGE_JSON_FILE_NAME) {
@@ -54,6 +55,7 @@ class ProjectUtils {
                 + `the ${packageJsonFile} file`);
         }
         const celleryConfig = packageJsonContent[Constants.Project.CELLERY_CONFIG_SECTION_KEY];
+        celleryConfig.imageName = imageName;
 
         // Building Cellery config object
         return new CelleryConfig(celleryConfig, projectPath);

@@ -45,7 +45,7 @@ program
         async (projectDir, orgName, imageName, imageVersion) => {
             // Invoking the life cycle method
             try {
-                Compiler.compile(projectDir);
+                await Compiler.compile(projectDir, imageName);
                 await Invoker.build(projectDir, orgName, imageName, imageVersion);
             } catch (e) {
                 log.error(chalk.red(e));

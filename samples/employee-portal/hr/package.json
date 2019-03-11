@@ -11,8 +11,6 @@
     "cellery:build": "cellery-scripts build ."
   },
   "dependencies": {
-    "employee": "0.1.0",
-    "stock": "0.1.0",
     "@ts-cellery/sdk": "0.1.0",
     "log": "^3.2.0"
   }

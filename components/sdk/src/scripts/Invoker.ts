@@ -34,7 +34,7 @@ class CelleryInvoker {
      * @param imageVersion Version of the Cell Image
      */
     public static async build(project: string, orgName: string, imageName: string, imageVersion: string) {
-        const celleryConfig = ProjectUtils.readCelleryConfig(project);
+        const celleryConfig = ProjectUtils.readCelleryConfig(project, imageName);
         log.info(chalk.green(`Building Cell from ${celleryConfig.compiledCell} file`));
 
         // Loading the Cell File's exported module

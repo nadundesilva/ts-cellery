@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import CellIngress from "../../lang/cell/CellIngress";
 import Constants from "../../util/Constants";
 import HttpGateway from "../gateway/http";
-import HttpComponentIngress from "../../../dist/lang/component/ingress/http/HttpComponentIngress";
 import Index from "../cell";
 import Service from "../service";
-import {Component, ComponentIngress} from "../../lang";
+import {CellIngress, Component, ComponentIngress, http} from "../../lang";
 import * as yaml from "js-yaml";
 
 /**
@@ -113,7 +111,7 @@ class CellBuilder {
             }
 
             if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {
-                const httpComponentIngress = <HttpComponentIngress>ingress;
+                const httpComponentIngress = <http.ComponentIngress>ingress;
                 httpGateways.push({
                     context: httpComponentIngress.basePath,
                     backend: component.name,
