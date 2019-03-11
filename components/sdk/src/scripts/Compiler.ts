@@ -19,7 +19,6 @@
 import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-import * as nodeExternals from "webpack-node-externals";
 import * as webpack from "webpack";
 import * as fs from "fs";
 import * as log from "log";
@@ -58,11 +57,6 @@ class Compiler {
                     libraryTarget: "commonjs"
                 },
                 watch: false,
-                optimization: {
-                    splitChunks: {
-                        chunks: "initial"
-                    }
-                },
                 module: {
                     rules: [
                         {
@@ -82,14 +76,14 @@ class Compiler {
                             baseUrl: path.resolve("."),
                             configFile: path.resolve(__dirname, "../../resources/tsconfig.json")
                         })
-                    ]
+                    ],
+                    symlinks: false
                 },
                 target: 'node',
                 node: {
                     __dirname: false,
                     process: false
-                },
-                externals: nodeExternals()
+                }
             });
 
             compiler.run((err: Error, stats: webpack.Stats) => {

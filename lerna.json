@@ -8,6 +8,6 @@
   },
   "packages": [
     "components/*",
-    "samples/**"
+    "samples/employee-portal/*"
   ]
 }

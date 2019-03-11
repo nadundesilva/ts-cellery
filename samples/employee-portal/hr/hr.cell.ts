@@ -17,8 +17,8 @@
  */
 
 import * as cellery from "@ts-cellery/sdk";
-import {EmployeeReference} from "employee/employee-ref";
-import {StockReference} from "stock/stock-ref";
+import {EmployeeReference} from "@myorg/employee";
+import {StockReference} from "@myorg/stock";
 
 const hrComponent: cellery.Component = {
     name: "hr",

@@ -22,6 +22,7 @@
 class Constants {
     public static readonly RESOURCES_DIR = "resources";
     public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
+    public static readonly ENV_VAR_TS_CELLERY_DIR = "CELLERY_ENV_VAR_TS_CELLERY_DIR";
     public static readonly TS_CONFIG_FILE_NAME = "tsconfig.json";
 
     public static readonly DEFAULT_GATEWAY_PORT = 80;

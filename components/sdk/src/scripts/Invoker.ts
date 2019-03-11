@@ -42,12 +42,13 @@ class CelleryInvoker {
         try {
             cellModule = await import(celleryConfig.compiledCell);
         } catch (e) {
-            throw Error(`Failed to find compiled Cell file ${celleryConfig.compiledCell} due to ${e}`);
+            throw Error(`Failed to load compiled Cell file ${celleryConfig.compiledCell} due to ${e}`);
         }
 
         // Invoking the build life cycle method of the Cell Image
         for (const cellClassName in cellModule) {
             if (cellModule.hasOwnProperty(cellClassName)) {
+                process.env[Constants.ENV_VAR_TS_CELLERY_DIR] = __dirname;
                 process.env[Constants.ENV_VAR_OUTPUT_DIR] = celleryConfig.outputDir;
 
                 const cell = new cellModule[cellClassName]();

@@ -179,8 +179,8 @@ abstract class CellImage {
             (text) => convertToTitleCase(text, /-/g));
 
         const rawTemplate = fs.readFileSync(path.resolve(
-            __dirname,
-            "../../../",
+            process.env[Constants.ENV_VAR_TS_CELLERY_DIR],
+            "../../",
             Constants.RESOURCES_DIR,
             Constants.CellReferenceTemplate.FILE
         )).toString();
@@ -196,8 +196,9 @@ abstract class CellImage {
         fs.writeFileSync(cellReferenceFile, cellReferenceFileContent);
 
         const packageJson = {
-            name: imageName,
-            version: imageVersion
+            name: `@${orgName}/${imageName}`,
+            version: imageVersion,
+            main: `${imageName}-ref.ts`
         };
         const cellReferencePackageJsonFile = path.resolve(celleryDir, "package.json");
         fs.writeFileSync(cellReferencePackageJsonFile, JSON.stringify(packageJson));
