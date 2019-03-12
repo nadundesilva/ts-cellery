@@ -25,10 +25,13 @@
     "tslint": "^5.12.1"
   },
   "dependencies": {
+    "@babel/core": "^7.3.4",
+    "babel-loader": "^8.0.5",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "handlebars": "^4.1.0",
     "js-yaml": "^3.12.2",
+    "json-beautify": "^1.0.1",
     "log": "^3.2.0",
     "log-node": "^3.2.1",
     "rimraf": "^2.6.3",

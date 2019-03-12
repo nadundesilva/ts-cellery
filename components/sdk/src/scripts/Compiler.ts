@@ -20,11 +20,12 @@ import ProjectUtils from "./util/ProjectUtils";
 import chalk from "chalk";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
-import * as fs from "fs";
+import * as mkdirp from "mkdirp";
 import * as log from "log";
 import * as ts from "typescript";
 import * as rimraf from "rimraf";
 import * as path from "path";
+import Constants from "../util/Constants";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -43,7 +44,7 @@ class Compiler {
             log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
 
             rimraf.sync(celleryConfig.outputDir);
-            fs.mkdirSync(celleryConfig.outputDir, {recursive: true});
+            mkdirp.sync(celleryConfig.outputDir);
 
             const compiler = webpack({
                 mode: "development",
@@ -62,9 +63,28 @@ class Compiler {
                         {
                             test: /\.tsx?$/,
                             loader: 'ts-loader',
+                            exclude: /node_modules/,
                             options: {
                                 context: path.resolve("."),
-                                configFile: path.resolve(__dirname, "../../resources/tsconfig.json")
+                                configFile: path.resolve(__dirname, "..", "..", Constants.RESOURCES_DIR,
+                                    Constants.TS_CONFIG_FILE_NAME)
+                            }
+                        },
+                        {
+                            test: /\.js$/,
+                            exclude: /node_modules/,
+                            loader: 'babel-loader',
+                            options: {
+                                cacheDirectory: true,
+                                presets: [
+                                    [
+                                        "es2015",
+                                        {
+                                            "modules": false
+                                        }
+                                    ],
+                                    "es2016"
+                                ]
                             }
                         }
                     ]
@@ -74,10 +94,10 @@ class Compiler {
                     plugins: [
                         new TsconfigPathsPlugin({
                             baseUrl: path.resolve("."),
-                            configFile: path.resolve(__dirname, "../../resources/tsconfig.json")
+                            configFile: path.resolve(__dirname, "..", "..", Constants.RESOURCES_DIR,
+                                Constants.TS_CONFIG_FILE_NAME)
                         })
-                    ],
-                    symlinks: false
+                    ]
                 },
                 target: 'node',
                 node: {

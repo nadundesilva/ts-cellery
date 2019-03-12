@@ -19,10 +19,14 @@
 import {Component, ComponentIngress} from "../component";
 import CellIngress from "./CellIngress";
 import Constants from "../../util/Constants";
+import * as mkdirp from "mkdirp";
+import * as os from "os";
 import * as Handlebars from "handlebars";
 import * as fs from "fs";
 import * as kubernetes from "../../kubernetes";
 import * as path from "path";
+import * as rimraf from "rimraf";
+import {execSync} from "child_process";
 
 /**
  * Cell Image model.
@@ -113,7 +117,7 @@ abstract class CellImage {
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
 
         const celleryDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_CELLERY);
-        fs.mkdirSync(celleryDir, {recursive: true});
+        mkdirp.sync(celleryDir);
 
         const cellFile = path.resolve(celleryDir, `${imageName}.yaml`);
         fs.writeFileSync(cellFile, cellFileContent);
@@ -189,19 +193,53 @@ abstract class CellImage {
 
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
 
-        const celleryDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
-        fs.mkdirSync(celleryDir, {recursive: true});
+        const typeScriptDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
+        mkdirp.sync(typeScriptDir);
 
-        const cellReferenceFile = path.resolve(celleryDir, `${imageName}-ref.ts`);
+        const cellReferenceFile = path.resolve(typeScriptDir, `${imageName}-ref.ts`);
         fs.writeFileSync(cellReferenceFile, cellReferenceFileContent);
 
+        // Generate the package.json for the Cell Reference
         const packageJson = {
             name: `@${orgName}/${imageName}`,
             version: imageVersion,
-            main: `${imageName}-ref.ts`
+            main: `./dist/${imageName}-ref.js`,
+            scripts: {
+                build: `tsc ${imageName}-ref.ts --outDir dist --target ES5 --module commonjs --declaration true`
+            },
+            dependencies: {
+                typescript: "^3.2.4"
+            }
         };
-        const cellReferencePackageJsonFile = path.resolve(celleryDir, "package.json");
+        const cellReferencePackageJsonFile = path.resolve(typeScriptDir, "package.json");
         fs.writeFileSync(cellReferencePackageJsonFile, JSON.stringify(packageJson));
+
+        // Building the Cell Reference
+        execSync("npm install", {cwd: typeScriptDir, stdio: "ignore"});
+        execSync("npm run build", {cwd: typeScriptDir, stdio: "ignore"});
+
+        // Generating the package
+        execSync("npm pack", {cwd: typeScriptDir, stdio: "ignore"});
+        const cellRefPackage = `${orgName}-${imageName}-${imageVersion}.tgz`;
+
+        // Cleaning up the directory
+        rimraf.sync(`${typeScriptDir}/**/*.ts`);
+        rimraf.sync(`${typeScriptDir}/**/*.js`);
+        rimraf.sync(`${typeScriptDir}/node_modules`);
+        rimraf.sync(`${typeScriptDir}/dist`);
+        rimraf.sync(`${typeScriptDir}/package*.json`);
+
+        // Copying the ref package to Repository
+        const refInstallationDIr = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
+            orgName, imageName, imageVersion);
+        if (fs.existsSync(refInstallationDIr)) {
+            rimraf.sync(refInstallationDIr);
+        }
+        mkdirp.sync(refInstallationDIr);
+        fs.copyFileSync(
+            path.resolve(typeScriptDir, cellRefPackage),
+            path.resolve(refInstallationDIr, cellRefPackage)
+        );
     }
 }
 

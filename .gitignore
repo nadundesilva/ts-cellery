@@ -4,6 +4,9 @@
 # Node
 **/node_modules
 
+# NPM
+*.tgz
+
 # Project
 dist
 

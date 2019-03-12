@@ -24,6 +24,11 @@ import chalk from "chalk";
 import * as log from "log";
 import * as logNode from "log-node";
 import * as program from "commander";
+import * as path from "path";
+import * as os from "os";
+import {execSync} from "child_process";
+import * as fs from "fs";
+import * as beautify from "json-beautify";
 
 program
     .option("-v, --verbose", "increase the verbosity of the output")
@@ -50,6 +55,22 @@ program
             } catch (e) {
                 log.error(chalk.red(e));
             }
+        }
+    );
+
+// Install Cell Reference Command
+program
+    .command("install-ref <orgName> <imageName> <imageVersion>")
+    .action(
+        (orgName, imageName, imageVersion) => {
+            const ref = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
+                orgName, imageName, imageVersion, `${orgName}-${imageName}-${imageVersion}.tgz`);
+            execSync(`npm install ${ref}`);
+
+            const packageJsonFile = path.resolve("./package.json");
+            const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
+            packageJsonContent["dependencies"][`@${orgName}/${imageName}`] = `file:${ref}`;
+            fs.writeFileSync(packageJsonFile, beautify(packageJsonContent, null, 2, 100));
         }
     );
 

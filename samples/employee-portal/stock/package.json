@@ -8,10 +8,11 @@
     "cell": "./stock.cell.ts"
   },
   "scripts": {
-    "cellery:build": "cellery-scripts build ."
+    "cellery:build": "cellery-scripts build .",
+    "cellery:installRef": "cellery-scripts install-ref"
   },
   "dependencies": {
-    "@ts-cellery/sdk": "0.1.0",
+    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
     "log": "^3.2.0"
   }
 }

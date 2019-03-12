@@ -5,14 +5,14 @@
   "keywords": [],
   "license": "Apache-2.0",
   "cellery": {
-    "cell": "./employee.cell.ts"
+    "cell": "./employee.cell.ts",
   },
   "scripts": {
     "cellery:build": "cellery-scripts build .",
-    "cellery:run": "cellery-scripts run ./target/"
+    "cellery:installRef": "cellery-scripts install-ref"
   },
   "dependencies": {
-    "@ts-cellery/sdk": "0.1.0",
+    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
     "log": "^3.2.0"
   }
 }
