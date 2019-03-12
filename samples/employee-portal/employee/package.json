@@ -5,10 +5,10 @@
   "keywords": [],
   "license": "Apache-2.0",
   "cellery": {
-    "cell": "./employee.cell.ts",
+    "cell": "./employee.cell.ts"
   },
   "scripts": {
-    "cellery:build": "cellery-scripts build .",
+    "cellery:build": "cellery-scripts build",
     "cellery:installRef": "cellery-scripts install-ref"
   },
   "dependencies": {

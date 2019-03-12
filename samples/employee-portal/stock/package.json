@@ -8,7 +8,7 @@
     "cell": "./stock.cell.ts"
   },
   "scripts": {
-    "cellery:build": "cellery-scripts build .",
+    "cellery:build": "cellery-scripts build",
     "cellery:installRef": "cellery-scripts install-ref"
   },
   "dependencies": {

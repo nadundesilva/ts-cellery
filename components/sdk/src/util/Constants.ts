@@ -27,6 +27,11 @@ class Constants {
 
     public static readonly DEFAULT_GATEWAY_PORT = 80;
 
+    public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
+    public static readonly IMAGE_VERSION_PATTERN = "[0-9]+\\.[0-9]+\\.[0-9]+";
+    public static readonly CELL_IMAGE_PATTERN = Constants.CELLERY_ID_PATTERN + "\\/"
+        + Constants.CELLERY_ID_PATTERN + ":" + Constants.IMAGE_VERSION_PATTERN;
+
     /**
      * Cell reference related constants.
      */

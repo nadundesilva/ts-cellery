@@ -34,13 +34,11 @@ class Compiler {
     /**
      * Compiler a Cellery Cell in a project and generate artifacts.
      *
-     * @param project The project root dir or project package.json file from which the build information
-     *                should be inferred
      * @param imageName The name of the Cell Image
      */
-    public static compile(project: string, imageName: string): Promise<void> {
+    public static compile(imageName: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const celleryConfig = ProjectUtils.readCelleryConfig(project, imageName);
+            const celleryConfig = ProjectUtils.readCelleryConfig(imageName);
             log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
 
             rimraf.sync(celleryConfig.outputDir);

@@ -27,9 +27,9 @@ class CelleryConfig {
     public readonly outputDir: string;
     public readonly compiledCell: string;
 
-    constructor(config: {cell: string, imageName: string}, projectPath: string) {
-        this.cell = path.resolve(projectPath, config.cell);
-        this.outputDir = path.resolve(projectPath, `./${Constants.Project.Build.OUTPUT_DIR}`);
+    constructor(config: {cell: string, imageName: string}) {
+        this.cell = path.resolve(".", config.cell);
+        this.outputDir = path.resolve(".", `./${Constants.Project.Build.OUTPUT_DIR}`);
         this.compiledCell = path.resolve(this.outputDir, `${config.imageName}.cell.js`);
     }
 }

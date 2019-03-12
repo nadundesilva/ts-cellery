@@ -1,20 +1,18 @@
 {
-    "name": "@ts-cellery/samples-hr-portal",
-    "version": "1.0.0",
-    "description": "",
-    "keywords": [],
-    "license": "Apache-2.0",
-    "cellery": {
-        "cell": "./hr.cell.ts"
-    },
-    "scripts": {
-        "cellery:build": "cellery-scripts build .",
-        "cellery:installRef": "cellery-scripts install-ref"
-    },
-    "dependencies": {
-        "@myorg/employee": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/employee/0.1.0/myorg-employee-0.1.0.tgz",
-        "@myorg/stock": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/stock/0.1.0/myorg-stock-0.1.0.tgz",
-        "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
-        "log": "^3.2.0"
-    }
+  "name": "@ts-cellery/samples-hr-portal",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "Apache-2.0",
+  "cellery": { "cell": "./hr.cell.ts" },
+  "scripts": {
+    "cellery:build": "cellery-scripts build",
+    "cellery:installRef": "cellery-scripts install-ref"
+  },
+  "dependencies": {
+    "@myorg/employee": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/employee/0.1.0/myorg-employee-0.1.0.tgz",
+    "@myorg/stock": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/stock/0.1.0/myorg-stock-0.1.0.tgz",
+    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
+    "log": "^3.2.0"
+  }
 }

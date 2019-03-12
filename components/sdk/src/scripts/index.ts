@@ -29,6 +29,7 @@ import * as os from "os";
 import {execSync} from "child_process";
 import * as fs from "fs";
 import * as beautify from "json-beautify";
+import ProjectUtils from "./util/ProjectUtils";
 
 program
     .option("-v, --verbose", "increase the verbosity of the output")
@@ -45,13 +46,15 @@ logNode();
 
 // Build command
 program
-    .command("build <projectDir> <orgName> <imageName> <imageVersion>")
+    .command("build <image>")
     .action(
-        async (projectDir, orgName, imageName, imageVersion) => {
+        async (image) => {
+            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
+
             // Invoking the life cycle method
             try {
-                await Compiler.compile(projectDir, imageName);
-                await Invoker.build(projectDir, orgName, imageName, imageVersion);
+                await Compiler.compile(imageName);
+                await Invoker.build(orgName, imageName, imageVersion);
             } catch (e) {
                 log.error(chalk.red(e));
             }
@@ -60,12 +63,14 @@ program
 
 // Install Cell Reference Command
 program
-    .command("install-ref <orgName> <imageName> <imageVersion>")
+    .command("install-ref <image>")
     .action(
-        (orgName, imageName, imageVersion) => {
+        (image) => {
+            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
+
             const ref = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
                 orgName, imageName, imageVersion, `${orgName}-${imageName}-${imageVersion}.tgz`);
-            execSync(`npm install ${ref}`);
+            execSync(`npm install ${ref}`, {stdio: "ignore"});
 
             const packageJsonFile = path.resolve("./package.json");
             const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
