@@ -178,11 +178,13 @@ abstract class CellImage {
             return convertedText;
         };
 
+        // Registering template helper functions
         Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_API_NAME,
             (text) => convertToTitleCase(text, /[\/\-]/g));
         Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_TYPE_NAME,
             (text) => convertToTitleCase(text, /-/g));
 
+        // Writing the Cell reference content to the file
         const rawTemplate = fs.readFileSync(path.resolve(
             process.env[Constants.ENV_VAR_TS_CELLERY_DIR],
             "../../",
@@ -192,11 +194,12 @@ abstract class CellImage {
         const template = Handlebars.compile(rawTemplate);
         const cellReferenceFileContent = template(templateContext);
 
+        // Creating the "target/typescript" directory
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
-
         const typeScriptDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
         mkdirp.sync(typeScriptDir);
 
+        // Writing the Cell Reference content to the file
         const cellReferenceFile = path.resolve(typeScriptDir, `${imageName}-ref.ts`);
         fs.writeFileSync(cellReferenceFile, cellReferenceFileContent);
 

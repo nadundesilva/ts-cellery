@@ -21,4 +21,6 @@ import * as tcp from "./tcp";
 
 type ComponentIngress = http.ComponentIngress | tcp.ComponentIngres;
 
-export {ComponentIngress, tcp, http};
+type Protocol = "HTTP";
+
+export {ComponentIngress, Protocol, tcp, http};

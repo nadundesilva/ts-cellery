@@ -20,8 +20,9 @@ import Constants from "../../util/Constants";
 import HttpGateway from "../gateway/http";
 import Index from "../cell";
 import Service from "../service";
-import {CellIngress, Component, ComponentIngress, http} from "../../lang";
+import {CellIngress, Component, ComponentIngress, Protocol, http, params} from "../../lang";
 import * as yaml from "js-yaml";
+import EnvVar from "../container/EnvVar";
 
 /**
  * Kubernetes Cell Resource builder.
@@ -75,6 +76,32 @@ class CellBuilder {
     public build(): string {
         const services: Service[] = [];
         this.components.forEach((component) => {
+            // Finding the protocol of the Component (Since the runtime does not yet support multiple protocols)
+            let protocol: Protocol = undefined;
+            Object.keys(component.ingresses).forEach((ingressName) => {
+                const ingress = component.ingresses[ingressName];
+                if (protocol) {
+                    throw Error("Multiple protocols in the same component is not supported");
+                } else {
+                    if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {
+                        protocol = "HTTP";
+                    }
+                }
+            });
+
+            // Finding the environment variables to be set
+            let envVars: EnvVar[];
+            if (component.parameters) {
+                envVars = Object.keys(component.parameters)
+                    .filter((paramName) => component.parameters[paramName] instanceof params.Env)
+                    .map((paramName) => ({
+                        name: paramName,
+                        value: component.parameters[paramName].value
+                    }));
+            } else {
+                envVars = [];
+            }
+
             services.push({
                 metadata: {
                     name: component.name,
@@ -83,6 +110,7 @@ class CellBuilder {
                 spec: {
                     container: {
                         image: component.source.image,
+                        env: envVars,
                         ports: Object.keys(component.ingresses).map((componentIngressName) => {
                             const componentIngress = component.ingresses[componentIngressName];
                             return {
@@ -91,7 +119,8 @@ class CellBuilder {
                         })
                     },
                     servicePort: 80,
-                    replicas: (component.replicas ? component.replicas : 1)
+                    replicas: (component.replicas ? component.replicas : 1),
+                    protocol: protocol
                 }
             });
         });

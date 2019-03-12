@@ -29,7 +29,7 @@ const stockComponent: cellery.Component = {
             basePath: "stock",
             definitions: [
                 {
-                    path: "/",
+                    path: "/options",
                     method: cellery.http.Method.GET
                 }
             ]

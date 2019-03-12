@@ -29,7 +29,7 @@ const employeeComponent: cellery.Component = {
             basePath: "employee",
             definitions: [
                 {
-                    path: "/",
+                    path: "/details",
                     method: cellery.http.Method.GET
                 }
             ]
@@ -69,7 +69,8 @@ const salaryComponent: cellery.Component = {
 
 export class EmployeeCellImage extends cellery.CellImage {
     build(orgName: string, imageName: string, imageVersion: string): void {
-        employeeComponent.parameters.SALARY_HOST.value = "";
+        employeeComponent.parameters.SALARY_HOST.value
+            = imageName + "--" + salaryComponent.name + "-service";
 
         this.addComponent(employeeComponent);
         this.addComponent(salaryComponent);

@@ -17,6 +17,7 @@
  */
 
 import Container from "../container";
+import {Protocol} from "../../lang";
 
 /**
  * Kubernetes Service Resource Spec model.
@@ -25,7 +26,7 @@ class ServiceSpec {
     readonly container: Container;
     readonly replicas: number;
     readonly servicePort?: number;
-    readonly protocol?: string;
+    readonly protocol?: Protocol;
 }
 
 export default ServiceSpec;

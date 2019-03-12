@@ -82,6 +82,13 @@ class Constants {
             public static readonly OUTPUT_DIR_TYPESCRIPT = "typescript";
         };
     };
+
+    /**
+     * The protocols supported by Cellery.
+     */
+    public static readonly Protocol = class Protocol {
+        public static readonly HTTP = "HTTP";
+    };
 }
 
 export default Constants;
