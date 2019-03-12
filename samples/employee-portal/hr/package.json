@@ -4,8 +4,15 @@
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
-  "cellery": { "cell": "./hr.cell.ts" },
+  "cellery": {
+    "cell": "./hr.cell.ts",
+    "refs": [
+      "myorg/stock:0.1.0",
+      "myorg/employee:0.1.0"
+    ]
+  },
   "scripts": {
+    "preinstall": "cellery-scripts bootstrap",
     "cellery:build": "cellery-scripts build",
     "cellery:installRef": "cellery-scripts install-ref"
   },

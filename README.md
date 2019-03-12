@@ -8,9 +8,10 @@ Cellery Typescript
    cd <CELLERY_TYPESCRIPT_ROOT>/components/sdk
    npm install
    ```
-2. Build the SDK
+2. Build and Package the SDK
    ```
    npm run build
+   npm pack
    ```
 3. Depending on your requirements follow one of the following.
    1. [Testing the provided samples](#testing-the-provided-samples)
@@ -18,22 +19,28 @@ Cellery Typescript
 
 ### Testing the provided samples
 
-1. Navigate to the <CELLERY_TYPESCRIPT_ROOT> and run `npm install` to bootstrap the ts-cellery and link the samples with the SDK
-2. Navigate into the sample's cell.
+1. Navigate into the sample's cell.
    ```
    cd <CELLERY_TYPESCRIPT_ROOT>/samples/employee-portal/<CELL>
    ```
-3. Execute `npm run cellery:build -- <ORG_NAME> <IMAGE_NAME> <IMAGE_VERSION>` to build the cell
+2. Install the SDK (Since this is not yet published)
+   ```
+   npm install <CELLERY_TYPESCRIPT_ROOT>/components/sdk/ts-cellery-sdk-<version>.tgz
+   ```
+4. Initialize the sample.
+   ```
+   npm install
+   ```
+3. Execute `npm run cellery:build -- <ORG_NAME>/<IMAGE_NAME>:<IMAGE_VERSION>` to build the cell
 
 ### Writing your own Cell
 
-1. Navigate to the SDK and link the SDK (Since this is not yet published)
+1. Create your own project by executing `npm init`
+2. Install the SDK (Since this is not yet published)
    ```
-   cd <CELLERY_TYPESCRIPT>/components/sdk
-   npm link
+   npm install <CELLERY_TYPESCRIPT_ROOT>/components/sdk/ts-cellery-sdk-<version>.tgz
    ```
-2. Create your own project by executing `npm init`
-3. Add the cellery section in `package.json`
+3. Add the cellery section in `package.json` and point to the Cell file.
    ```json
    {
        "cellery": {
@@ -41,37 +48,23 @@ Cellery Typescript
        }
    }
    ```
-4. Add `ts-cellery` as a dependency.
-5. Run `npm link @ts-cellery/sdk` to link the SDK to your Cell project
-6. Write your Cell file and point to it from the `package.json` as mentioned in `3.`
-7. Execute `npm run cellery:build -- <ORG_NAME> <IMAGE_NAME> <IMAGE_VERSION>` to build the cell
+4. Write your Cell file. ([Install Cell References](#installing-a-cell-reference) if required)
+5. Execute `npm run cellery:build -- <ORG_NAME>/<IMAGE_NAME>:<IMAGE_VERSION>` to build the cell
 
-**Note** If you are building Cell using Cell references, you need to build the dependent Cells and [link](#linking-an-existing-cell) them first.
+**Note** If you are building Cell using Cell references, you need to build the dependent Cells and [Install the Reference](#installing-a-cell-reference) first.
 
-## Linking an existing Cell
+## Installing a Cell Reference
 
-1. Navigate to the build directory containing the generated Cell reference.
-   ```
-   cd <DEPENDENT_CELL_ROOT>/target/typescript
-   npm link
-   ```
+1. Build the Cell you want to refer to.
 2. Navigate to the directory containing the Cell you are writing
    ```
    cd <CELL_UNDER_CONSTRUCTION>
    ```
-3. Add the dependent Cell as a dependency.
-   ```json
-   {
-       "dependencies": {
-           "@<DEPENDENT_CELL_ORG>/<DEPENDENT_CELL_NAME>": "<DEPENDENT_CELL_VERSION>"
-       }
-   }
+3. Install the Cell Reference.
    ```
-4. Link the dependent Cell.
+   npm run cellery:installRef -- <ORG_NAME>/<IMAGE_NAME>:<IMAGE_VERSION>
    ```
-   npm link @<DEPENDENT_CELL_ORG>/<DEPENDENT_CELL_NAME>
-   ```
-5. Import the dependent Cell to your cell.<br>
+4. Import the dependent Cell to your cell.<br>
    eg:-
    ```typescript
    import {EmployeeReference} from "@myorg/employee";

@@ -25,10 +25,7 @@ import * as log from "log";
 import * as logNode from "log-node";
 import * as program from "commander";
 import * as path from "path";
-import * as os from "os";
-import {execSync} from "child_process";
 import * as fs from "fs";
-import * as beautify from "json-beautify";
 import ProjectUtils from "./util/ProjectUtils";
 
 program
@@ -47,36 +44,45 @@ logNode();
 // Build command
 program
     .command("build <image>")
-    .action(
-        async (image) => {
-            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
+    .action(async (image) => {
+        const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
 
-            // Invoking the life cycle method
-            try {
-                await Compiler.compile(imageName);
-                await Invoker.build(orgName, imageName, imageVersion);
-            } catch (e) {
-                log.error(chalk.red(e));
-            }
+        // Invoking the life cycle method
+        try {
+            await Compiler.compile(imageName);
+            await Invoker.build(orgName, imageName, imageVersion);
+        } catch (e) {
+            log.error(chalk.red(e));
         }
-    );
+    });
+
+// Bootstrap command
+program
+    .command("bootstrap")
+    .action(() => {
+        const packageJsonFile = path.resolve("./package.json");
+        const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
+
+        if (!packageJsonContent.cellery) {
+            packageJsonContent.cellery = {};
+        }
+        if (!packageJsonContent.cellery.refs) {
+            packageJsonContent.cellery.refs = [];
+        }
+
+        for (let i = 0; i < packageJsonContent.cellery.refs.length; i++) {
+            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(
+                packageJsonContent.cellery.refs[i]);
+            ProjectUtils.installCellRef(orgName, imageName, imageVersion);
+        }
+    });
 
 // Install Cell Reference Command
 program
     .command("install-ref <image>")
-    .action(
-        (image) => {
-            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
-
-            const ref = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
-                orgName, imageName, imageVersion, `${orgName}-${imageName}-${imageVersion}.tgz`);
-            execSync(`npm install ${ref}`, {stdio: "ignore"});
-
-            const packageJsonFile = path.resolve("./package.json");
-            const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
-            packageJsonContent["dependencies"][`@${orgName}/${imageName}`] = `file:${ref}`;
-            fs.writeFileSync(packageJsonFile, beautify(packageJsonContent, null, 2, 100));
-        }
-    );
+    .action((image) => {
+        const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
+        ProjectUtils.installCellRef(orgName, imageName, imageVersion);
+    });
 
 program.parse(process.argv);

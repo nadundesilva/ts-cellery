@@ -8,6 +8,7 @@
     "cell": "./employee.cell.ts"
   },
   "scripts": {
+    "preinstall": "cellery-scripts bootstrap",
     "cellery:build": "cellery-scripts build",
     "cellery:installRef": "cellery-scripts install-ref"
   },

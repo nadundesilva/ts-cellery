@@ -20,6 +20,9 @@ import CelleryConfig from "./CelleryConfig";
 import Constants from "../../util/Constants";
 import * as fs from "fs";
 import * as path from "path";
+import * as os from "os";
+import * as beautify from "json-beautify";
+import {execSync} from "child_process";
 
 /**
  * Cellery Project related Utilities.
@@ -53,6 +56,45 @@ class ProjectUtils {
 
         // Building Cellery config object
         return new CelleryConfig(celleryConfig);
+    }
+
+    /**
+     * Install a cell reference from the local repository.
+     *
+     * @param orgName The organization name of the image
+     * @param imageName The name of the image
+     * @param imageVersion The version of the image
+     */
+    public static installCellRef(orgName: string, imageName: string, imageVersion: string): void {
+        const ref = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
+            orgName, imageName, imageVersion, `${orgName}-${imageName}-${imageVersion}.tgz`);
+        if (fs.existsSync(ref)) {
+            execSync(`npm install ${ref}`, {stdio: "ignore"});
+        } else {
+            const image = `${orgName}/${imageName}:${imageVersion}`;
+            throw Error(`Failed to install Cell Reference ${image}. `
+                + `The Cell image ${image} should be built first`);
+        }
+
+        const packageJsonFile = path.resolve(".", Constants.Project.PACKAGE_JSON_FILE_NAME);
+
+        // Adjusting the relative link added by "npm install" to a absolute link
+        const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
+        packageJsonContent.dependencies[`@${orgName}/${imageName}`] = `file:${ref}`;
+
+        // Adding the ref to "cellery.refs" section
+        if (!packageJsonContent.cellery) {
+            packageJsonContent.cellery = {};
+        }
+        if (!packageJsonContent.cellery.refs) {
+            packageJsonContent.cellery.refs = [];
+        }
+        const image = `@${orgName}/${imageName}:${imageVersion}`;
+        if (!packageJsonContent.cellery.refs.indexOf(image)) {
+            packageJsonContent.cellery.refs.push(image);
+        }
+
+        fs.writeFileSync(packageJsonFile, beautify(packageJsonContent, null, 2, 100));
     }
 
     /**

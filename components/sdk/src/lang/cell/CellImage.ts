@@ -26,6 +26,7 @@ import * as fs from "fs";
 import * as kubernetes from "../../kubernetes";
 import * as path from "path";
 import * as rimraf from "rimraf";
+import * as beautify from "json-beautify";
 import {execSync} from "child_process";
 
 /**
@@ -178,7 +179,7 @@ abstract class CellImage {
         };
 
         Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_API_NAME,
-            (text) => convertToTitleCase(text, /\/|-/g));
+            (text) => convertToTitleCase(text, /[\/\-]/g));
         Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_TYPE_NAME,
             (text) => convertToTitleCase(text, /-/g));
 
@@ -212,7 +213,7 @@ abstract class CellImage {
             }
         };
         const cellReferencePackageJsonFile = path.resolve(typeScriptDir, "package.json");
-        fs.writeFileSync(cellReferencePackageJsonFile, JSON.stringify(packageJson));
+        fs.writeFileSync(cellReferencePackageJsonFile, beautify(packageJson, null, 2, 100));
 
         // Building the Cell Reference
         execSync("npm install", {cwd: typeScriptDir, stdio: "ignore"});
