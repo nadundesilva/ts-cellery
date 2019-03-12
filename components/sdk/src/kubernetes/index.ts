@@ -19,7 +19,4 @@
 import Cell from "./cell";
 import CellBuilder from "./util/CellBuilder";
 
-export {
-    Cell,
-    CellBuilder
-};
+export { Cell, CellBuilder };

@@ -18,8 +18,6 @@
 
 import Labels from "./Labels";
 
-export {
-    Labels
-};
+export { Labels };
 export * from "./component";
 export * from "./cell";

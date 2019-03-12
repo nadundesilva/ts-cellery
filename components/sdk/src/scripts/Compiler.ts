@@ -17,7 +17,6 @@
  */
 
 import ProjectUtils from "./util/ProjectUtils";
-import chalk from "chalk";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import * as mkdirp from "mkdirp";
@@ -39,7 +38,7 @@ class Compiler {
     public static compile(imageName: string): Promise<void> {
         return new Promise((resolve, reject) => {
             const celleryConfig = ProjectUtils.readCelleryConfig(imageName);
-            log.info(chalk.green(`Compiling Cell from ${celleryConfig.cell} file`));
+            log.info(`Compiling Cell from ${celleryConfig.cell} file`);
 
             rimraf.sync(celleryConfig.outputDir);
             mkdirp.sync(celleryConfig.outputDir);
@@ -51,7 +50,10 @@ class Compiler {
                 },
                 context: __dirname,
                 output: {
-                    filename: path.relative(__dirname, celleryConfig.compiledCell),
+                    filename: path.relative(
+                        __dirname,
+                        celleryConfig.compiledCell
+                    ),
                     path: path.resolve(__dirname),
                     libraryTarget: "commonjs"
                 },
@@ -60,25 +62,30 @@ class Compiler {
                     rules: [
                         {
                             test: /\.tsx?$/,
-                            loader: 'ts-loader',
+                            loader: "ts-loader",
                             exclude: /node_modules/,
                             options: {
                                 context: path.resolve("."),
-                                configFile: path.resolve(__dirname, "..", "..", Constants.RESOURCES_DIR,
-                                    Constants.TS_CONFIG_FILE_NAME)
+                                configFile: path.resolve(
+                                    __dirname,
+                                    "..",
+                                    "..",
+                                    Constants.RESOURCES_DIR,
+                                    Constants.TS_CONFIG_FILE_NAME
+                                )
                             }
                         },
                         {
                             test: /\.js$/,
                             exclude: /node_modules/,
-                            loader: 'babel-loader',
+                            loader: "babel-loader",
                             options: {
                                 cacheDirectory: true,
                                 presets: [
                                     [
                                         "es2015",
                                         {
-                                            "modules": false
+                                            modules: false
                                         }
                                     ],
                                     "es2016"
@@ -88,16 +95,21 @@ class Compiler {
                     ]
                 },
                 resolve: {
-                    extensions: [ '.tsx', '.ts', '.js' ],
+                    extensions: [".tsx", ".ts", ".js"],
                     plugins: [
                         new TsconfigPathsPlugin({
                             baseUrl: path.resolve("."),
-                            configFile: path.resolve(__dirname, "..", "..", Constants.RESOURCES_DIR,
-                                Constants.TS_CONFIG_FILE_NAME)
+                            configFile: path.resolve(
+                                __dirname,
+                                "..",
+                                "..",
+                                Constants.RESOURCES_DIR,
+                                Constants.TS_CONFIG_FILE_NAME
+                            )
                         })
                     ]
                 },
-                target: 'node',
+                target: "node",
                 node: {
                     __dirname: false,
                     process: false
@@ -108,13 +120,17 @@ class Compiler {
                 if (err) {
                     reject(err);
                 } else if (stats.hasErrors()) {
-                    reject(stats.compilation.errors.map((error) => error.message).join(", "));
+                    reject(
+                        stats.compilation.errors
+                            .map((error) => error.message)
+                            .join(", ")
+                    );
                 } else {
                     resolve();
                 }
             });
 
-            log.info(chalk.green(`Saved compiled Cell into ${celleryConfig.compiledCell}`));
+            log.info(`Saved compiled Cell into ${celleryConfig.compiledCell}`);
         });
     }
 }

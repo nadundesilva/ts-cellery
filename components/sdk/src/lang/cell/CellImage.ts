@@ -212,7 +212,7 @@ abstract class CellImage {
                 typescript: "^3.2.4"
             }
         };
-        const cellReferencePackageJsonFile = path.resolve(typeScriptDir, "package.json");
+        const cellReferencePackageJsonFile = path.resolve(typeScriptDir, Constants.Project.PACKAGE_JSON_FILE_NAME);
         fs.writeFileSync(cellReferencePackageJsonFile, beautify(packageJson, null, 2, 100));
 
         // Building the Cell Reference

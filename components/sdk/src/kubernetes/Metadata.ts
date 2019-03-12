@@ -22,7 +22,7 @@
 interface Metadata {
     readonly name: string;
     readonly annotations?: object;
-    readonly labels?: object
+    readonly labels?: object;
 }
 
 export default Metadata;

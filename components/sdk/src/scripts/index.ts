@@ -20,13 +20,13 @@
 
 import Compiler from "./Compiler";
 import Invoker from "./Invoker";
-import chalk from "chalk";
 import * as log from "log";
 import * as logNode from "log-node";
 import * as program from "commander";
 import * as path from "path";
 import * as fs from "fs";
 import ProjectUtils from "./util/ProjectUtils";
+import Constants from "../util/Constants";
 
 program
     .option("-v, --verbose", "increase the verbosity of the output")
@@ -42,47 +42,58 @@ if (program.verbose) {
 logNode();
 
 // Build command
-program
-    .command("build <image>")
-    .action(async (image) => {
-        const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
+program.command("build <image>").action(async (image) => {
+    const {
+        orgName,
+        imageName,
+        imageVersion
+    } = ProjectUtils.parseCellImageName(image);
 
-        // Invoking the life cycle method
-        try {
-            await Compiler.compile(imageName);
-            await Invoker.build(orgName, imageName, imageVersion);
-        } catch (e) {
-            log.error(chalk.red(e));
-        }
-    });
+    // Invoking the life cycle method
+    try {
+        await Compiler.compile(imageName);
+        await Invoker.build(orgName, imageName, imageVersion);
+    } catch (e) {
+        log.error(e);
+    }
+});
 
 // Bootstrap command
-program
-    .command("bootstrap")
-    .action(() => {
-        const packageJsonFile = path.resolve("./package.json");
-        const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile).toString());
+program.command("bootstrap").action(() => {
+    const packageJsonFile = path.resolve(
+        ".",
+        Constants.Project.PACKAGE_JSON_FILE_NAME
+    );
+    const packageJsonContent = JSON.parse(
+        fs.readFileSync(packageJsonFile).toString()
+    );
 
-        if (!packageJsonContent.cellery) {
-            packageJsonContent.cellery = {};
-        }
-        if (!packageJsonContent.cellery.refs) {
-            packageJsonContent.cellery.refs = [];
-        }
+    // Creating Cellery sections in "package.json" if not present
+    if (!packageJsonContent.cellery) {
+        packageJsonContent.cellery = {};
+    }
+    if (!packageJsonContent.cellery.refs) {
+        packageJsonContent.cellery.refs = [];
+    }
 
-        for (let i = 0; i < packageJsonContent.cellery.refs.length; i++) {
-            const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(
-                packageJsonContent.cellery.refs[i]);
-            ProjectUtils.installCellRef(orgName, imageName, imageVersion);
-        }
-    });
+    for (let i = 0; i < packageJsonContent.cellery.refs.length; i++) {
+        const {
+            orgName,
+            imageName,
+            imageVersion
+        } = ProjectUtils.parseCellImageName(packageJsonContent.cellery.refs[i]);
+        ProjectUtils.installCellRef(orgName, imageName, imageVersion);
+    }
+});
 
 // Install Cell Reference Command
-program
-    .command("install-ref <image>")
-    .action((image) => {
-        const {orgName, imageName, imageVersion} =  ProjectUtils.parseCellImageName(image);
-        ProjectUtils.installCellRef(orgName, imageName, imageVersion);
-    });
+program.command("install-ref <image>").action((image) => {
+    const {
+        orgName,
+        imageName,
+        imageVersion
+    } = ProjectUtils.parseCellImageName(image);
+    ProjectUtils.installCellRef(orgName, imageName, imageVersion);
+});
 
 program.parse(process.argv);

@@ -22,15 +22,20 @@
 class Constants {
     public static readonly RESOURCES_DIR = "resources";
     public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
-    public static readonly ENV_VAR_TS_CELLERY_DIR = "CELLERY_ENV_VAR_TS_CELLERY_DIR";
+    public static readonly ENV_VAR_TS_CELLERY_DIR =
+        "CELLERY_ENV_VAR_TS_CELLERY_DIR";
     public static readonly TS_CONFIG_FILE_NAME = "tsconfig.cell.json";
 
     public static readonly DEFAULT_GATEWAY_PORT = 80;
 
     public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
     public static readonly IMAGE_VERSION_PATTERN = "[0-9]+\\.[0-9]+\\.[0-9]+";
-    public static readonly CELL_IMAGE_PATTERN = Constants.CELLERY_ID_PATTERN + "\\/"
-        + Constants.CELLERY_ID_PATTERN + ":" + Constants.IMAGE_VERSION_PATTERN;
+    public static readonly CELL_IMAGE_PATTERN =
+        Constants.CELLERY_ID_PATTERN +
+        "\\/" +
+        Constants.CELLERY_ID_PATTERN +
+        ":" +
+        Constants.IMAGE_VERSION_PATTERN;
 
     /**
      * Cell reference related constants.
@@ -50,11 +55,15 @@ class Constants {
      * Kubernetes runtime related constants.
      */
     public static readonly Kubernetes = class Kubernetes {
-        public static readonly CELL_RESOURCE_API_VERSION = "mesh.cellery.io/v1alpha1";
+        public static readonly CELL_RESOURCE_API_VERSION =
+            "mesh.cellery.io/v1alpha1";
         public static readonly CELL_RESOURCE_KIND = "Cell";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_ORG = "mesh.cellery.io/cell-image-org";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_NAME = "mesh.cellery.io/cell-image-name";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn = "mesh.cellery.io/cell-image-version";
+        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_ORG =
+            "mesh.cellery.io/cell-image-org";
+        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_NAME =
+            "mesh.cellery.io/cell-image-name";
+        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn =
+            "mesh.cellery.io/cell-image-version";
     };
 
     /**
@@ -71,7 +80,7 @@ class Constants {
             public static readonly OUTPUT_DIR = "target";
             public static readonly OUTPUT_DIR_CELLERY = "cellery";
             public static readonly OUTPUT_DIR_TYPESCRIPT = "typescript";
-        }
+        };
     };
 }
 

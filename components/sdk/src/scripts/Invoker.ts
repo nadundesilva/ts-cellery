@@ -18,7 +18,6 @@
 
 import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
-import chalk from "chalk";
 import * as log from "log";
 
 /**
@@ -28,28 +27,36 @@ class CelleryInvoker {
     /**
      * Invoke the build lifecycle of a Cell.
      *
-     * @param project Project containing the Cell
      * @param orgName Organization name of the Cell Image
      * @param imageName Name of the Cell Image
      * @param imageVersion Version of the Cell Image
      */
-    public static async build(orgName: string, imageName: string, imageVersion: string) {
+    public static async build(
+        orgName: string,
+        imageName: string,
+        imageVersion: string
+    ) {
         const celleryConfig = ProjectUtils.readCelleryConfig(imageName);
-        log.info(chalk.green(`Building Cell from ${celleryConfig.compiledCell} file`));
+        log.info(`Building Cell from ${celleryConfig.compiledCell} file`);
 
         // Loading the Cell File's exported module
         let cellModule;
         try {
             cellModule = await import(celleryConfig.compiledCell);
         } catch (e) {
-            throw Error(`Failed to load compiled Cell file ${celleryConfig.compiledCell} due to ${e}`);
+            throw Error(
+                `Failed to load compiled Cell file ${
+                    celleryConfig.compiledCell
+                } due to ${e}`
+            );
         }
 
         // Invoking the build life cycle method of the Cell Image
         for (const cellClassName in cellModule) {
             if (cellModule.hasOwnProperty(cellClassName)) {
                 process.env[Constants.ENV_VAR_TS_CELLERY_DIR] = __dirname;
-                process.env[Constants.ENV_VAR_OUTPUT_DIR] = celleryConfig.outputDir;
+                process.env[Constants.ENV_VAR_OUTPUT_DIR] =
+                    celleryConfig.outputDir;
 
                 const cell = new cellModule[cellClassName]();
                 cell.build(orgName, imageName, imageVersion);
