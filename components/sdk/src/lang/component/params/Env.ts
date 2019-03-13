@@ -20,10 +20,12 @@
  * Cell Environment variable parameter model.
  */
 class Env {
-    public value: any;
+    public value: string;
 
-    constructor(defaultValue: any = undefined) {
-        this.value = defaultValue;
+    constructor(defaultValue: number | string | boolean = undefined) {
+        if (defaultValue) {
+            this.value = defaultValue.toString();
+        }
     }
 }
 
