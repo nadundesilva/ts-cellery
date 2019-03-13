@@ -21,15 +21,34 @@ import {ComponentSource} from "./source";
 import {Param} from "./params";
 
 /**
- * Cellery Component.
+ * Cellery Component Spec.
  */
-interface Component {
+interface ComponentSpec {
     readonly name: string;
     readonly source: ComponentSource;
     readonly ingresses: { [key: string]: ComponentIngress };
     readonly replicas?: number;
     readonly labels?: { [key: string]: string };
     readonly parameters?: {[key: string]: Param }
+}
+
+/**
+ * Cellery Component.
+ */
+class Component {
+    public readonly spec;
+
+    constructor(spec: ComponentSpec) {
+        this.spec = spec;
+    }
+
+    public getHost(cellInstanceName: string): string {
+        return cellInstanceName + "--" + this.spec.name + "-service"
+    }
+
+    public setParam(key: string, value: any) {
+        this.spec.parameters[key].value = value;
+    }
 }
 
 export default Component;

@@ -54,11 +54,11 @@ abstract class CellImage {
      */
     protected addComponent(component: Component): void {
         const matchCount = this.components.filter(
-            (existingComponent) => existingComponent.name === component.name).length;
+            (existingComponent) => existingComponent.spec.name === component.spec.name).length;
         if (matchCount === 0) {
             this.components.push(component);
         } else {
-            throw Error(`Component ${component.name} already exists`);
+            throw Error(`Component ${component.spec.name} already exists`);
         }
     }
 
@@ -68,7 +68,7 @@ abstract class CellImage {
      * @param component Component of which the ingresses should be exposed.
      */
     protected expose(component: Component): void {
-        Object.keys(component.ingresses).forEach((ingressName) => {
+        Object.keys(component.spec.ingresses).forEach((ingressName) => {
             this.exposedIngresses.push({
                 componentIngressName: ingressName,
                 isGlobal: false
@@ -82,7 +82,7 @@ abstract class CellImage {
      * @param component Component of which the ingresses should be exposed.
      */
     protected exposeGlobal(component: Component): void {
-        Object.keys(component.ingresses).forEach((ingressName) => {
+        Object.keys(component.spec.ingresses).forEach((ingressName) => {
             this.exposedIngresses.push({
                 componentIngressName: ingressName,
                 isGlobal: true
@@ -136,10 +136,10 @@ abstract class CellImage {
         const ingresses: {isGlobal: boolean, protocol: string, ingress: ComponentIngress}[] = [];
         this.exposedIngresses.forEach((exposedIngress) => {
             const matches = this.components.filter(
-                (component) => component.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
+                (component) => component.spec.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
 
             if (matches.length === 1) {
-                let ingress = matches[0].ingresses[exposedIngress.componentIngressName];
+                let ingress = matches[0].spec.ingresses[exposedIngress.componentIngressName];
 
                 let protocol: string;
                 if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {

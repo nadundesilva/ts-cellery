@@ -18,7 +18,7 @@
 
 import * as cellery from "@ts-cellery/sdk";
 
-const stockComponent: cellery.Component = {
+const stockComponent = new cellery.Component({
     name: "stock",
     source: {
         image: "docker.io/wso2vick/sampleapp-stock"
@@ -35,7 +35,7 @@ const stockComponent: cellery.Component = {
             ]
         }
     }
-};
+});
 
 export class StockCellImage extends cellery.CellImage {
     build(orgName: string, imageName: string, imageVersion: string): void {

@@ -78,8 +78,8 @@ class CellBuilder {
         this.components.forEach((component) => {
             // Finding the protocol of the Component (Since the runtime does not yet support multiple protocols)
             let protocol: Protocol = undefined;
-            Object.keys(component.ingresses).forEach((ingressName) => {
-                const ingress = component.ingresses[ingressName];
+            Object.keys(component.spec.ingresses).forEach((ingressName) => {
+                const ingress = component.spec.ingresses[ingressName];
                 if (protocol) {
                     throw Error("Multiple protocols in the same component is not supported");
                 } else {
@@ -91,12 +91,12 @@ class CellBuilder {
 
             // Finding the environment variables to be set
             let envVars: EnvVar[];
-            if (component.parameters) {
-                envVars = Object.keys(component.parameters)
-                    .filter((paramName) => component.parameters[paramName] instanceof params.Env)
+            if (component.spec.parameters) {
+                envVars = Object.keys(component.spec.parameters)
+                    .filter((paramName) => component.spec.parameters[paramName] instanceof params.Env)
                     .map((paramName) => ({
                         name: paramName,
-                        value: component.parameters[paramName].value
+                        value: component.spec.parameters[paramName].value
                     }));
             } else {
                 envVars = [];
@@ -104,22 +104,22 @@ class CellBuilder {
 
             services.push({
                 metadata: {
-                    name: component.name,
-                    labels: (component.labels ? component.labels : {})
+                    name: component.spec.name,
+                    labels: (component.spec.labels ? component.spec.labels : {})
                 },
                 spec: {
                     container: {
-                        image: component.source.image,
+                        image: component.spec.source.image,
                         env: envVars,
-                        ports: Object.keys(component.ingresses).map((componentIngressName) => {
-                            const componentIngress = component.ingresses[componentIngressName];
+                        ports: Object.keys(component.spec.ingresses).map((componentIngressName) => {
+                            const componentIngress = component.spec.ingresses[componentIngressName];
                             return {
                                 containerPort: componentIngress.port
                             };
                         })
                     },
                     servicePort: 80,
-                    replicas: (component.replicas ? component.replicas : 1),
+                    replicas: (component.spec.replicas ? component.spec.replicas : 1),
                     protocol: protocol
                 }
             });
@@ -128,13 +128,13 @@ class CellBuilder {
         const httpGateways: HttpGateway[] = [];
         this.exposedIngresses.forEach((exposedIngress) => {
             const componentMatches = this.components.filter(
-                (component) => component.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
+                (component) => component.spec.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
 
             let component: Component;
             let ingress: ComponentIngress;
             if (componentMatches.length === 1) {
                 component = componentMatches[0];
-                ingress = component.ingresses[exposedIngress.componentIngressName];
+                ingress = component.spec.ingresses[exposedIngress.componentIngressName];
             } else {
                 throw Error(`Duplicate ingress name ${exposedIngress.componentIngressName} cannot be used`);
             }
@@ -143,7 +143,7 @@ class CellBuilder {
                 const httpComponentIngress = <http.ComponentIngress>ingress;
                 httpGateways.push({
                     context: httpComponentIngress.basePath,
-                    backend: component.name,
+                    backend: component.spec.name,
                     definitions: httpComponentIngress.definitions.map((apiDefinition) => ({
                         method: <string><unknown>apiDefinition.method,
                         path: apiDefinition.path

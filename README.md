@@ -1,6 +1,11 @@
 Cellery Typescript
 ==================
 
+## Prerequisites
+
+* Node
+* NPM
+
 ## Getting Started
 
 1. Navigate to the sdk directory and initialize the SDK.
@@ -31,7 +36,8 @@ Cellery Typescript
    ```
    npm install
    ```
-3. Execute `npm run cellery:build -- <ORG_NAME>/<IMAGE_NAME>:<IMAGE_VERSION>` to build the cell
+3. Execute `npm run cellery:build -- myorg/<CELL>:0.1.0` to build the cell
+4. Apply the Cell yaml found in `<CELL>/target/cellery/` directory
 
 ### Writing your own Cell
 
@@ -50,6 +56,7 @@ Cellery Typescript
    ```
 4. Write your Cell file. ([Install Cell References](#installing-a-cell-reference) if required)
 5. Execute `npm run cellery:build -- <ORG_NAME>/<IMAGE_NAME>:<IMAGE_VERSION>` to build the cell
+6. Apply the Cell yaml found in `<CELL>/target/cellery/` directory
 
 **Note** If you are building Cell using Cell references, you need to build the dependent Cells and [Install the Reference](#installing-a-cell-reference) first.
 

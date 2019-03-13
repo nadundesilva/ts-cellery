@@ -20,7 +20,7 @@ import * as cellery from "@ts-cellery/sdk";
 import {EmployeeReference} from "@myorg/employee";
 import {StockReference} from "@myorg/stock";
 
-const hrComponent: cellery.Component = {
+const hrComponent = new cellery.Component({
     name: "hr",
     source: {
         image: "docker.io/wso2vick/sampleapp-hr"
@@ -41,15 +41,15 @@ const hrComponent: cellery.Component = {
         employeegw_url: new cellery.params.Env(),
         stockgw_url: new cellery.params.Env()
     }
-};
+});
 
 export class HrCellImage extends cellery.CellImage {
     build(orgName: string, imageName: string, imageVersion: string): void {
         const employeeRef = new EmployeeReference("employee-inst");
         const stockRef = new StockReference("stock-inst");
 
-        hrComponent.parameters.employeegw_url.value = employeeRef.getHost();
-        hrComponent.parameters.stockgw_url.value = stockRef.getHost();
+        hrComponent.setParam("employeegw_url", employeeRef.getHost());
+        hrComponent.setParam("stockgw_url", stockRef.getHost());
 
         this.addComponent(hrComponent);
 

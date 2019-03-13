@@ -18,7 +18,7 @@
 
 import * as cellery from "@ts-cellery/sdk";
 
-const employeeComponent: cellery.Component = {
+const employeeComponent = new cellery.Component({
     name: "employee",
     source: {
         image: "docker.io/wso2vick/sampleapp-employee"
@@ -42,9 +42,9 @@ const employeeComponent: cellery.Component = {
     labels: {
         [cellery.Labels.TEAM]: "HR"
     }
-};
+});
 
-const salaryComponent: cellery.Component = {
+const salaryComponent = new cellery.Component({
     name: "salary",
     source: {
         image: "docker.io/wso2vick/sampleapp-salary"
@@ -65,12 +65,11 @@ const salaryComponent: cellery.Component = {
         [cellery.Labels.TEAM]: "Finance",
         [cellery.Labels.OWNER]: "Alice"
     }
-};
+});
 
 export class EmployeeCellImage extends cellery.CellImage {
     build(orgName: string, imageName: string, imageVersion: string): void {
-        employeeComponent.parameters.SALARY_HOST.value
-            = imageName + "--" + salaryComponent.name + "-service";
+        employeeComponent.setParam("SALARY_HOST", salaryComponent.getHost(imageName));
 
         this.addComponent(employeeComponent);
         this.addComponent(salaryComponent);

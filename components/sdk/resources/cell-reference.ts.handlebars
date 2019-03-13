@@ -21,10 +21,10 @@
  * within the cellery system.
  */
 export class {{handleTypeName cellName}}Reference {
-    private readonly cellOrg: string = "{{cellOrg}}";
-    private readonly cellName: string = "{{cellName}}";
-    private readonly cellVersion: string = "{{cellVersion}}";
-    private readonly instanceName: string = "";
+    public readonly cellOrg: string = "{{cellOrg}}";
+    public readonly cellName: string = "{{cellName}}";
+    public readonly cellVersion: string = "{{cellVersion}}";
+    public readonly instanceName: string = "";
 
     constructor(instanceName: string) {
         this.instanceName = instanceName;
