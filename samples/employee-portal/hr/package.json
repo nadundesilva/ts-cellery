@@ -5,21 +5,12 @@
   "keywords": [],
   "license": "Apache-2.0",
   "cellery": {
-    "cell": "./hr.cell.ts",
-    "refs": [
-      "myorg/stock:0.1.0",
-      "myorg/employee:0.1.0"
-    ]
+    "cell": "./hr.cell.ts"
   },
   "scripts": {
-    "preinstall": "cellery-scripts bootstrap",
-    "cellery:build": "cellery-scripts build",
-    "cellery:installRef": "cellery-scripts install-ref"
+    "cellery:build": "cellery-scripts build"
   },
   "dependencies": {
-    "@myorg/employee": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/employee/0.1.0/myorg-employee-0.1.0.tgz",
-    "@myorg/stock": "file:/home/nadun/.cellery/lang/typescript/repo/myorg/stock/0.1.0/myorg-stock-0.1.0.tgz",
-    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
-    "log": "^3.2.0"
+    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz"
   }
 }

@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import ProjectUtils from "./util/ProjectUtils";
+import * as log from "log";
+import * as mkdirp from "mkdirp";
+import * as path from "path";
+import * as rimraf from "rimraf";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
-import * as mkdirp from "mkdirp";
-import * as log from "log";
-import * as ts from "typescript";
-import * as rimraf from "rimraf";
-import * as path from "path";
 import Constants from "../util/Constants";
+import ProjectUtils from "./util/ProjectUtils";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -81,15 +80,7 @@ class Compiler {
                             loader: "babel-loader",
                             options: {
                                 cacheDirectory: true,
-                                presets: [
-                                    [
-                                        "es2015",
-                                        {
-                                            modules: false
-                                        }
-                                    ],
-                                    "es2016"
-                                ]
+                                presets: ["@babel/preset-env"]
                             }
                         }
                     ]

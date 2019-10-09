@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import Port from "./Port";
 import EnvVar from "./EnvVar";
+import Port from "./Port";
 
 /**
  * Kubernetes container model.
  */
 class Container {
-    readonly image: string;
-    readonly ports: Port[];
-    readonly env?: EnvVar[];
+    public readonly image: string;
+    public readonly ports: Port[];
+    public readonly env?: EnvVar[];
 }
 
 export default Container;

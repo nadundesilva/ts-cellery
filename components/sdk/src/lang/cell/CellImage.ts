@@ -16,18 +16,13 @@
  * under the License.
  */
 
-import {Component, ComponentIngress} from "../component";
-import CellIngress from "./CellIngress";
-import Constants from "../../util/Constants";
-import * as mkdirp from "mkdirp";
-import * as os from "os";
-import * as Handlebars from "handlebars";
 import * as fs from "fs";
-import * as kubernetes from "../../kubernetes";
+import * as mkdirp from "mkdirp";
 import * as path from "path";
-import * as rimraf from "rimraf";
-import * as beautify from "json-beautify";
-import {execSync} from "child_process";
+import * as kubernetes from "../../kubernetes";
+import Constants from "../../util/Constants";
+import {Component} from "../component";
+import CellIngress from "./CellIngress";
 
 /**
  * Cell Image model.
@@ -99,7 +94,6 @@ abstract class CellImage {
      */
     protected buildArtifacts(orgName: string, imageName: string, imageVersion: string): void {
         this.buildCellFile(orgName, imageName, imageVersion);
-        this.buildCellReferenceFile(orgName, imageName, imageVersion);
     }
 
     /**
@@ -122,128 +116,6 @@ abstract class CellImage {
 
         const cellFile = path.resolve(celleryDir, `${imageName}.yaml`);
         fs.writeFileSync(cellFile, cellFileContent);
-    }
-
-    /**
-     * Build the Cell Reference File to be used by the Cell consumers.
-     *
-     * @param orgName Organization name of the Cell Image
-     * @param imageName Name of the Cell Image
-     * @param imageVersion Version of the Cell Image
-     */
-    private buildCellReferenceFile(orgName: string, imageName: string, imageVersion: string): void {
-        // Finding the exposed ingresses
-        const ingresses: {isGlobal: boolean, protocol: string, ingress: ComponentIngress}[] = [];
-        this.exposedIngresses.forEach((exposedIngress) => {
-            const matches = this.components.filter(
-                (component) => component.spec.ingresses.hasOwnProperty(exposedIngress.componentIngressName));
-
-            if (matches.length === 1) {
-                let ingress = matches[0].spec.ingresses[exposedIngress.componentIngressName];
-
-                let protocol: string;
-                if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {
-                    protocol = "http";
-                } else {
-                    protocol = "tcp";
-                }
-
-                ingresses.push({
-                    ingress: ingress,
-                    protocol: protocol,
-                    isGlobal: exposedIngress.isGlobal
-                });
-            }
-        });
-
-        const templateContext = {
-            [Constants.CellReferenceTemplate.CONTEXT_ORGANIZATION_NAME]: orgName,
-            [Constants.CellReferenceTemplate.CONTEXT_NAME]: imageName,
-            [Constants.CellReferenceTemplate.CONTEXT_VERSION]: imageVersion,
-            [Constants.CellReferenceTemplate.CONTEXT_GATEWAY_PORT]: Constants.DEFAULT_GATEWAY_PORT,
-            [Constants.CellReferenceTemplate.CONTEXT_INGRESSES]: ingresses
-        };
-
-        const convertToTitleCase = (text: string, separator: string | RegExp): string => {
-            const wordsArray: string[] = text.split(separator);
-            let convertedText = "";
-            wordsArray.forEach((word) => {
-                if (word.length >= 1) {
-                    convertedText += word.substring(0, 1).toUpperCase();
-                }
-                if (word.length >= 2) {
-                    convertedText += word.substring(1).toLowerCase();
-                }
-            });
-            return convertedText;
-        };
-
-        // Registering template helper functions
-        Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_API_NAME,
-            (text) => convertToTitleCase(text, /[\/\-]/g));
-        Handlebars.registerHelper(Constants.CellReferenceTemplate.CONTEXT_HANDLE_TYPE_NAME,
-            (text) => convertToTitleCase(text, /-/g));
-
-        // Writing the Cell reference content to the file
-        const rawTemplate = fs.readFileSync(path.resolve(
-            process.env[Constants.ENV_VAR_TS_CELLERY_DIR],
-            "../../",
-            Constants.RESOURCES_DIR,
-            Constants.CellReferenceTemplate.FILE
-        )).toString();
-        const template = Handlebars.compile(rawTemplate);
-        const cellReferenceFileContent = template(templateContext);
-
-        // Creating the "target/typescript" directory
-        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
-        const typeScriptDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
-        mkdirp.sync(typeScriptDir);
-
-        // Writing the Cell Reference content to the file
-        const cellReferenceFile = path.resolve(typeScriptDir, `${imageName}-ref.ts`);
-        fs.writeFileSync(cellReferenceFile, cellReferenceFileContent);
-
-        // Generate the package.json for the Cell Reference
-        const packageJson = {
-            name: `@${orgName}/${imageName}`,
-            version: imageVersion,
-            main: `./dist/${imageName}-ref.js`,
-            scripts: {
-                build: `tsc ${imageName}-ref.ts --outDir dist --target ES5 --module commonjs --declaration true`
-            },
-            dependencies: {
-                typescript: "^3.2.4"
-            }
-        };
-        const cellReferencePackageJsonFile = path.resolve(typeScriptDir, Constants.Project.PACKAGE_JSON_FILE_NAME);
-        fs.writeFileSync(cellReferencePackageJsonFile, beautify(packageJson, null, 2, 100));
-
-        // Building the Cell Reference
-        execSync("npm install", {cwd: typeScriptDir, stdio: "ignore"});
-        execSync("npm run build", {cwd: typeScriptDir, stdio: "ignore"});
-
-        // Generating the package
-        execSync("npm pack", {cwd: typeScriptDir, stdio: "ignore"});
-        const cellRefPackage = `${orgName}-${imageName}-${imageVersion}.tgz`;
-
-        // Cleaning up the directory
-        rimraf.sync(`${typeScriptDir}/**/*.ts`);
-        rimraf.sync(`${typeScriptDir}/**/*.js`);
-        rimraf.sync(`${typeScriptDir}/node_modules`);
-        rimraf.sync(`${typeScriptDir}/dist`);
-        rimraf.sync(`${typeScriptDir}/package*.json`);
-
-        // Copying the ref package to Repository
-        const refInstallationDIr = path.resolve(os.homedir(), ".cellery", "lang", "typescript", "repo",
-            orgName, imageName, imageVersion);
-        if (fs.existsSync(refInstallationDIr)) {
-            rimraf.sync(refInstallationDIr);
-        }
-        mkdirp.sync(refInstallationDIr);
-        fs.copyFileSync(
-            path.resolve(typeScriptDir, cellRefPackage),
-            path.resolve(refInstallationDIr, cellRefPackage)
-        );
     }
 }
 

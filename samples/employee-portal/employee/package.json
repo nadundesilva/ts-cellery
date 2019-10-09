@@ -8,12 +8,9 @@
     "cell": "./employee.cell.ts"
   },
   "scripts": {
-    "preinstall": "cellery-scripts bootstrap",
-    "cellery:build": "cellery-scripts build",
-    "cellery:installRef": "cellery-scripts install-ref"
+    "cellery:build": "cellery-scripts build"
   },
   "dependencies": {
-    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz",
-    "log": "^3.2.0"
+    "@ts-cellery/sdk": "file:../../../components/sdk/ts-cellery-sdk-0.1.0.tgz"
   }
 }

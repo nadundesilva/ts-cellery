@@ -22,7 +22,7 @@ import GatewaySpec from "./GatewaySpec";
  * Kubernetes Gateway Resource model.
  */
 class Index {
-    spec: GatewaySpec
+    public spec: GatewaySpec;
 }
 
 export default Index;

@@ -29,27 +29,14 @@ class Constants {
     public static readonly DEFAULT_GATEWAY_PORT = 80;
 
     public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
-    public static readonly IMAGE_VERSION_PATTERN = "[0-9]+\\.[0-9]+\\.[0-9]+";
+    public static readonly IMAGE_VERSION_PATTERN =
+        "[a-z0-9]+((?:-|.)[a-z0-9]+)*";
     public static readonly CELL_IMAGE_PATTERN =
         Constants.CELLERY_ID_PATTERN +
         "\\/" +
         Constants.CELLERY_ID_PATTERN +
         ":" +
         Constants.IMAGE_VERSION_PATTERN;
-
-    /**
-     * Cell reference related constants.
-     */
-    public static readonly CellReferenceTemplate = class CellReferenceTemplate {
-        public static readonly FILE = "cell-reference.ts.handlebars";
-        public static readonly CONTEXT_ORGANIZATION_NAME = "cellOrg";
-        public static readonly CONTEXT_NAME = "cellName";
-        public static readonly CONTEXT_VERSION = "cellVersion";
-        public static readonly CONTEXT_GATEWAY_PORT = "cellGatewayPort";
-        public static readonly CONTEXT_INGRESSES = "ingresses";
-        public static readonly CONTEXT_HANDLE_API_NAME = "handleApiName";
-        public static readonly CONTEXT_HANDLE_TYPE_NAME = "handleTypeName";
-    };
 
     /**
      * Kubernetes runtime related constants.

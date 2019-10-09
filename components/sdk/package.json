@@ -12,25 +12,24 @@
     "clean": "rimraf ./dist/",
     "format:check": "prettier --check ./src/**/*.ts",
     "format:fix": "prettier --write ./src/**/*.ts",
-    "lint": "tslint --fix -c tslint.json -p ./",
     "build": "tsc",
-    "build:prod": "npm run clean && npm run format:fix && npm run lint && npm run build"
+    "build:prod": "npm run clean && npm run format:check && npm run build"
   },
   "devDependencies": {
     "@types/handlebars": "^4.1.0",
     "@types/js-yaml": "^3.12.1",
-    "@types/webpack": "^4.39.2",
     "@types/node": "^12.7.12",
+    "@types/webpack": "^4.39.2",
     "prettier": "^1.18.2",
     "tslint": "^5.20.0"
   },
   "dependencies": {
     "@babel/core": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
     "babel-loader": "^8.0.6",
     "commander": "^3.0.2",
     "handlebars": "^4.4.3",
     "js-yaml": "^3.13.1",
-    "json-beautify": "^1.1.1",
     "log": "^6.0.0",
     "log-node": "^7.0.0",
     "rimraf": "^3.0.0",

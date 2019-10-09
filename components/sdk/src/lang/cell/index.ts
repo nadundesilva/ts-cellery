@@ -22,4 +22,4 @@ import CellIngress from "./CellIngress";
 export {
     CellImage,
     CellIngress
-}
+};

@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import Container from "../container";
 import {Protocol} from "../../lang";
+import Container from "../container";
 
 /**
  * Kubernetes Service Resource Spec model.
  */
 class ServiceSpec {
-    readonly container: Container;
-    readonly replicas: number;
-    readonly servicePort?: number;
-    readonly protocol?: Protocol;
+    public readonly container: Container;
+    public readonly replicas: number;
+    public readonly servicePort?: number;
+    public readonly protocol?: Protocol;
 }
 
 export default ServiceSpec;

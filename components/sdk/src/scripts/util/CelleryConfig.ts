@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import Constants from "../../util/Constants";
 import * as path from "path";
+import Constants from "../../util/Constants";
 
 /**
  * Value Holder for the Cellery configuration.

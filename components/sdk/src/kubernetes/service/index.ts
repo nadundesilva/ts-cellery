@@ -23,8 +23,8 @@ import ServiceSpec from "./ServiceSpec";
  * Kubernetes Service Resource model.
  */
 class Service {
-    readonly metadata: Metadata;
-    readonly spec: ServiceSpec;
+    public readonly metadata: Metadata;
+    public readonly spec: ServiceSpec;
 }
 
 export default Service;

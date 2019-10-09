@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import Constants from "../../util/Constants";
-import HttpGateway from "../gateway/http";
-import Index from "../cell";
-import Service from "../service";
-import {CellIngress, Component, ComponentIngress, Protocol, http, params} from "../../lang";
 import * as yaml from "js-yaml";
+import {CellIngress, Component, ComponentIngress, http, params, Protocol} from "../../lang";
+import Constants from "../../util/Constants";
+import Index from "../cell";
 import EnvVar from "../container/EnvVar";
+import HttpGateway from "../gateway/http";
+import Service from "../service";
 
 /**
  * Kubernetes Cell Resource builder.
@@ -52,7 +52,7 @@ class CellBuilder {
             self.components.push(component);
         });
         return this;
-    };
+    }
 
     /**
      * Add exposed ingresses to the Cell Resource builder.
@@ -77,7 +77,7 @@ class CellBuilder {
         const services: Service[] = [];
         this.components.forEach((component) => {
             // Finding the protocol of the Component (Since the runtime does not yet support multiple protocols)
-            let protocol: Protocol = undefined;
+            let protocol: Protocol;
             Object.keys(component.spec.ingresses).forEach((ingressName) => {
                 const ingress = component.spec.ingresses[ingressName];
                 if (protocol) {
@@ -140,12 +140,12 @@ class CellBuilder {
             }
 
             if (ingress.hasOwnProperty("basePath") && ingress.hasOwnProperty("definitions")) {
-                const httpComponentIngress = <http.ComponentIngress>ingress;
+                const httpComponentIngress = ingress as http.ComponentIngress;
                 httpGateways.push({
                     context: httpComponentIngress.basePath,
                     backend: component.spec.name,
                     definitions: httpComponentIngress.definitions.map((apiDefinition) => ({
-                        method: <string><unknown>apiDefinition.method,
+                        method: apiDefinition.method as unknown as string,
                         path: apiDefinition.path
                     })),
                     global: exposedIngress.isGlobal

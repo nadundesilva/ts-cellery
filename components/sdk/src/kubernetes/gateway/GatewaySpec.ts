@@ -22,7 +22,7 @@ import HttpGateway from "./http";
  * Kubernetes Gateway Resource Spec model.
  */
 class GatewaySpec {
-    readonly http: HttpGateway[];
+    public readonly http: HttpGateway[];
 }
 
 export default GatewaySpec;

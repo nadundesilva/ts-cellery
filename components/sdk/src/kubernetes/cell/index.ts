@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import CellSpec from "./CellSpec";
 import Metadata from "../Metadata";
+import CellSpec from "./CellSpec";
 
 /**
  * Kubernetes Cell Resource model.

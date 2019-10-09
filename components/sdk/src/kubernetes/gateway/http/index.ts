@@ -29,4 +29,3 @@ interface HttpGateway {
 }
 
 export default HttpGateway;
-

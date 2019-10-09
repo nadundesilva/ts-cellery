@@ -17,8 +17,6 @@
  */
 
 import * as cellery from "@ts-cellery/sdk";
-import {EmployeeReference} from "@myorg/employee";
-import {StockReference} from "@myorg/stock";
 
 const hrComponent = new cellery.Component({
     name: "hr",
@@ -36,21 +34,11 @@ const hrComponent = new cellery.Component({
                 }
             ]
         }
-    },
-    parameters: {
-        employeegw_url: new cellery.params.Env(),
-        stockgw_url: new cellery.params.Env()
     }
 });
 
 export class HrCellImage extends cellery.CellImage {
     build(orgName: string, imageName: string, imageVersion: string): void {
-        const employeeRef = new EmployeeReference("employee-inst");
-        const stockRef = new StockReference("stock-inst");
-
-        hrComponent.setParam("employeegw_url", employeeRef.getHost());
-        hrComponent.setParam("stockgw_url", stockRef.getHost());
-
         this.addComponent(hrComponent);
 
         this.exposeGlobal(hrComponent);

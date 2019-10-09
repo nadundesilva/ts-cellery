@@ -17,8 +17,8 @@
  */
 
 import {ComponentIngress} from "./ingress";
-import {ComponentSource} from "./source";
 import {Param} from "./params";
+import {ComponentSource} from "./source";
 
 /**
  * Cellery Component Spec.
@@ -29,7 +29,7 @@ interface ComponentSpec {
     readonly ingresses: { [key: string]: ComponentIngress };
     readonly replicas?: number;
     readonly labels?: { [key: string]: string };
-    readonly parameters?: {[key: string]: Param }
+    readonly parameters?: {[key: string]: Param };
 }
 
 /**
@@ -43,7 +43,7 @@ class Component {
     }
 
     public getHost(cellInstanceName: string): string {
-        return cellInstanceName + "--" + this.spec.name + "-service"
+        return cellInstanceName + "--" + this.spec.name + "-service";
     }
 
     public setParam(key: string, value: any) {

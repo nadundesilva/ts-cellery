@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import * as log from "log";
 import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
-import * as log from "log";
 
 /**
  * Cellery Cell Lifecycle Invoker.
