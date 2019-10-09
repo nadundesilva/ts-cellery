@@ -45,9 +45,7 @@ class CelleryInvoker {
             cellModule = await import(celleryConfig.compiledCell);
         } catch (e) {
             throw Error(
-                `Failed to load compiled Cell file ${
-                    celleryConfig.compiledCell
-                } due to ${e}`
+                `Failed to load compiled Cell file ${celleryConfig.compiledCell} due to ${e}`
             );
         }
 
