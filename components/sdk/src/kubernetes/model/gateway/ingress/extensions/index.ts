@@ -16,8 +16,17 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import ApiPublisher from "./ApiPublisher";
+import ClusterIngress from "./ClusterIngress";
+import OidcConfig from "./OidcConfig";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway extensions model.
+ */
+class IngressExtensions {
+    public readonly apiPublisher: ApiPublisher;
+    public readonly clusterIngress: ClusterIngress;
+    public readonly oidc: OidcConfig;
+}
+
+export default IngressExtensions;

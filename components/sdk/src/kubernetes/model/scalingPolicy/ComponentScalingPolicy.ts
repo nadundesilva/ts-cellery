@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import HorizontalPodAutoscaler from "./HorizontalPodAutoscaler";
+import KnativePodAutoscaler from "./KnativePodAutoscaler";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Component scaling policy model.
+ */
+class ComponentScalingPolicy {
+    public readonly replicas: number;
+    public readonly hpa: HorizontalPodAutoscaler;
+    public readonly kpa: KnativePodAutoscaler;
+}
+
+export default ComponentScalingPolicy;

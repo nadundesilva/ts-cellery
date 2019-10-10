@@ -17,11 +17,14 @@
  */
 
 /**
- * Kubernetes Gateway Resource Spec HTTP Gateway API Definition model.
+ * Kubernetes Component port mapping model.
  */
-interface ApiDefinition {
-    readonly path: string;
-    readonly method: string;
+class PortMapping {
+    public readonly name: string;
+    public readonly protocol: "HTTP" | "TCP" | "GRPC";
+    public readonly port: number;
+    public readonly targetContainer: string;
+    public readonly targetPort: number;
 }
 
-export default ApiDefinition;
+export default PortMapping;

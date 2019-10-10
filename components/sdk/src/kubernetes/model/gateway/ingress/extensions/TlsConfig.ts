@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import Metadata from "../Metadata";
-import ServiceSpec from "./ServiceSpec";
-
 /**
- * Kubernetes Service Resource model.
+ * Kubernetes Gateway extensions cluster ingress TLS config model.
  */
-class Service {
-    public readonly metadata: Metadata;
-    public readonly spec: ServiceSpec;
+class TlsConfig {
+    public readonly secret: string;
+    public readonly key: string;
+    public readonly cert: string;
 }
 
-export default Service;
+export default TlsConfig;

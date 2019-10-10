@@ -16,17 +16,14 @@
  * under the License.
  */
 
-import Metadata from "../Metadata";
-import CellSpec from "./CellSpec";
+import TlsConfig from "./TlsConfig";
 
 /**
- * Kubernetes Cell Resource model.
+ * Kubernetes Gateway extensions cluster ingress model.
  */
-interface Cell {
-    readonly apiVersion: string;
-    readonly kind: string;
-    readonly metadata: Metadata;
-    readonly spec: CellSpec;
+class ClusterIngress {
+    public readonly host: string;
+    public readonly tls: TlsConfig;
 }
 
-export default Cell;
+export default ClusterIngress;

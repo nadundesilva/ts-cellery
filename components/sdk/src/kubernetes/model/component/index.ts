@@ -16,13 +16,17 @@
  * under the License.
  */
 
-import GatewaySpec from "./GatewaySpec";
+import ComponentSpec from "./ComponentSpec";
+import {V1ObjectMeta} from "@kubernetes/client-node";
 
 /**
- * Kubernetes Gateway Resource model.
+ * Kubernetes Component resource model.
  */
-class Index {
-    public spec: GatewaySpec;
+class Component {
+    public readonly apiVersion: "v1alpha2";
+    public readonly kind: "Component";
+    public readonly metadata: V1ObjectMeta;
+    public readonly spec: ComponentSpec;
 }
 
-export default Index;
+export default Component;

@@ -16,8 +16,17 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import {V1ObjectMeta} from "@kubernetes/client-node";
+import TokenServiceSpec from "./TokenServiceSpec";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes token service resource model.
+ */
+class TokenService {
+    public readonly apiVersion: "v1alpha2";
+    public readonly kind: "Cell";
+    public readonly metadata: V1ObjectMeta;
+    public readonly spec: TokenServiceSpec;
+}
+
+export default TokenService;

@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+/**
+ * Kubernetes knative pod autoscaler model.
+ */
+class KnativePodAutoscaler {
+    public readonly minReplicas: number;
+    public readonly maxReplicas: number;
+    public readonly concurrency: number;
+    public readonly selector: {[key: string]: string};
+}
 
-export { Cell, CellBuilder, Composite };
+export default KnativePodAutoscaler;

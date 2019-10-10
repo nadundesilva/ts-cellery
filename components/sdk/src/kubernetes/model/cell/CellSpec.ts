@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import EnvVar from "./EnvVar";
-import Port from "./Port";
+import Gateway from "../gateway";
+import Component from "../component";
+import TokenService from "../tokenService";
 
 /**
- * Kubernetes container model.
+ * Kubernetes Cell resource spec model.
  */
-class Container {
-    public readonly image: string;
-    public readonly ports: Port[];
-    public readonly env?: EnvVar[];
+interface CellSpec {
+    readonly gateway: Gateway;
+    readonly components: Component[];
+    readonly sts: TokenService;
 }
 
-export default Container;
+export default CellSpec;

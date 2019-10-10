@@ -16,8 +16,18 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import OpaPolicy from "./OpaPolicy";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes token service resource spec model.
+ */
+class TokenServiceSpec {
+    public readonly selector: {[key: string]: string};
+    public readonly secretName: string;
+    public readonly instanceName: string;
+    public readonly interceptMode: "Inbound" | "Outbound" | "Any" | "None";
+    public readonly opa: OpaPolicy[];
+    public readonly unsecuredPaths: string[];
+}
+
+export default TokenServiceSpec;

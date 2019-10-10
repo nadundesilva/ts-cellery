@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import Destination from "./Destination";
+
 /**
- * Kubernetes container port model.
+ * Kubernetes Gateway gRPC route model.
  */
-interface Port {
-    readonly containerPort: number;
+class GrpcRoute {
+    public readonly port: number;
+    public readonly destination: Destination;
 }
 
-export default Port;
+export default GrpcRoute;

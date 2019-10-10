@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import {Protocol} from "../../lang";
-import Container from "../container";
+import CellSpec from "./CellSpec";
+import {V1ObjectMeta} from "@kubernetes/client-node";
 
 /**
- * Kubernetes Service Resource Spec model.
+ * Kubernetes Cell resource model.
  */
-class ServiceSpec {
-    public readonly container: Container;
-    public readonly replicas: number;
-    public readonly servicePort?: number;
-    public readonly protocol?: Protocol;
+interface Cell {
+    readonly apiVersion: "v1alpha2";
+    readonly kind: "Cell";
+    readonly metadata: V1ObjectMeta;
+    readonly spec: CellSpec;
 }
 
-export default ServiceSpec;
+export default Cell;

@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import {V1PersistentVolumeClaim} from "@kubernetes/client-node";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Component volume claim model.
+ */
+class VolumeClaim {
+    public readonly shared: boolean;
+    public readonly template: V1PersistentVolumeClaim;
+}
+
+export default VolumeClaim;

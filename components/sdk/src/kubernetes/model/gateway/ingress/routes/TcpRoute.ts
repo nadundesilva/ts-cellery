@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import HttpGateway from "./http";
+import Destination from "./Destination";
 
 /**
- * Kubernetes Gateway Resource Spec model.
+ * Kubernetes Gateway TCP route model.
  */
-class GatewaySpec {
-    public readonly http: HttpGateway[];
+class TcpRoute {
+    public readonly port: number;
+    public readonly destination: Destination;
 }
 
-export default GatewaySpec;
+export default TcpRoute;

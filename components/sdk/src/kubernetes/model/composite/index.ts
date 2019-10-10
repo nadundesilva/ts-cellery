@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -16,15 +17,17 @@
  * under the License.
  */
 
-import Gateway from "../gateway";
-import Service from "../service";
+import {V1ObjectMeta} from "@kubernetes/client-node";
+import CompositeSpec from "./CompositeSpec";
 
 /**
- * Kubernetes Cell resource spec model.
+ * Kubernetes Composite resource model.
  */
-interface CellSpec {
-    readonly gatewayTemplate: Gateway;
-    readonly servicesTemplates: Service[];
+interface Composite {
+    readonly apiVersion: "v1alpha2";
+    readonly kind: "Composite";
+    readonly metadata: V1ObjectMeta;
+    readonly spec: CompositeSpec;
 }
 
-export default CellSpec;
+export default Composite;

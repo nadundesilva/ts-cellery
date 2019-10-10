@@ -16,8 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+/**
+ * Kubernetes Gateway route destination model.
+ */
+class Destination {
+    public readonly host: string;
+    public readonly port: string;
+}
 
-export { Cell, CellBuilder, Composite };
+export default Destination;

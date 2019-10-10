@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import HorizontalPodAutoscaler from "./HorizontalPodAutoscaler";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway scaling policy model.
+ */
+class GatewayScalingPolicy {
+    public readonly replicas: number;
+    public readonly hpa: HorizontalPodAutoscaler;
+}
+
+export default GatewayScalingPolicy;

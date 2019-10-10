@@ -16,16 +16,12 @@
  * under the License.
  */
 
-import ApiDefinition from "./ApiDefinition";
-
 /**
- * Kubernetes Gateway Resource Spec HTTP Gateway model.
+ * Kubernetes Gateway HTTP route API definition model.
  */
-interface HttpGateway {
-    readonly backend: string;
-    readonly context: string;
-    readonly definitions: ApiDefinition[];
-    readonly global: boolean;
+class ApiDefinition {
+    public readonly path: string;
+    public readonly method: string;
 }
 
-export default HttpGateway;
+export default ApiDefinition;

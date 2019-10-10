@@ -16,8 +16,15 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import GatewayScalingPolicy from "../scalingPolicy/GatewayScalingPolicy";
+import Ingress from "./ingress";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway resource spec model.
+ */
+class GatewaySpec {
+    public readonly ingress: Ingress;
+    public readonly scalingPolicy: GatewayScalingPolicy;
+}
+
+export default GatewaySpec;

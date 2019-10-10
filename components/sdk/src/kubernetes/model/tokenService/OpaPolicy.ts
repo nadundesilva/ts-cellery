@@ -17,11 +17,11 @@
  */
 
 /**
- * Kubernetes container environment variable model.
+ * Kubernetes OPA policy model.
  */
-interface EnvVar {
-    readonly name: string;
-    readonly value: string;
+class OpaPolicy {
+    public readonly key: string;
+    public readonly regoPolicy: string;
 }
 
-export default EnvVar;
+export default OpaPolicy;

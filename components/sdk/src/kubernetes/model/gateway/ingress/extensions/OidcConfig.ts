@@ -16,8 +16,24 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+/**
+ * Kubernetes Gateway extensions OIDC config model.
+ */
+class OidcConfig {
+    public readonly providerUrl: string;
+    public readonly clientId: string;
+    public readonly clientSecret: string;
+    public readonly dcrUrl: string;
+    public readonly dcrUser: string;
+    public readonly dcrPassword: string;
+    public readonly redirectUrl: string;
+    public readonly baseUrl: string;
+    public readonly subjectClaim: string;
+    public readonly jwtIssuer: string;
+    public readonly jwtAudience: string;
+    public readonly secretName: string;
+    public readonly securePaths: string[];
+    public readonly nonSecurePaths: string[];
+}
 
-export { Cell, CellBuilder, Composite };
+export default OidcConfig;

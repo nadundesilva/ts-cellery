@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+/**
+ * Kubernetes Gateway extensions api publisher model.
+ */
+class ApiPublisher {
+    public readonly authenticate: boolean;
+    public readonly backend: string;
+    public readonly context: string;
+    public readonly version: string;
+}
 
-export { Cell, CellBuilder, Composite };
+export default ApiPublisher;

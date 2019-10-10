@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import Component from "../component";
+
 /**
- * Kubernetes metadata model.
+ * Kubernetes Composite resource spec model.
  */
-interface Metadata {
-    readonly name: string;
-    readonly annotations?: object;
-    readonly labels?: object;
+interface CompositeSpec {
+    readonly components: Component[];
 }
 
-export default Metadata;
+export default CompositeSpec;

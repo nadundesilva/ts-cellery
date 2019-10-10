@@ -16,8 +16,17 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import GatewaySpec from "./GatewaySpec";
+import {V1ObjectMeta} from "@kubernetes/client-node";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway resource model.
+ */
+class Gateway {
+    public readonly apiVersion: "v1alpha2";
+    public readonly kind: "Gateway";
+    public readonly metadata: V1ObjectMeta;
+    public readonly spec: GatewaySpec;
+}
+
+export default Gateway;

@@ -16,8 +16,20 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import ApiDefinition from "./ApiDefinition";
+import Destination from "./Destination";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway HTTP route model.
+ */
+class HttpRoute {
+    public readonly context: string;
+    public readonly version: string;
+    public readonly definitions: ApiDefinition[];
+    public readonly global: boolean;
+    public readonly authenticate: boolean;
+    public readonly port: number;
+    public readonly destination: Destination;
+}
+
+export default HttpRoute;

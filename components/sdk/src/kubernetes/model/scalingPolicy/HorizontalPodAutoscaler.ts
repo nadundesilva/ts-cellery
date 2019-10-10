@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import {V2beta2MetricSpec} from "@kubernetes/client-node";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes horizontal pod autoscaler model.
+ */
+class HorizontalPodAutoscaler {
+    public readonly minReplicas: number;
+    public readonly maxReplicas: number;
+    public readonly overridable: boolean;
+    public readonly metrics: V2beta2MetricSpec;
+}
+
+export default HorizontalPodAutoscaler;

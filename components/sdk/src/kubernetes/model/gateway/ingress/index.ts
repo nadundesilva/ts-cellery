@@ -16,8 +16,19 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
-import CellBuilder from "./util/CellBuilder";
+import IngressExtensions from "./extensions";
+import HttpRoute from "./routes/HttpRoute";
+import GrpcRoute from "./routes/GrpcRoute";
+import TcpRoute from "./routes/TcpRoute";
 
-export { Cell, CellBuilder, Composite };
+/**
+ * Kubernetes Gateway ingress model.
+ */
+class Ingress {
+    public readonly extensions: IngressExtensions;
+    public readonly http: HttpRoute[];
+    public readonly grpc: GrpcRoute[];
+    public readonly tcp: TcpRoute[];
+}
+
+export default Ingress;
