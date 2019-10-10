@@ -1,6 +1,10 @@
 Cellery Typescript
 ==================
 
+  ![GitHub Actions Build Workflow Status](https://github.com/nadundesilva/ts-cellery/workflows/Build/badge.svg)
+  [![GitHub Last Commit](https://img.shields.io/github/last-commit/nadundesilva/ts-cellery.svg)](https://github.com/nadundesilva/ts-cellery/commits/master)
+  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ## Prerequisites
 
 * Node

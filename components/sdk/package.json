@@ -9,10 +9,10 @@
     "cellery-scripts": "./dist/scripts/index.js"
   },
   "scripts": {
-    "clean": "rimraf ./dist/",
+    "clean": "rimraf ./dist/ && rimraf ts-cellery-sdk-*.tgz",
     "format:check": "prettier --check ./src/**/*.ts",
     "format:fix": "prettier --write ./src/**/*.ts",
-    "build": "tsc",
+    "build": "tsc && npm pack",
     "build:prod": "npm run clean && npm run format:check && npm run build"
   },
   "devDependencies": {
