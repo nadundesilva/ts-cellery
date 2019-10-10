@@ -16,7 +16,20 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Lookup from "./Lookup";
 
-export { Cell, Composite };
+/**
+ * Represents a non shared volume which can be mounted to a component.
+ *
+ * The volume claim is created when the instance is created.
+ */
+interface K8sNonSharedPersistence {
+    readonly name: string;
+    readonly mode?: "Filesystem" | "Block";
+    readonly storageClass?: string;
+    readonly accessMode?: ("ReadWriteOnce" | "ReadOnlyMany" | "ReadWriteMany")[];
+    readonly lookup?: Lookup;
+    readonly request: string;
+}
+
+export default K8sNonSharedPersistence;

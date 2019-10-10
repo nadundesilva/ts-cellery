@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a non shared configuration which can be mounted to a component.
+ *
+ * The config map is created when the instance is created.
+ */
+interface NonSharedConfiguration {
+    readonly name: string;
+    readonly data: { [key: string]: string };
+}
 
-export { Cell, Composite };
+export default NonSharedConfiguration;

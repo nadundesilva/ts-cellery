@@ -17,7 +17,8 @@
  */
 
 import DockerImageSource from "./DockerImageSource";
+import DockerFileSource from "./DockerFileSource";
+import ComponentSource from "./ComponentSource";
 
-type ComponentSource = DockerImageSource;
-
-export {ComponentSource, DockerImageSource};
+export default ComponentSource;
+export {DockerImageSource, DockerFileSource};

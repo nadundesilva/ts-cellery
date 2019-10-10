@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+interface ImageMeta {
+    org: string;
+    name: string;
+    ver: string;
+}
 
-export { Cell, Composite };
+export default ImageMeta;

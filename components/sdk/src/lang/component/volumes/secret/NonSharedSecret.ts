@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a non shared secret which can be mounted to a component.
+ *
+ * The secret is created when the instance is created.
+ */
+interface NonSharedSecret {
+    readonly name: string;
+    readonly data: { [key: string]: string };
+}
 
-export { Cell, Composite };
+export default NonSharedSecret;

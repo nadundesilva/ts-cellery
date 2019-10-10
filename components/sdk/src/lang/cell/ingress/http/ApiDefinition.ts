@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import ResourceDefinition from "./ResourceDefinition";
 
-export { Cell, Composite };
+/**
+ * Component HTTP API Ingress's API definition.
+ */
+interface ApiDefinition {
+    readonly resources: ResourceDefinition[];
+}
+
+export default ApiDefinition;

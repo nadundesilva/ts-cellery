@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a metric value as a definite value.
+ */
+interface MetricsValue {
+    readonly threshold: string;
+}
 
-export { Cell, Composite };
+export default MetricsValue;

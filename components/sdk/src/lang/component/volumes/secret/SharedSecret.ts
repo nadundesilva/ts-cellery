@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a shared secret which can be mounted to a component.
+ *
+ * This expects the Kubernetes secret to be already present.
+ */
+interface SharedSecret {
+    readonly name: string;
+}
 
-export { Cell, Composite };
+export default SharedSecret;

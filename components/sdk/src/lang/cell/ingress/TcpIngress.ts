@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component TCP Ingress.
+ */
+interface TcpIngress {
+    readonly backendPort: number;
+    readonly gatewayPort?: number;
+}
 
-export { Cell, Composite };
+export default TcpIngress;

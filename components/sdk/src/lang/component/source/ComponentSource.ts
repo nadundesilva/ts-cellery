@@ -16,7 +16,17 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component Source which represents a container which can be deployed in Kubernetes.
+ */
+interface ComponentSource {
 
-export { Cell, Composite };
+    /**
+     * Build the component source.
+     *
+     * @returns A promise which resolves to the Component source image tag.
+     */
+    build(): Promise<string>;
+}
+
+export default ComponentSource;

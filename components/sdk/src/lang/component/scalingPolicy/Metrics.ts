@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import MetricsValue from "./MetricsValue";
+import MetricsPercentage from "./MetricsPercentage";
 
-export { Cell, Composite };
+/**
+ * Represents the autoscaling policy's metrics thresholds.
+ */
+interface Metrics {
+    readonly cpu?: MetricsValue | MetricsPercentage;
+    readonly memory?: MetricsValue | MetricsPercentage;
+}
+
+export default Metrics;

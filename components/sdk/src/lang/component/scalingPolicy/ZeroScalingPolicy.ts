@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Autoscaling (with scale to zero) policy to be used for a Component.
+ */
+interface ZeroScalingPolicy {
+    readonly maxReplicas?: number;
+    readonly concurrencyTarget?: number;
+}
 
-export { Cell, Composite };
+export default ZeroScalingPolicy;

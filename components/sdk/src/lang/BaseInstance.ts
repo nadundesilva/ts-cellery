@@ -16,7 +16,18 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import ImageMeta from "./ImageMeta";
 
-export { Cell, Composite };
+/**
+ * Used as the base of all types of instances available in Cellery.
+ */
+abstract class BaseInstance {
+    /**
+     * Cellery Lifecycle method which will be called during the build.
+     *
+     * @param imageMetadata The image metadata passed by the invoker
+     */
+    public abstract build(imageMetadata: ImageMeta): void;
+}
+
+export default BaseInstance;

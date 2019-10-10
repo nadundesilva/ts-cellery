@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents the global API publisher related information.
+ */
+interface GlobalApiPublisher {
+    readonly context?: string;
+    readonly apiVersion?: string;
+}
 
-export { Cell, Composite };
+export default GlobalApiPublisher;

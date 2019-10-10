@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component HTTPS port ingress.
+ */
+interface HttpsPortIngress {
+    readonly port: number;
+}
 
-export { Cell, Composite };
+export default HttpsPortIngress;

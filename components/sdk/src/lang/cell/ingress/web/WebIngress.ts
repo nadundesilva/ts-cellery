@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import GatewayConfig from "./GatewayConfig";
 
-export { Cell, Composite };
+/**
+ * Component WEB Ingress.
+ */
+interface WebIngress {
+    readonly port: number;
+    readonly gatewayConfig: GatewayConfig;
+}
+
+export default WebIngress;

@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import TcpIngress from "./TcpIngress";
 
-export { Cell, Composite };
+/**
+ * Component gRPC Ingress.
+ */
+interface GrpcIngress extends TcpIngress {
+    readonly protoFile?: string;
+}
+
+export default GrpcIngress;

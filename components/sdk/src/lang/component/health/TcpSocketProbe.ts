@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component TCP health probe.
+ */
+interface TcpSocketProbe {
+    readonly port?: number;
+    readonly host?: string;
+}
 
-export { Cell, Composite };
+export default TcpSocketProbe;

@@ -16,7 +16,20 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import TcpSocketProbe from "./TcpSocketProbe";
+import ExecProbe from "./ExecProbe";
+import HttpGetProbe from "./HttpGetProbe";
 
-export { Cell, Composite };
+/**
+ * Represents a probe which is used for checking the health of a component.
+ */
+interface Probe {
+    readonly initialDelaySeconds?: number;
+    readonly periodSeconds?: number;
+    readonly timeoutSeconds?: number;
+    readonly failureThreshold?: number;
+    readonly successThreshold?: number;
+    readonly kind: TcpSocketProbe | ExecProbe | HttpGetProbe;
+}
+
+export default Probe;

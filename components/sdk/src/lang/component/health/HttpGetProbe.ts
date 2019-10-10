@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component HTTP health probe which checks health using a get request
+ */
+interface HttpGetProbe {
+    readonly path: string;
+    readonly port: number;
+    readonly httpHeaders?: { [key: string]: string };
+}
 
-export { Cell, Composite };
+export default HttpGetProbe;

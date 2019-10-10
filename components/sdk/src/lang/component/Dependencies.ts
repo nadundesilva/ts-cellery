@@ -16,7 +16,16 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import BaseComponent from "./BaseComponent";
+import ImageMeta from "../ImageMeta";
 
-export { Cell, Composite };
+/**
+ * Dependencies of a component.
+ */
+interface Dependencies {
+    readonly components?: BaseComponent[];
+    readonly cells?: { [key: string]: ImageMeta | string };
+    readonly composites?: { [key: string]: ImageMeta | string };
+}
+
+export default Dependencies;

@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a metric value as a percentage of resource limits.
+ */
+interface MetricsPercentage {
+    readonly threshold: number;
+}
 
-export { Cell, Composite };
+export default MetricsPercentage;

@@ -16,7 +16,16 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import BaseComponent from "../component/BaseComponent";
+import HttpPortIngress from "./ingress/HttpPortIngress";
+import HttpsPortIngress from "./ingress/HttpsPortIngress";
+import TcpPortIngress from "./ingress/TcpPortIngress";
 
-export { Cell, Composite };
+/**
+ * A component deployed as part of a Composite.
+ */
+interface Component extends BaseComponent {
+    readonly ingresses?: { [key: string]: (TcpPortIngress | HttpPortIngress | HttpsPortIngress) };
+}
+
+export default Component;

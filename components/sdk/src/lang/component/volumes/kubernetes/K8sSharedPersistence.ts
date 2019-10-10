@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a shared volume which can be mounted to a component.
+ *
+ * This expects the Kubernetes volume claim to be already present.
+ */
+interface K8sSharedPersistence {
+    readonly name: string;
+}
 
-export { Cell, Composite };
+export default K8sSharedPersistence;

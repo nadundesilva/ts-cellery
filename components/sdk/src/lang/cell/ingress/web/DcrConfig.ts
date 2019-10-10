@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component WEB Ingress DCR Configuration for automatically creating a client in the Identity Provider.
+ */
+interface DcrConfig {
+    readonly dcrUrl: string;
+    readonly dcrUser: string;
+    readonly dcrPassword: string;
+}
 
-export { Cell, Composite };
+export default DcrConfig;

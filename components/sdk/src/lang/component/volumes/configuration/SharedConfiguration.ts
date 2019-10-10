@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a shared configuration which can be mounted to a component.
+ *
+ * This expects the Kubernetes config map to be already present.
+ */
+interface SharedConfiguration {
+    readonly name: string;
+}
 
-export { Cell, Composite };
+export default SharedConfiguration;

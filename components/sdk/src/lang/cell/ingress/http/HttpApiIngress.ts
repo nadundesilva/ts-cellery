@@ -16,7 +16,18 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import ApiDefinition from "./ApiDefinition";
 
-export { Cell, Composite };
+/**
+ * Component HTTP API Ingress.
+ */
+interface HttpApiIngress {
+    readonly port: number;
+    readonly context?: string;
+    readonly definition?: ApiDefinition;
+    readonly apiVersion?: string;
+    readonly expose?: "global" | "local";
+    readonly authenticate?: boolean;
+}
+
+export default HttpApiIngress;

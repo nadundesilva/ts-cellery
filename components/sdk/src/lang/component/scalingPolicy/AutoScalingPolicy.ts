@@ -16,7 +16,16 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Metrics from "./Metrics";
 
-export { Cell, Composite };
+/**
+ * Autoscaling policy to be used for a Component.
+ */
+interface AutoScalingPolicy {
+    readonly overridable?: boolean;
+    readonly minReplicas: number;
+    readonly maxReplicas: number;
+    readonly metrics: Metrics;
+}
+
+export default AutoScalingPolicy;

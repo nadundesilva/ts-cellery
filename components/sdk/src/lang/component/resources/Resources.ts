@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Quota from "./Quota";
 
-export { Cell, Composite };
+/**
+ * Represents the resources requested and the resource limits applied to a component.
+ */
+interface Resources {
+    readonly requests?: Quota;
+    readonly limits?: Quota;
+}
+
+export default Resources;

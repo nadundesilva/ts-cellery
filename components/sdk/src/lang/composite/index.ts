@@ -16,7 +16,28 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Component from "./Component";
+import BaseInstance from "../BaseInstance";
+import ImageMeta from "../ImageMeta";
+import LangUtils from "../util/LangUtils";
 
-export { Cell, Composite };
+/**
+ * Cellery Composite.
+ *
+ * This should be extended and implemented when creating Composites.
+ */
+abstract class Composite extends BaseInstance {
+    public readonly components: Component[] = [];
+
+    /**
+     * Build the image.
+     *
+     * @param imageMetadata The image metadata passed by the invoker
+     */
+    protected createImage(imageMetadata: ImageMeta): void {
+        LangUtils.saveBuildSnapshot(imageMetadata, this);
+    }
+}
+
+export default Composite;
+export {Component};

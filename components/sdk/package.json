@@ -28,6 +28,7 @@
     "@kubernetes/client-node": "^0.10.3",
     "babel-loader": "^8.0.6",
     "commander": "^3.0.2",
+    "docker-cli-js": "^2.6.0",
     "handlebars": "^4.4.3",
     "js-yaml": "^3.13.1",
     "log": "^6.0.0",

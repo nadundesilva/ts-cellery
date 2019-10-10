@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Represents a resource quota used for defining limits and requests.
+ */
+interface Quota {
+    readonly memory?: string;
+    readonly cpu?: string;
+}
 
-export { Cell, Composite };
+export default Quota;

@@ -16,8 +16,23 @@
  * under the License.
  */
 
-interface DockerImageSource {
-    readonly image: string;
+import ComponentSource from "./ComponentSource";
+
+/**
+ * Docker image component source.
+ *
+ * This requires and already built docker image that had been pushed to a registry.
+ */
+class DockerImageSource implements ComponentSource {
+    public readonly image: string;
+
+    constructor(options: {image: string}) {
+        this.image = options.image;
+    }
+
+    public build(): Promise<string> {
+        return Promise.resolve(this.image);
+    };
 }
 
 export default DockerImageSource;

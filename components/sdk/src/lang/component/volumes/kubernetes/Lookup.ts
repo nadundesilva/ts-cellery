@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Expression from "./Expression";
 
-export { Cell, Composite };
+/**
+ * Represents a lookup used in a non shared persistence.
+ */
+interface Lookup {
+    readonly labels?: {[key: string]: string};
+    readonly expressions?: Expression[];
+}
+
+export default Lookup;

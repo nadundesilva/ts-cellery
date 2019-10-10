@@ -16,10 +16,30 @@
  * under the License.
  */
 
-import CellImage from "./CellImage";
-import CellIngress from "./CellIngress";
+import GlobalApiPublisher from "./GlobalApiPublisher";
+import ImageMeta from "../ImageMeta";
+import Component from "./Component";
+import BaseInstance from "../BaseInstance";
+import LangUtils from "../util/LangUtils";
 
-export {
-    CellImage,
-    CellIngress
-};
+/**
+ * Cellery Cell.
+ *
+ * This should be extended and implemented when creating Cells.
+ */
+abstract class Cell extends BaseInstance {
+    public components: Component[] = [];
+    public globalPublisher: GlobalApiPublisher = null;
+
+    /**
+     * Build the image.
+     *
+     * @param imageMetadata The image metadata passed by the invoker
+     */
+    protected createImage(imageMetadata: ImageMeta): void {
+        LangUtils.saveBuildSnapshot(imageMetadata, this);
+    }
+}
+
+export default Cell;
+export {Component, GlobalApiPublisher};

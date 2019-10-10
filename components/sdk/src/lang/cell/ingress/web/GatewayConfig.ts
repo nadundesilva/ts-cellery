@@ -16,7 +16,19 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import TlsConfig from "./TlsConfig";
+import OidcConfig from "./OidcConfig";
 
-export { Cell, Composite };
+/**
+ * Component WEB Ingress Gateway Configuration.
+ *
+ * This contains several configurations related to the hostname used for the WEB ingress, TLS configurations, etc.
+ */
+interface GatewayConfig {
+    readonly vhost: string;
+    readonly context?: string;
+    readonly tls?: TlsConfig;
+    readonly oidc?: OidcConfig;
+}
+
+export default GatewayConfig;

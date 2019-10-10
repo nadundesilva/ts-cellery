@@ -16,7 +16,20 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import Probe from "./Probe";
 
-export { Cell, Composite };
+/**
+ * Component health probes.
+ *
+ * The liveness probe defines a probe which checks if a component is alive.
+ * If this fails, the component is automatically restarted.
+ *
+ * The readiness probe defined a probe which checks if a component is ready.
+ * Traffic is routed to the component only if this is successful.
+ */
+interface HealthProbes {
+    readonly readiness?: Probe;
+    readonly liveness?: Probe;
+}
+
+export default HealthProbes;

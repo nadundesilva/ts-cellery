@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * Component command execution health probe.
+ */
+interface ExecProbe {
+    readonly command: string[];
+}
 
-export { Cell, Composite };
+export default ExecProbe;

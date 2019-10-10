@@ -57,7 +57,11 @@ class CelleryInvoker {
                     celleryConfig.outputDir;
 
                 const cell = new cellModule[cellClassName]();
-                cell.build(orgName, imageName, imageVersion);
+                cell.build({
+                    org: orgName,
+                    name: imageName,
+                    ver: imageVersion
+                });
             }
         }
     }

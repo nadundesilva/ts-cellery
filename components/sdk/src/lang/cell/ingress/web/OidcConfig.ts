@@ -16,7 +16,20 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+import DcrConfig from "./DcrConfig";
 
-export { Cell, Composite };
+/**
+ * Open ID Connect configurations used for securing the Component WEB Ingress.
+ */
+interface OidcConfig {
+    readonly nonSecurePaths?: string[];
+    readonly securePaths?: string[];
+    readonly providerUrl: string;
+    readonly clientId: string;
+    readonly clientSecret: string | DcrConfig;
+    readonly redirectUrl: string;
+    readonly baseUrl: string;
+    readonly subjectClaim?: string;
+}
+
+export default OidcConfig;

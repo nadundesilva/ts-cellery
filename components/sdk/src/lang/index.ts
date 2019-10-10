@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import Labels from "./Labels";
+import Cell, { Component as CellComponent, GlobalApiPublisher } from "./cell";
+import Composite, { Component as CompositeComponent } from "./composite";
+import ImageMeta from "./ImageMeta";
 
-export { Labels };
-export * from "./component";
-export * from "./cell";
+export * from "./component/source";
+export {
+    ImageMeta,
+    Cell,
+    CellComponent,
+    GlobalApiPublisher,
+    Composite,
+    CompositeComponent
+};

@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Cell from "./model/cell";
-import Composite from "./model/composite";
+/**
+ * TLS Configurations for the Component WEB Ingress.
+ */
+interface TlsConfig {
+    key: string;
+    cert: string;
+}
 
-export { Cell, Composite };
+export default TlsConfig;
