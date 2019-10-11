@@ -16,66 +16,74 @@
  * under the License.
  */
 
-import * as cellery from "@ts-cellery/sdk";
+import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk";
 
-const employeeComponent = new cellery.Component({
-    name: "employee",
-    source: {
-        image: "docker.io/wso2vick/sampleapp-employee"
-    },
-    ingresses: {
-        employee: {
-            port: 8080,
-            basePath: "employee",
-            definitions: [
-                {
-                    path: "/details",
-                    method: cellery.http.Method.GET
+export class EmployeeCell extends Cell {
+    static readonly SALARY_CONTAINER_PORT = 8080;
+
+    build(imageMetadata: ImageMeta): void {
+        const salaryComponent: CellComponent = {
+            name: "salary",
+            source: new DockerImageSource({
+                image: "wso2cellery/sampleapp-salary:0.3.0"
+            }),
+            ingresses: {
+                salary: {
+                    port: EmployeeCell.SALARY_CONTAINER_PORT,
+                    context: "payroll",
+                    expose: "local",
+                    definition: {
+                        resources: [
+                            {
+                                path: "/salary",
+                                method: "GET"
+                            }
+                        ]
+                    }
                 }
-            ]
-        }
-    },
-    parameters: {
-        SALARY_HOST: new cellery.params.Env(),
-        PORT: new cellery.params.Env(8080)
-    },
-    labels: {
-        [cellery.Labels.TEAM]: "HR"
-    }
-});
+            },
+            labels: {
+                team: "Finance",
+                owner: "Alice"
+            }
+        };
+        this.components.push(salaryComponent);
 
-const salaryComponent = new cellery.Component({
-    name: "salary",
-    source: {
-        image: "docker.io/wso2vick/sampleapp-salary"
-    },
-    ingresses: {
-        salary: {
-            port: 8080,
-            basePath: "payroll",
-            definitions: [
-                {
-                    path: "/salary",
-                    method: cellery.http.Method.GET
+        const employeeComponent: CellComponent = {
+            name: "employee",
+            source: new DockerImageSource({
+                image: "wso2cellery/sampleapp-employee:0.3.0"
+            }),
+            ingresses: {
+                employee: {
+                    port: 8080,
+                    context: "employee",
+                    expose: "local",
+                    definition: {
+                        resources: [
+                            {
+                                path: "/details",
+                                method: "GET"
+                            }
+                        ]
+                    }
                 }
-            ]
-        }
-    },
-    labels: {
-        [cellery.Labels.TEAM]: "Finance",
-        [cellery.Labels.OWNER]: "Alice"
-    }
-});
+            },
+            envVars: {
+                SALARY_HOST: null,
+                PORT: EmployeeCell.SALARY_CONTAINER_PORT
+            },
+            labels: {
+                team: "HR"
+            },
+            dependencies:{
+                components:[
+                    salaryComponent
+                ]
+            }
+        };
+        this.components.push(employeeComponent);
 
-export class EmployeeCellImage extends cellery.CellImage {
-    build(orgName: string, imageName: string, imageVersion: string): void {
-        employeeComponent.setParam("SALARY_HOST", salaryComponent.getHost(imageName));
-
-        this.addComponent(employeeComponent);
-        this.addComponent(salaryComponent);
-
-        this.expose(employeeComponent);
-
-        this.buildArtifacts(orgName, imageName, imageVersion);
+        this.createImage(imageMetadata);
     }
 }

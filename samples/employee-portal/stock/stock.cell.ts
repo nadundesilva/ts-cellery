@@ -16,33 +16,34 @@
  * under the License.
  */
 
-import * as cellery from "@ts-cellery/sdk";
+import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk";
 
-const stockComponent = new cellery.Component({
-    name: "stock",
-    source: {
-        image: "docker.io/wso2vick/sampleapp-stock"
-    },
-    ingresses: {
-        stock: {
-            port: 8080,
-            basePath: "stock",
-            definitions: [
-                {
-                    path: "/options",
-                    method: cellery.http.Method.GET
+export class StockCellImage extends Cell {
+
+    build(imageMetadata: ImageMeta): void {
+        const stockComponent: CellComponent = {
+            name: "stock",
+            source: new DockerImageSource({
+                image: "docker.io/wso2vick/sampleapp-stock"
+            }),
+            ingresses: {
+                stock: {
+                    port: 8080,
+                    context: "stock",
+                    expose: "local",
+                    definition: {
+                        resources: [
+                            {
+                                path: "/options",
+                                method: "GET"
+                            }
+                        ]
+                    }
                 }
-            ]
-        }
-    }
-});
+            }
+        };
+        this.components.push(stockComponent);
 
-export class StockCellImage extends cellery.CellImage {
-    build(orgName: string, imageName: string, imageVersion: string): void {
-        this.addComponent(stockComponent);
-
-        this.expose(stockComponent);
-
-        this.buildArtifacts(orgName, imageName, imageVersion);
+        this.createImage(imageMetadata);
     }
 }

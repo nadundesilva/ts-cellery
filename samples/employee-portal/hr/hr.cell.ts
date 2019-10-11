@@ -16,33 +16,53 @@
  * under the License.
  */
 
-import * as cellery from "@ts-cellery/sdk";
+import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk";
 
-const hrComponent = new cellery.Component({
-    name: "hr",
-    source: {
-        image: "docker.io/wso2vick/sampleapp-hr"
-    },
-    ingresses: {
-        hr: {
-            port: 8080,
-            basePath: "hr-api",
-            definitions: [
-                {
-                    path: "/",
-                    method: cellery.http.Method.GET
+export class HrCell extends Cell {
+
+    build(imageMetadata: ImageMeta): void {
+        const hrComponent: CellComponent = {
+            name: "hr",
+            source: new DockerImageSource({
+                image: "docker.io/wso2vick/sampleapp-hr"
+            }),
+            ingresses: {
+                hr: {
+                    port: 8080,
+                    context: "hr",
+                    expose: "global",
+                    definition: {
+                        resources: [
+                            {
+                                path: "/",
+                                method:"GET"
+                            }
+                        ]
+                    }
                 }
-            ]
-        }
-    }
-});
+            },
+            envVars: {
+                employee_api_url: "",
+                stock_api_url: ""
+            },
+            dependencies: {
+                cells: {
+                    employeeCell: "ts-cellery/employee:0.1.0",
+                    stockCell: {
+                        org: "ts-cellery",
+                        name: "stock",
+                        ver: "0.1.0"
+                    }
+                }
+            }
+        };
+        this.components.push(hrComponent);
 
-export class HrCellImage extends cellery.CellImage {
-    build(orgName: string, imageName: string, imageVersion: string): void {
-        this.addComponent(hrComponent);
+        this.globalPublisher = {
+            apiVersion: "0.1.0",
+            context: "employee-portal"
+        };
 
-        this.exposeGlobal(hrComponent);
-
-        this.buildArtifacts(orgName, imageName, imageVersion);
+        this.createImage(imageMetadata);
     }
 }
