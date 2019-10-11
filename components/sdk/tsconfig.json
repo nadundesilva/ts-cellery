@@ -5,7 +5,7 @@
     "declaration": true,
     "outDir": "./dist",
     "lib": [ "es2015" ],
-    "types": ["node"]
+    "types": ["archiver", "fs-extra", "js-yaml", "node", "webpack"]
   },
   "include": [
     "src/**/*.ts"

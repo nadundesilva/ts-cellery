@@ -20,7 +20,7 @@ import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk
 
 export class StockCellImage extends Cell {
 
-    build(imageMetadata: ImageMeta): void {
+    public async build(imageMetadata: ImageMeta) {
         const stockComponent: CellComponent = {
             name: "stock",
             source: new DockerImageSource({
@@ -44,6 +44,6 @@ export class StockCellImage extends Cell {
         };
         this.components.push(stockComponent);
 
-        this.createImage(imageMetadata);
+        await this.createImage(imageMetadata);
     }
 }

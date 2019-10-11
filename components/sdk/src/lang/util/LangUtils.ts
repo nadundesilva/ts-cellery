@@ -17,9 +17,9 @@
  */
 
 import Constants from "../../util/Constants";
-import * as mkdirp from "mkdirp";
 import * as path from "path";
-import * as fs from "fs";
+import * as fse from "fs-extra";
+import * as archiver from "archiver";
 import ImageMeta from "../ImageMeta";
 import Cell from "../cell";
 import Composite from "../composite";
@@ -33,13 +33,12 @@ class LangUtils {
      * Save the build time snapshot in the output directory.
      *
      * @param imageMetadata Image metadata
-     * @param instance The instance of which the snapshot should be saved
+     * @param instance The instance of which the build-time snapshot should be saved
      */
     public static saveBuildSnapshot(imageMetadata: ImageMeta, instance: Cell | Composite) {
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
-        const typeScriptDir = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_TYPESCRIPT);
-        mkdirp.sync(typeScriptDir);
-        const cellFile = path.resolve(typeScriptDir, `${imageMetadata.name}-snapshot.json`);
+        const cellFile = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_ARTIFACTS_TYPESCRIPT,
+            `${imageMetadata.name}-snapshot.json`);
 
         let snapshot;
         if (instance instanceof Cell) {
@@ -54,7 +53,45 @@ class LangUtils {
         } else {
             throw Error("Unknown type " + typeof instance + " passed as the instance");
         }
-        fs.writeFileSync(cellFile, JSON.stringify(snapshot));
+        fse.outputFileSync(cellFile, JSON.stringify(snapshot));
+    }
+
+    /**
+     * Create an image and save it in the local repository.
+     *
+     * @param imageMetadata Image metadata
+     * @param instance The instance of which the image should be saved
+     */
+    public static saveImageToLocalRepository(imageMetadata: ImageMeta, instance: Cell | Composite): Promise<null> {
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+        const zipFileName = `${imageMetadata.name}.zip`;
+        const outputZipFilePath = path.resolve(outputDir, zipFileName);
+
+        const outputZipFile = fse.createWriteStream(outputZipFilePath);
+        const archive = archiver("zip");
+        archive.pipe(outputZipFile);
+        for (const dirItem of fse.readdirSync(outputDir)) {
+            if (dirItem !== zipFileName) {
+                const dirItemPath = path.resolve(outputDir, dirItem);
+                const stat = fse.lstatSync(dirItemPath);
+                if (stat.isDirectory()) {
+                    archive.directory(dirItemPath, dirItem);
+                } else {
+                    archive.file(dirItemPath, {name: dirItem});
+                }
+            }
+        }
+
+        return new Promise((async (resolve) => {
+            outputZipFile.on("finish", function() {
+                fse.removeSync(path.resolve(Constants.CELLERY_LOCAL_REPO, imageMetadata.org, imageMetadata.name,
+                    imageMetadata.ver));
+                fse.copySync(outputZipFilePath, path.resolve(Constants.CELLERY_LOCAL_REPO, imageMetadata.org,
+                    imageMetadata.name, imageMetadata.ver, zipFileName));
+                resolve();
+            });
+            await archive.finalize();
+        }));
     }
 }
 

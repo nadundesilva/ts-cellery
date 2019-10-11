@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as fs from "fs";
+import * as fse from "fs-extra";
 import * as path from "path";
 import Constants from "../../util/Constants";
 import CelleryConfig from "./CelleryConfig";
@@ -33,14 +33,14 @@ class ProjectUtils {
     public static readCelleryConfig(imageName: string): CelleryConfig {
         // Resolving the package JSON file
         const packageJsonFile = path.resolve(path.join(".", Constants.Project.PACKAGE_JSON_FILE_NAME));
-        if (!fs.existsSync(packageJsonFile)) {
+        if (!fse.existsSync(packageJsonFile)) {
             throw Error(`Unable to locate ${packageJsonFile} file`);
         }
 
         // Reading the package cellery content
         let packageJsonContent;
         try {
-            packageJsonContent = JSON.parse(fs.readFileSync(`${packageJsonFile}`, "utf8"));
+            packageJsonContent = JSON.parse(fse.readFileSync(`${packageJsonFile}`, "utf8"));
         } catch {
             throw Error(`Unable to read malformed ${packageJsonFile} file`);
         }

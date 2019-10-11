@@ -17,11 +17,11 @@
  */
 
 import * as log from "log";
-import * as mkdirp from "mkdirp";
 import * as path from "path";
 import * as rimraf from "rimraf";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
+import * as fse from "fs-extra";
 import Constants from "../util/Constants";
 import ProjectUtils from "./util/ProjectUtils";
 
@@ -40,7 +40,7 @@ class Compiler {
             log.info(`Compiling Cell from ${celleryConfig.cell} file`);
 
             rimraf.sync(celleryConfig.outputDir);
-            mkdirp.sync(celleryConfig.outputDir);
+            fse.ensureDirSync(celleryConfig.outputDir);
 
             const compiler = webpack({
                 mode: "development",
@@ -67,10 +67,7 @@ class Compiler {
                                 context: path.resolve("."),
                                 configFile: path.resolve(
                                     __dirname,
-                                    "..",
-                                    "..",
-                                    Constants.RESOURCES_DIR,
-                                    Constants.TS_CONFIG_FILE_NAME
+                                    `../../${Constants.TS_CONFIG}`
                                 )
                             }
                         },
@@ -92,10 +89,7 @@ class Compiler {
                             baseUrl: path.resolve("."),
                             configFile: path.resolve(
                                 __dirname,
-                                "..",
-                                "..",
-                                Constants.RESOURCES_DIR,
-                                Constants.TS_CONFIG_FILE_NAME
+                                `../../${Constants.TS_CONFIG}`
                             )
                         })
                     ]

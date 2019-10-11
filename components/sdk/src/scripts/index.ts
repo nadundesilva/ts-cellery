@@ -19,16 +19,14 @@
  */
 
 import * as program from "commander";
-import * as fs from "fs";
 import * as log from "log";
 import * as logNode from "log-node";
-import * as path from "path";
-import Constants from "../util/Constants";
 import Compiler from "./Compiler";
 import Invoker from "./Invoker";
 import ProjectUtils from "./util/ProjectUtils";
 
 program
+    .version("0.1.0")
     .option("-v, --verbose", "increase the verbosity of the output")
     .parseOptions(process.argv);
 

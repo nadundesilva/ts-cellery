@@ -27,7 +27,7 @@ abstract class BaseInstance {
      *
      * @param imageMetadata The image metadata passed by the invoker
      */
-    public abstract build(imageMetadata: ImageMeta): void;
+    public abstract async build(imageMetadata: ImageMeta);
 }
 
 export default BaseInstance;

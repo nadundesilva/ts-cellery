@@ -52,12 +52,11 @@ class CelleryInvoker {
         // Invoking the build life cycle method of the Cell Image
         for (const cellClassName in cellModule) {
             if (cellModule.hasOwnProperty(cellClassName)) {
-                process.env[Constants.ENV_VAR_TS_CELLERY_DIR] = __dirname;
                 process.env[Constants.ENV_VAR_OUTPUT_DIR] =
                     celleryConfig.outputDir;
 
                 const cell = new cellModule[cellClassName]();
-                cell.build({
+                await cell.build({
                     org: orgName,
                     name: imageName,
                     ver: imageVersion

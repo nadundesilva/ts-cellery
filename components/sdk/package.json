@@ -16,7 +16,8 @@
     "build:prod": "npm run clean && npm run format:check && npm run build"
   },
   "devDependencies": {
-    "@types/handlebars": "^4.1.0",
+    "@types/archiver": "^3.0.0",
+    "@types/fs-extra": "^8.0.0",
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.12",
     "@types/webpack": "^4.39.2",
@@ -26,10 +27,11 @@
     "@babel/core": "^7.6.3",
     "@babel/preset-env": "^7.6.3",
     "@kubernetes/client-node": "^0.10.3",
+    "archiver": "^3.1.1",
     "babel-loader": "^8.0.6",
     "commander": "^3.0.2",
     "docker-cli-js": "^2.6.0",
-    "handlebars": "^4.4.3",
+    "fs-extra": "^8.1.0",
     "js-yaml": "^3.13.1",
     "log": "^6.0.0",
     "log-node": "^7.0.0",

@@ -16,17 +16,14 @@
  * under the License.
  */
 
+import * as path from "path";
+
 /**
  * Constants related to Cellery Scripts.
  */
 class Constants {
-    public static readonly RESOURCES_DIR = "resources";
     public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
-    public static readonly ENV_VAR_TS_CELLERY_DIR =
-        "CELLERY_ENV_VAR_TS_CELLERY_DIR";
-    public static readonly TS_CONFIG_FILE_NAME = "tsconfig.cell.json";
-
-    public static readonly DEFAULT_GATEWAY_PORT = 80;
+    public static readonly TS_CONFIG = "resources/tsconfig.cell.json";
 
     public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
     public static readonly IMAGE_VERSION_PATTERN =
@@ -37,21 +34,12 @@ class Constants {
         Constants.CELLERY_ID_PATTERN +
         ":" +
         Constants.IMAGE_VERSION_PATTERN;
-
-    /**
-     * Kubernetes runtime related constants.
-     */
-    public static readonly Kubernetes = class Kubernetes {
-        public static readonly CELL_RESOURCE_API_VERSION =
-            "mesh.cellery.io/v1alpha1";
-        public static readonly CELL_RESOURCE_KIND = "Cell";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_ORG =
-            "mesh.cellery.io/cell-image-org";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_NAME =
-            "mesh.cellery.io/cell-image-name";
-        public static readonly CELL_RESOURCE_ANNOTATION_IMAGE_VERSIOn =
-            "mesh.cellery.io/cell-image-version";
-    };
+    public static readonly USER_HOME =
+        process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+    public static readonly CELLERY_LOCAL_REPO = path.resolve(
+        Constants.USER_HOME,
+        ".cellery/repo"
+    );
 
     /**
      * Cellery project related constants.
@@ -65,16 +53,12 @@ class Constants {
          */
         public static readonly Build = class Build {
             public static readonly OUTPUT_DIR = "target";
-            public static readonly OUTPUT_DIR_CELLERY = "cellery";
-            public static readonly OUTPUT_DIR_TYPESCRIPT = "typescript";
+            public static readonly OUTPUT_DIR_SRC = "src";
+            public static readonly OUTPUT_DIR_ARTIFACTS_CELLERY =
+                "artifacts/cellery";
+            public static readonly OUTPUT_DIR_ARTIFACTS_TYPESCRIPT =
+                "artifacts/typescript";
         };
-    };
-
-    /**
-     * The protocols supported by Cellery.
-     */
-    public static readonly Protocol = class Protocol {
-        public static readonly HTTP = "HTTP";
     };
 }
 

@@ -20,7 +20,7 @@ import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk
 
 export class HrCell extends Cell {
 
-    build(imageMetadata: ImageMeta): void {
+    public async build(imageMetadata: ImageMeta) {
         const hrComponent: CellComponent = {
             name: "hr",
             source: new DockerImageSource({
@@ -63,6 +63,6 @@ export class HrCell extends Cell {
             context: "employee-portal"
         };
 
-        this.createImage(imageMetadata);
+        await this.createImage(imageMetadata);
     }
 }

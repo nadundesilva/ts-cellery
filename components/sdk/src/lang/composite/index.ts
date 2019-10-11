@@ -34,8 +34,9 @@ abstract class Composite extends BaseInstance {
      *
      * @param imageMetadata The image metadata passed by the invoker
      */
-    protected createImage(imageMetadata: ImageMeta): void {
+    protected async createImage(imageMetadata: ImageMeta) {
         LangUtils.saveBuildSnapshot(imageMetadata, this);
+        await LangUtils.saveImageToLocalRepository(imageMetadata, this);
     }
 }
 

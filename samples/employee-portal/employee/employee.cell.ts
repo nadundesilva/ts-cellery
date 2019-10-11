@@ -21,7 +21,7 @@ import {ImageMeta, Cell, CellComponent, DockerImageSource} from "@ts-cellery/sdk
 export class EmployeeCell extends Cell {
     static readonly SALARY_CONTAINER_PORT = 8080;
 
-    build(imageMetadata: ImageMeta): void {
+    public async build(imageMetadata: ImageMeta) {
         const salaryComponent: CellComponent = {
             name: "salary",
             source: new DockerImageSource({
@@ -84,6 +84,6 @@ export class EmployeeCell extends Cell {
         };
         this.components.push(employeeComponent);
 
-        this.createImage(imageMetadata);
+        await this.createImage(imageMetadata);
     }
 }
