@@ -5,6 +5,10 @@ Cellery Typescript
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/nadundesilva/ts-cellery.svg)](https://github.com/nadundesilva/ts-cellery/commits/master)
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+🚨 Typescript Cellery is still at an experimental stage. 🚨
+
+ℹ️ If you just wish to get started with Cellery, please use the [Ballerina based implementation](https://wso2-cellery.github.io/)
+
 ## Prerequisites
 
 * Node
