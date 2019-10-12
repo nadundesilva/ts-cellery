@@ -38,6 +38,7 @@ build: build.lang build.samples
 .PHONY: init.lang
 init.lang:
 	cd components/sdk; \
+	npm version ${VERSION} --allow-same-version --no-git-tag-version; \
 	npm ci
 
 .PHONY: init.samples
@@ -81,3 +82,9 @@ build.samples: clean.samples build.lang
 	npm run cellery:build -- ts-cellery/stock-cell:${VERSION}
 	cd samples/employee-portal/hr; \
 	npm run cellery:build -- ts-cellery/hr-cell:${VERSION}
+
+
+.PHONY: publish
+publish: build.lang
+	cd components/sdk; \
+	npm publish ts-cellery-sdk-${VERSION}.tgz --tag ${VERSION}
