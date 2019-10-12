@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import TcpIngress from "./TcpIngress";
-
 /**
  * Component gRPC Ingress.
  */
-interface GrpcIngress extends TcpIngress {
+interface GrpcIngress {
+    readonly type: "GRPC";
+    readonly backendPort: number;
+    readonly gatewayPort?: number;
     readonly protoFile?: string;
 }
 

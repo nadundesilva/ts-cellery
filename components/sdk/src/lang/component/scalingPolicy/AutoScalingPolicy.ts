@@ -22,6 +22,7 @@ import Metrics from "./Metrics";
  * Autoscaling policy to be used for a Component.
  */
 interface AutoScalingPolicy {
+    readonly type: "AutoScaling";
     readonly overridable?: boolean;
     readonly minReplicas: number;
     readonly maxReplicas: number;

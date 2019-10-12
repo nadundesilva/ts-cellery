@@ -22,6 +22,7 @@ import ApiDefinition from "./ApiDefinition";
  * Component HTTP API Ingress.
  */
 interface HttpApiIngress {
+    readonly type: "HTTP";
     readonly port: number;
     readonly context?: string;
     readonly definition?: ApiDefinition;

@@ -30,7 +30,7 @@ class CelleryConfig {
     constructor(config: {cell: string, imageName: string}) {
         this.cell = path.resolve(".", config.cell);
         this.outputDir = path.resolve(".", Constants.Project.Build.OUTPUT_DIR);
-        this.compiledCell = path.resolve(this.outputDir, Constants.Project.Build.OUTPUT_DIR_SRC,
+        this.compiledCell = path.resolve(this.outputDir, Constants.Image.SRC_DIR,
             `${config.imageName}.cell.js`);
     }
 }

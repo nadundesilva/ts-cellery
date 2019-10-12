@@ -20,6 +20,7 @@
  * Component HTTP port ingress.
  */
 interface TcpPortIngress {
+    readonly type: "TCP";
     readonly port: number;
 }
 

@@ -38,6 +38,7 @@ abstract class Cell extends BaseInstance {
      */
     protected async createImage(imageMetadata: ImageMeta) {
         LangUtils.saveBuildSnapshot(imageMetadata, this);
+        await LangUtils.generateMetadata(imageMetadata, this);
         await LangUtils.saveImageToLocalRepository(imageMetadata, this);
     }
 }

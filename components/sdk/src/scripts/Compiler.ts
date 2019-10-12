@@ -23,7 +23,7 @@ import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import * as fse from "fs-extra";
 import Constants from "../util/Constants";
-import ProjectUtils from "./util/ProjectUtils";
+import ScriptsUtils from "./util/ScriptsUtils";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -36,7 +36,7 @@ class Compiler {
      */
     public static compile(imageName: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const celleryConfig = ProjectUtils.readCelleryConfig(imageName);
+            const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
             log.info(`Compiling Cell from ${celleryConfig.cell} file`);
 
             rimraf.sync(celleryConfig.outputDir);

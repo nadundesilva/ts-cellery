@@ -18,14 +18,13 @@
 
 import BaseComponent from "../component/BaseComponent";
 import HttpPortIngress from "./ingress/HttpPortIngress";
-import HttpsPortIngress from "./ingress/HttpsPortIngress";
 import TcpPortIngress from "./ingress/TcpPortIngress";
 
 /**
  * A component deployed as part of a Composite.
  */
 interface Component extends BaseComponent {
-    readonly ingresses?: { [key: string]: (TcpPortIngress | HttpPortIngress | HttpsPortIngress) };
+    readonly ingresses?: { [key: string]: (TcpPortIngress | HttpPortIngress ) };
 }
 
 export default Component;

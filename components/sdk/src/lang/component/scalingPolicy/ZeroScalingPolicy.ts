@@ -20,6 +20,7 @@
  * Autoscaling (with scale to zero) policy to be used for a Component.
  */
 interface ZeroScalingPolicy {
+    readonly type: "ZeroScaling";
     readonly maxReplicas?: number;
     readonly concurrencyTarget?: number;
 }

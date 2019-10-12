@@ -16,13 +16,19 @@
  * under the License.
  */
 
-/**
- * Component TCP Ingress.
- */
-interface TcpIngress {
-    readonly type: "TCP";
-    readonly backendPort: number;
-    readonly gatewayPort?: number;
+import ComponentMetaData from "./ComponentMetaData";
+
+interface Metadata {
+    readonly org: string;
+    readonly name: string
+    readonly ver: string
+    readonly schemaVersion: "0.1.0";
+    readonly kind: "Cell" | "Composite";
+    readonly components: {[key: string]: ComponentMetaData};
+    readonly buildTimestamp: number;
+    readonly buildCelleryVersion: string;
+    readonly zeroScalingRequired: boolean;
+    readonly autoScalingRequired: boolean;
 }
 
-export default TcpIngress;
+export default Metadata;

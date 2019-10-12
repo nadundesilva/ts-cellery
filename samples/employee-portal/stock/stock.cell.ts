@@ -28,6 +28,7 @@ export class StockCellImage extends Cell {
             }),
             ingresses: {
                 stock: {
+                    type: "HTTP",
                     port: 8080,
                     context: "stock",
                     expose: "local",

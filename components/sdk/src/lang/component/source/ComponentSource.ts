@@ -24,9 +24,23 @@ interface ComponentSource {
     /**
      * Build the component source.
      *
-     * @returns A promise which resolves to the Component source image tag.
+     * @returns A promise which resolves once build is complete.
      */
-    build(): Promise<string>;
+    build(): Promise<null>;
+
+    /**
+     * Get the image tag.
+     *
+     * @returns The image tag.
+     */
+    getImageTag(): string;
+
+    /**
+     * Check if docker push is required.
+     *
+     * @returns True if docker push is required.
+     */
+    isDockerPushRequired(): boolean;
 }
 
 export default ComponentSource;

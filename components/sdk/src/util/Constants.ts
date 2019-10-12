@@ -22,6 +22,7 @@ import * as path from "path";
  * Constants related to Cellery Scripts.
  */
 class Constants {
+    public static readonly VERSION = "0.1.0";
     public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
     public static readonly TS_CONFIG = "resources/tsconfig.cell.json";
 
@@ -53,12 +54,26 @@ class Constants {
          */
         public static readonly Build = class Build {
             public static readonly OUTPUT_DIR = "target";
-            public static readonly OUTPUT_DIR_SRC = "src";
-            public static readonly OUTPUT_DIR_ARTIFACTS_CELLERY =
-                "artifacts/cellery";
-            public static readonly OUTPUT_DIR_ARTIFACTS_TYPESCRIPT =
-                "artifacts/typescript";
         };
+    };
+
+    /**
+     * Cellery Image related constants.
+     */
+    public static readonly Image = class Image {
+        public static readonly SRC_DIR = "src";
+        public static readonly SNAPSHOT_FILE =
+            "artifacts/typescript/snapshot.json";
+        public static readonly METADATA_FILE =
+            "artifacts/cellery/metadata.json";
+    };
+
+    /**
+     * Cellery project related constants.
+     */
+    public static readonly ScalingPolicy = class Project {
+        public static readonly AUTO_SCALING = "AutoScaling";
+        public static readonly ZERO_SCALING = "ZeroScaling";
     };
 }
 

@@ -28,6 +28,7 @@ export class HrCell extends Cell {
             }),
             ingresses: {
                 hr: {
+                    type: "HTTP",
                     port: 8080,
                     context: "hr",
                     expose: "global",
@@ -47,10 +48,10 @@ export class HrCell extends Cell {
             },
             dependencies: {
                 cells: {
-                    employeeCell: "ts-cellery/employee:0.1.0",
+                    employeeCell: "ts-cellery/employee-cell:0.1.0",
                     stockCell: {
                         org: "ts-cellery",
-                        name: "stock",
+                        name: "stock-cell",
                         ver: "0.1.0"
                     }
                 }

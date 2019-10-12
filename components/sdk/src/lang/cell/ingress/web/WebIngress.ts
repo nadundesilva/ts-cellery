@@ -22,6 +22,7 @@ import GatewayConfig from "./GatewayConfig";
  * Component WEB Ingress.
  */
 interface WebIngress {
+    readonly type: "WEB";
     readonly port: number;
     readonly gatewayConfig: GatewayConfig;
 }

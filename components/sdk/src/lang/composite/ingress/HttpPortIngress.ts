@@ -20,6 +20,8 @@
  * Component HTTP port ingress.
  */
 interface HttpPortIngress {
+    readonly type: "HTTP";
+    readonly ssl?: boolean;
     readonly port: number;
 }
 

@@ -16,13 +16,14 @@
  * under the License.
  */
 
-/**
- * Component TCP Ingress.
- */
-interface TcpIngress {
-    readonly type: "TCP";
-    readonly backendPort: number;
-    readonly gatewayPort?: number;
+import ComponentDependencies from "./ComponentDependencies";
+
+interface ComponentMetaData {
+    dockerImage: string;
+    isDockerPushRequired: boolean;
+    labels: {[key: string]: string};
+    ingressTypes: ("TCP" | "HTTP" | "WEB" | "GRPC")[];
+    dependencies: ComponentDependencies;
 }
 
-export default TcpIngress;
+export default ComponentMetaData;

@@ -23,10 +23,11 @@ import * as log from "log";
 import * as logNode from "log-node";
 import Compiler from "./Compiler";
 import Invoker from "./Invoker";
-import ProjectUtils from "./util/ProjectUtils";
+import Utils from "../util/Utils";
+import Constants from "../util/Constants";
 
 program
-    .version("0.1.0")
+    .version(Constants.VERSION)
     .option("-v, --verbose", "increase the verbosity of the output")
     .parseOptions(process.argv);
 
@@ -41,11 +42,9 @@ logNode();
 
 // Build command
 program.command("build <image>").action(async (image) => {
-    const {
-        orgName,
-        imageName,
-        imageVersion
-    } = ProjectUtils.parseCellImageName(image);
+    const { orgName, imageName, imageVersion } = Utils.parseCellImageName(
+        image
+    );
 
     // Invoking the life cycle method
     try {

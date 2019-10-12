@@ -23,6 +23,9 @@ import * as archiver from "archiver";
 import ImageMeta from "../ImageMeta";
 import Cell from "../cell";
 import Composite from "../composite";
+import Metadata from "../metadata";
+import ComponentMetaData from "../metadata/ComponentMetaData";
+import Utils from "../../util/Utils";
 
 /**
  * TypeScript project related utilities.
@@ -36,10 +39,6 @@ class LangUtils {
      * @param instance The instance of which the build-time snapshot should be saved
      */
     public static saveBuildSnapshot(imageMetadata: ImageMeta, instance: Cell | Composite) {
-        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
-        const cellFile = path.resolve(outputDir, Constants.Project.Build.OUTPUT_DIR_ARTIFACTS_TYPESCRIPT,
-            `${imageMetadata.name}-snapshot.json`);
-
         let snapshot;
         if (instance instanceof Cell) {
             snapshot = {
@@ -53,7 +52,127 @@ class LangUtils {
         } else {
             throw Error("Unknown type " + typeof instance + " passed as the instance");
         }
+
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+        const cellFile = path.resolve(outputDir, Constants.Image.SNAPSHOT_FILE);
         fse.outputFileSync(cellFile, JSON.stringify(snapshot));
+    }
+
+    /**
+     * Generate metadata file from an instance.
+     *
+     * @param imageMetadata Image metadata
+     * @param instance The instance of which the metadata file should be generated
+     */
+    public static async generateMetadata(imageMetadata: ImageMeta, instance: Cell | Composite) {
+        let kind;
+        const instanceIngressTypes = {};
+        if (instance instanceof Cell) {
+            kind = "Cell";
+            instance.components.forEach((component) => {
+                const ingressTypes = new Set<string>();
+                Object.values(component.ingresses).forEach((ingress) => {
+                    ingressTypes.add(ingress.type);
+                });
+                instanceIngressTypes[component.name] = Array.from(ingressTypes);
+            });
+        } else if (instance instanceof Composite) {
+            kind = "Composite";
+            instance.components.forEach((component) => {
+                const ingressTypes = new Set<string>();
+                Object.values(component.ingresses).forEach((ingress) => {
+                    ingressTypes.add(ingress.type);
+                });
+                instanceIngressTypes[component.name] = Array.from(ingressTypes);
+            });
+        } else {
+            throw Error("Unknown type " + typeof instance + " passed as the instance");
+        }
+
+        let zeroScalingRequired;
+        let autoScalingRequired;
+        const components: {[key: string]: ComponentMetaData} = {};
+        for (const component of instance.components) {
+            if (component.scalingPolicy) {
+                if (component.scalingPolicy.type === Constants.ScalingPolicy.ZERO_SCALING) {
+                    zeroScalingRequired = true;
+                } else if (component.scalingPolicy.type === Constants.ScalingPolicy.AUTO_SCALING) {
+                    autoScalingRequired = true;
+                } else {
+                    throw Error("Unknown scaling policy type " + typeof instance + " passed as the instance");
+                }
+            }
+
+            const componentMetadata: ComponentMetaData = {
+                dockerImage: component.source.getImageTag(),
+                isDockerPushRequired: component.source.isDockerPushRequired(),
+                labels: component.labels,
+                ingressTypes: instanceIngressTypes[component.name],
+                dependencies: {
+                    cells: {},
+                    composites: {},
+                    components: component.dependencies && component.dependencies.components
+                        ? component.dependencies.components.map((dependentComponent) => dependentComponent.name)
+                        : []
+                }
+            };
+
+            const extractImageMeta = (alias, dependentImage): Promise<Metadata> => {
+                let orgName;
+                let imageName;
+                let imageVersion;
+                if (typeof dependentImage === "string") {
+                    const image = Utils.parseCellImageName(dependentImage);
+                    orgName = image.orgName;
+                    imageName = image.imageName;
+                    imageVersion = image.imageVersion;
+                } else {
+                    orgName = dependentImage.org;
+                    imageName = dependentImage.name;
+                    imageVersion = dependentImage.ver;
+                }
+                return new Promise<Metadata>(async (resolve, reject) => {
+                    let extractedImagePath;
+                    try {
+                        extractedImagePath = await Utils.extractCellImage(orgName, imageName, imageVersion);
+                    } catch (err) {
+                        reject(err);
+                    }
+                    const metadataFilePath = path.resolve(extractedImagePath, Constants.Image.METADATA_FILE);
+                    const dependentMetadataConent = fse.readFileSync(metadataFilePath, "utf8");
+                    resolve(JSON.parse(dependentMetadataConent));
+                });
+            };
+            if (component.dependencies && component.dependencies.cells) {
+                for (const [alias, dependentImage] of Object.entries(component.dependencies.cells)) {
+                    componentMetadata.dependencies.cells[alias] = await extractImageMeta(alias, dependentImage);
+                }
+            }
+            if (component.dependencies && component.dependencies.composites) {
+                for (const [alias, dependentImage] of Object.entries(component.dependencies.composites)) {
+                    componentMetadata.dependencies.composites[alias] = await extractImageMeta(alias, dependentImage);
+                }
+            }
+
+            components[component.name] = componentMetadata;
+        }
+
+        const metadata: Metadata = {
+            org: imageMetadata.org,
+            name: imageMetadata.name,
+            ver: imageMetadata.ver,
+            schemaVersion: "0.1.0",
+            kind: kind,
+            components: components,
+            buildTimestamp: new Date().getTime(),
+            buildCelleryVersion: Constants.VERSION,
+            zeroScalingRequired: zeroScalingRequired,
+            autoScalingRequired: autoScalingRequired
+        };
+
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+        const metadataFile = path.resolve(outputDir, Constants.Image.METADATA_FILE);
+        fse.outputFileSync(metadataFile, JSON.stringify(metadata));
     }
 
     /**

@@ -16,11 +16,12 @@
  * under the License.
  */
 
-/**
- * Component HTTPS port ingress.
- */
-interface HttpsPortIngress {
-    readonly port: number;
+import Metadata from "./index";
+
+interface ComponentDependencies {
+    cells: {[key: string]: Metadata};
+    composites: {[key: string]: Metadata};
+    components: string[];
 }
 
-export default HttpsPortIngress;
+export default ComponentDependencies;

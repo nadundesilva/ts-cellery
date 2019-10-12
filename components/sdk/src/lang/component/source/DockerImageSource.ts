@@ -30,9 +30,17 @@ class DockerImageSource implements ComponentSource {
         this.image = options.image;
     }
 
-    public build(): Promise<string> {
-        return Promise.resolve(this.image);
+    public build(): Promise<null> {
+        return Promise.resolve(null);
     };
+
+    public getImageTag(): string {
+        return this.image;
+    }
+
+    public isDockerPushRequired(): boolean {
+        return false;
+    }
 }
 
 export default DockerImageSource;

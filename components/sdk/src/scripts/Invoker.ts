@@ -18,7 +18,7 @@
 
 import * as log from "log";
 import Constants from "../util/Constants";
-import ProjectUtils from "./util/ProjectUtils";
+import ScriptsUtils from "./util/ScriptsUtils";
 
 /**
  * Cellery Cell Lifecycle Invoker.
@@ -36,7 +36,7 @@ class CelleryInvoker {
         imageName: string,
         imageVersion: string
     ) {
-        const celleryConfig = ProjectUtils.readCelleryConfig(imageName);
+        const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
         log.info(`Building Cell from ${celleryConfig.compiledCell} file`);
 
         // Loading the Cell File's exported module

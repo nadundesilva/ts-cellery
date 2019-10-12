@@ -29,6 +29,7 @@ export class EmployeeCell extends Cell {
             }),
             ingresses: {
                 salary: {
+                    type: "HTTP",
                     port: EmployeeCell.SALARY_CONTAINER_PORT,
                     context: "payroll",
                     expose: "local",
@@ -56,6 +57,7 @@ export class EmployeeCell extends Cell {
             }),
             ingresses: {
                 employee: {
+                    type: "HTTP",
                     port: 8080,
                     context: "employee",
                     expose: "local",

@@ -34,18 +34,26 @@ class DockerFileSource implements ComponentSource {
         this.tag = options.tag;
     }
 
-    public build(): Promise<string> {
+    public build(): Promise<null> {
         return new Promise((resolve, reject) => {
             const docker = new Docker();
             docker.command("build -t " + this.tag + " " + this.dockerFileDir)
                 .then(() => {
-                    resolve(this.tag);
+                    resolve();
                 })
                 .catch((e) => {
                     reject(e);
                 });
         });
     };
+
+    public getImageTag(): string {
+        return this.tag;
+    }
+
+    public isDockerPushRequired(): boolean {
+        return true;
+    }
 }
 
 export default DockerFileSource;
