@@ -43,7 +43,7 @@ class Compiler {
             fse.ensureDirSync(celleryConfig.outputDir);
 
             const compiler = webpack({
-                mode: "development",
+                mode: "production",
                 entry: {
                     [imageName]: celleryConfig.cell
                 },
