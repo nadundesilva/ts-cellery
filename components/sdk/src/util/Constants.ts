@@ -27,6 +27,8 @@ class Constants {
     public static readonly TS_CONFIG = "resources/tsconfig.cell.json";
 
     public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
+    public static readonly INSTANCE_COMPONENT_SEPARATOR = "--";
+    public static readonly GATEWAY = "gateway";
     public static readonly IMAGE_VERSION_PATTERN =
         "[a-z0-9]+((?:-|.)[a-z0-9]+)*";
     public static readonly CELL_IMAGE_PATTERN =
@@ -58,7 +60,7 @@ class Constants {
     };
 
     /**
-     * Cellery Image related constants.
+     * Image related constants.
      */
     public static readonly Image = class Image {
         public static readonly SRC_DIR = "src";
@@ -66,12 +68,32 @@ class Constants {
             "artifacts/typescript/snapshot.json";
         public static readonly METADATA_FILE =
             "artifacts/cellery/metadata.json";
+        public static readonly REFERENCE_FILE = "artifacts/ref/reference.json";
+        public static readonly INSTANCE_PLACEHOLDER = "{{instance_name}}";
     };
 
     /**
-     * Cellery project related constants.
+     * Ingress related constants.
      */
-    public static readonly ScalingPolicy = class Project {
+    public static readonly Ingress = class Ingress {
+        public static readonly HTTP_INGRESS_DEFAULT_PROTOCOL = "http";
+        public static readonly HTTP_INGRESS_DEFAULT_PORT = 80;
+
+        /**
+         * Ingress Types related constants.
+         */
+        public static readonly Type = class Type {
+            public static readonly TCP = "TCP";
+            public static readonly HTTP = "HTTP";
+            public static readonly GRPC = "GRPC";
+            public static readonly WEB = "WEB";
+        };
+    };
+
+    /**
+     * Scaling policy related constants.
+     */
+    public static readonly ScalingPolicy = class ScalingPolicy {
         public static readonly AUTO_SCALING = "AutoScaling";
         public static readonly ZERO_SCALING = "ZeroScaling";
     };

@@ -36,21 +36,21 @@ class LangUtils {
      * Save the build time snapshot in the output directory.
      *
      * @param imageMetadata Image metadata
-     * @param instance The instance of which the build-time snapshot should be saved
+     * @param image The image of which the build-time snapshot should be saved
      */
-    public static saveBuildSnapshot(imageMetadata: ImageMeta, instance: Cell | Composite) {
+    public static saveBuildSnapshot(imageMetadata: ImageMeta, image: Cell | Composite) {
         let snapshot;
-        if (instance instanceof Cell) {
+        if (image instanceof Cell) {
             snapshot = {
-                components: instance.components,
-                globalPublisher: instance.globalPublisher
+                components: image.components,
+                globalPublisher: image.globalPublisher
             }
-        } else if (instance instanceof Composite) {
+        } else if (image instanceof Composite) {
             snapshot = {
-                components: instance.components
+                components: image.components
             }
         } else {
-            throw Error("Unknown type " + typeof instance + " passed as the instance");
+            throw Error("Unknown type " + typeof image + " passed as the instance");
         }
 
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
@@ -62,23 +62,23 @@ class LangUtils {
      * Generate metadata file from an instance.
      *
      * @param imageMetadata Image metadata
-     * @param instance The instance of which the metadata file should be generated
+     * @param image The image of which the metadata file should be generated
      */
-    public static async generateMetadata(imageMetadata: ImageMeta, instance: Cell | Composite) {
+    public static async generateMetadata(imageMetadata: ImageMeta, image: Cell | Composite) {
         let kind;
         const instanceIngressTypes = {};
-        if (instance instanceof Cell) {
+        if (image instanceof Cell) {
             kind = "Cell";
-            instance.components.forEach((component) => {
+            image.components.forEach((component) => {
                 const ingressTypes = new Set<string>();
                 Object.values(component.ingresses).forEach((ingress) => {
                     ingressTypes.add(ingress.type);
                 });
                 instanceIngressTypes[component.name] = Array.from(ingressTypes);
             });
-        } else if (instance instanceof Composite) {
+        } else if (image instanceof Composite) {
             kind = "Composite";
-            instance.components.forEach((component) => {
+            image.components.forEach((component) => {
                 const ingressTypes = new Set<string>();
                 Object.values(component.ingresses).forEach((ingress) => {
                     ingressTypes.add(ingress.type);
@@ -86,20 +86,20 @@ class LangUtils {
                 instanceIngressTypes[component.name] = Array.from(ingressTypes);
             });
         } else {
-            throw Error("Unknown type " + typeof instance + " passed as the instance");
+            throw Error("Unknown type " + typeof image + " passed as the instance");
         }
 
         let zeroScalingRequired;
         let autoScalingRequired;
         const components: {[key: string]: ComponentMetaData} = {};
-        for (const component of instance.components) {
+        for (const component of image.components) {
             if (component.scalingPolicy) {
                 if (component.scalingPolicy.type === Constants.ScalingPolicy.ZERO_SCALING) {
                     zeroScalingRequired = true;
                 } else if (component.scalingPolicy.type === Constants.ScalingPolicy.AUTO_SCALING) {
                     autoScalingRequired = true;
                 } else {
-                    throw Error("Unknown scaling policy type " + typeof instance + " passed as the instance");
+                    throw Error("Unknown scaling policy type " + typeof image + " passed as the instance");
                 }
             }
 
@@ -176,12 +176,71 @@ class LangUtils {
     }
 
     /**
+     * Generate reference file from an instance.
+     *
+     * @param image The image of which the reference file should be generated
+     */
+    public static generateReference(image: Cell | Composite) {
+        const sanitize = (input: string) => {
+            return input.toLowerCase().replace(/[^a-z0-9]/g, "_");
+        };
+        const reference = {};
+        if (image instanceof Cell) {
+            for (const component of image.components) {
+                const sanitizedComponentName = sanitize(component.name);
+                for (const [ingressName, ingress] of Object.entries(component.ingresses)) {
+                    const sanitizedIngressName = sanitize(ingressName);
+                    if (ingress.type === Constants.Ingress.Type.TCP) {
+                        reference[`${sanitizedComponentName}_${sanitizedIngressName}_tcp_port`] = ingress.gatewayPort;
+                    } else if (ingress.type === Constants.Ingress.Type.HTTP) {
+                        reference[`${sanitizedComponentName}_${sanitizedIngressName}_http_url`] =
+                            Constants.Ingress.HTTP_INGRESS_DEFAULT_PROTOCOL + "://"
+                            + Constants.Image.INSTANCE_PLACEHOLDER + Constants.INSTANCE_COMPONENT_SEPARATOR
+                            + sanitizedComponentName + ":" + Constants.Ingress.HTTP_INGRESS_DEFAULT_PORT + "/"
+                            + ingress.context;
+                    } else if (ingress.type === Constants.Ingress.Type.GRPC) {
+                        reference[`${sanitizedComponentName}_${sanitizedIngressName}_grpc_port`] = ingress.gatewayPort;
+                    } else if (ingress.type === Constants.Ingress.Type.WEB) {
+                        // Web ingresses are directly exposed by the Cluster Ingress and
+                        // therefore not used by other instances
+                    } else {
+                        throw Error("Unknown scaling policy type " + typeof image + " passed as the instance");
+                    }
+                }
+            }
+            reference[`${Constants.GATEWAY}_host`] = Constants.Image.INSTANCE_PLACEHOLDER
+                + Constants.INSTANCE_COMPONENT_SEPARATOR + Constants.GATEWAY;
+        } else if (image instanceof Composite) {
+            for (const component of image.components) {
+                const sanitizedComponentName = sanitize(component.name);
+                for (const [ingressName, ingress] of Object.entries(component.ingresses)) {
+                    const sanitizedIngressName = sanitize(ingressName);
+                    if (ingress.type === Constants.Ingress.Type.TCP) {
+                        reference[`${sanitizedComponentName}_${sanitizedIngressName}_tcp_port`] = ingress.port;
+                    } else if (ingress.type === Constants.Ingress.Type.HTTP) {
+                        reference[`${sanitizedComponentName}_${sanitizedIngressName}_http_port`] = ingress.port;
+                    } else {
+                        throw Error("Unknown scaling policy type " + typeof image + " passed as the instance");
+                    }
+                }
+                reference[`${sanitizedComponentName}_host`] = Constants.Image.INSTANCE_PLACEHOLDER
+                    + Constants.INSTANCE_COMPONENT_SEPARATOR + sanitizedComponentName;
+            }
+        } else {
+            throw Error("Unknown type " + typeof image + " passed as the instance");
+        }
+
+        const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
+        const referenceFile = path.resolve(outputDir, Constants.Image.REFERENCE_FILE);
+        fse.outputFileSync(referenceFile, JSON.stringify(reference));
+    }
+
+    /**
      * Create an image and save it in the local repository.
      *
      * @param imageMetadata Image metadata
-     * @param instance The instance of which the image should be saved
      */
-    public static saveImageToLocalRepository(imageMetadata: ImageMeta, instance: Cell | Composite): Promise<null> {
+    public static saveImageToLocalRepository(imageMetadata: ImageMeta): Promise<null> {
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
         const zipFileName = `${imageMetadata.name}.zip`;
         const outputZipFilePath = path.resolve(outputDir, zipFileName);

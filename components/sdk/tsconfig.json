@@ -2,8 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "declaration": true,
     "outDir": "./dist",
+    "inlineSourceMap": true,
+    "declaration": true,
+    "declarationDir": "./dist",
+    "declarationMap": true,
     "lib": [ "es2015" ],
     "types": ["archiver", "extract-zip", "fs-extra", "js-yaml", "node", "tmp", "webpack"]
   },
