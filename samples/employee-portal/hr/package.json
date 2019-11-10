@@ -5,7 +5,7 @@
   "keywords": [],
   "license": "Apache-2.0",
   "cellery": {
-    "cell": "./hr.cell.ts"
+    "entry": "./hr.cell.ts"
   },
   "scripts": {
     "cellery:build": "cellery-scripts build"

@@ -26,12 +26,17 @@ class Constants {
     public static readonly ENV_VAR_OUTPUT_DIR = "CELLERY_ENV_VAR_OUTPUT_DIR";
     public static readonly TS_CONFIG = "resources/tsconfig.cell.json";
 
-    public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
     public static readonly INSTANCE_COMPONENT_SEPARATOR = "--";
     public static readonly GATEWAY = "gateway";
+    public static readonly DOMAIN_NAME_PATTERN =
+        "[a-z0-9]+((?:-|.)[a-z0-9]+)*(:[0-9]+)?";
+    public static readonly CELLERY_ID_PATTERN = "[a-z0-9]+(-[a-z0-9]+)*";
     public static readonly IMAGE_VERSION_PATTERN =
         "[a-z0-9]+((?:-|.)[a-z0-9]+)*";
     public static readonly CELL_IMAGE_PATTERN =
+        "(?:" +
+        Constants.DOMAIN_NAME_PATTERN +
+        "\\/)?" +
         Constants.CELLERY_ID_PATTERN +
         "\\/" +
         Constants.CELLERY_ID_PATTERN +

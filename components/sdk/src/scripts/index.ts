@@ -23,7 +23,6 @@ import * as log from "log";
 import * as logNode from "log-node";
 import Compiler from "./Compiler";
 import Invoker from "./Invoker";
-import Utils from "../util/Utils";
 import Constants from "../util/Constants";
 import ScriptsUtils from "./util/ScriptsUtils";
 
@@ -43,15 +42,11 @@ logNode();
 
 // Build command
 program.command("build <image>").action(async (image) => {
-    const { orgName, imageName, imageVersion } = Utils.parseCellImageName(
-        image
-    );
-
     // Invoking the life cycle method
     try {
-        const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
-        await Compiler.compile(imageName, celleryConfig);
-        await Invoker.build(orgName, imageName, imageVersion, celleryConfig);
+        const config = ScriptsUtils.readCelleryConfig(image);
+        await Compiler.compile(config);
+        await Invoker.build(config);
     } catch (err) {
         log.error(`Failed to build Cell ${err}`);
     }

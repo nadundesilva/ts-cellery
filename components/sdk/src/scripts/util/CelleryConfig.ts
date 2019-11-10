@@ -18,19 +18,29 @@
 
 import * as path from "path";
 import Constants from "../../util/Constants";
+import PackageJsonConfig from "./PackageJsonConfig";
+import Image from "../../util/Image";
 
 /**
  * Value Holder for the Cellery configuration.
  */
 class CelleryConfig {
+    public readonly orgName: string;
+    public readonly imageName: string;
+    public readonly imageVersion: string;
+
     public readonly cell: string;
     public readonly outputDir: string;
     public readonly compiledCell: string;
 
-    constructor(config: {cell: string, imageName: string}) {
-        this.cell = path.resolve(".", config.cell);
+    constructor(image: Image, packageJsonConfig: PackageJsonConfig) {
+        this.orgName = image.orgName;
+        this.imageName = image.imageName;
+        this.imageVersion = image.imageVersion;
+
+        this.cell = path.resolve(".", packageJsonConfig.entry);
         this.outputDir = path.resolve(".", Constants.Project.Build.OUTPUT_DIR);
-        this.compiledCell = path.resolve(this.outputDir, Constants.Image.SRC_DIR, `${config.imageName}.cell.js`);
+        this.compiledCell = path.resolve(this.outputDir, Constants.Image.SRC_DIR, `${image.imageName}.cell.js`);
     }
 }
 

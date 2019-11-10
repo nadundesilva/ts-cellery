@@ -23,7 +23,6 @@ import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import * as fse from "fs-extra";
 import Constants from "../util/Constants";
-import ScriptsUtils from "./util/ScriptsUtils";
 import CelleryConfig from "./util/CelleryConfig";
 
 /**
@@ -33,13 +32,9 @@ class Compiler {
     /**
      * Compiler a Cellery Cell in a project and generate artifacts.
      *
-     * @param imageName The name of the Cell Image
      * @param celleryConfig Cellery configuration
      */
-    public static compile(
-        imageName: string,
-        celleryConfig: CelleryConfig
-    ): Promise<void> {
+    public static compile(celleryConfig: CelleryConfig): Promise<void> {
         return new Promise((resolve, reject) => {
             log.debug(
                 `Removing target directory if it exists: ${celleryConfig.outputDir}`
@@ -50,7 +45,7 @@ class Compiler {
             const compiler = webpack({
                 mode: "production",
                 entry: {
-                    [imageName]: celleryConfig.cell
+                    [celleryConfig.imageName]: celleryConfig.cell
                 },
                 context: __dirname,
                 output: {

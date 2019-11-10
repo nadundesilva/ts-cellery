@@ -18,7 +18,6 @@
 
 import * as log from "log";
 import Constants from "../util/Constants";
-import ScriptsUtils from "./util/ScriptsUtils";
 import CelleryConfig from "./util/CelleryConfig";
 
 /**
@@ -28,17 +27,9 @@ class CelleryInvoker {
     /**
      * Invoke the build lifecycle of a Cell.
      *
-     * @param orgName Organization name of the Cell Image
-     * @param imageName Name of the Cell Image
-     * @param imageVersion Version of the Cell Image
      * @param celleryConfig Cellery configuration
      */
-    public static async build(
-        orgName: string,
-        imageName: string,
-        imageVersion: string,
-        celleryConfig: CelleryConfig
-    ) {
+    public static async build(celleryConfig: CelleryConfig) {
         // Loading the Cell File's exported module
         let cellModule;
         try {
@@ -64,9 +55,9 @@ class CelleryInvoker {
                     `Invoking build function from file: ${celleryConfig.compiledCell}`
                 );
                 await cell.build({
-                    org: orgName,
-                    name: imageName,
-                    ver: imageVersion
+                    org: celleryConfig.orgName,
+                    name: celleryConfig.imageName,
+                    ver: celleryConfig.imageVersion
                 });
             }
         }

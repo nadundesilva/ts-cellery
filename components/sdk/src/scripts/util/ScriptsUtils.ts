@@ -21,6 +21,8 @@ import * as log from "log";
 import * as path from "path";
 import Constants from "../../util/Constants";
 import CelleryConfig from "./CelleryConfig";
+import Utils from "../../util/Utils";
+import PackageJsonConfig from "./PackageJsonConfig";
 
 /**
  * Cellery Project related Utilities.
@@ -29,9 +31,11 @@ class ScriptsUtils {
     /**
      * Read the Cellery config in the package.json file.
      *
-     * @param imageName The name of the image
+     * @param imageFQN The fully qualified name of the image
      */
-    public static readCelleryConfig(imageName: string): CelleryConfig {
+    public static readCelleryConfig(imageFQN: string): CelleryConfig {
+        const image = Utils.parseCellImageName(imageFQN);
+
         // Resolving the package JSON file
         const packageJsonFile = path.resolve(path.join(".", Constants.Project.PACKAGE_JSON_FILE_NAME));
         if (!fse.existsSync(packageJsonFile)) {
@@ -41,7 +45,7 @@ class ScriptsUtils {
         // Reading the package cellery content
         let packageJsonContent;
         try {
-            log.debug(`Reading Cellery Cell Project Config from file: ${packageJsonFile}`)
+            log.debug(`Reading Cellery Cell Project Config from file: ${packageJsonFile}`);
             packageJsonContent = JSON.parse(fse.readFileSync(packageJsonFile, "utf8"));
         } catch {
             throw Error(`Unable to read malformed ${packageJsonFile} file`);
@@ -50,12 +54,13 @@ class ScriptsUtils {
             throw Error(`Cellery expects the ${Constants.Project.CELLERY_CONFIG_SECTION_KEY} section to be present in `
                 + `the ${packageJsonFile} file`);
         }
-        const celleryConfig = packageJsonContent[Constants.Project.CELLERY_CONFIG_SECTION_KEY];
+        const celleryConfig = packageJsonContent[Constants.Project.CELLERY_CONFIG_SECTION_KEY] as PackageJsonConfig;
         log.debug(`Using Cellery Cell Project Config: ${JSON.stringify(celleryConfig)}`);
-        celleryConfig.imageName = imageName;
 
         // Building Cellery config object
-        return new CelleryConfig(celleryConfig);
+        const config = new CelleryConfig(image, celleryConfig);
+        log.debug(`Using Cellery config ${JSON.stringify(config)}`);
+        return config;
     }
 }
 

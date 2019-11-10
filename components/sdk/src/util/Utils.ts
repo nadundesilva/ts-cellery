@@ -21,6 +21,7 @@ import * as tmp from "tmp";
 import * as path from "path";
 import * as extractZip from "extract-zip";
 import * as fse from "fs-extra";
+import Image from "./Image";
 
 /**
  * Common Utilities.
@@ -30,36 +31,47 @@ class Utils {
      * Parse the cell image name in the format org/name:version and return and object containing
      * the image name information.
      *
-     * @param name The name of the image in the format org/name:version
+     * @param imageFQN The fully qualified name of the image in the format [registry/]org/name:version
      */
-    public static parseCellImageName(
-        name: string
-    ): { orgName: string; imageName: string; imageVersion: string } {
-        if (name == "") {
+    public static parseCellImageName(imageFQN: string): Image {
+        if (imageFQN === "") {
             throw Error("Image name cannot be empty");
-        } else if (!name.match(Constants.CELL_IMAGE_PATTERN)) {
-            throw Error(`Invalid image ${name}`);
+        } else if (!imageFQN.match(Constants.CELL_IMAGE_PATTERN)) {
+            throw Error(`Invalid image ${imageFQN}`);
         }
 
         // Parsing the cell image string
-        const nameSplit = name.split("/");
-        const cellImage = {
-            orgName: "",
-            imageName: "",
-            imageVersion: ""
-        };
-        if (nameSplit.length == 2) {
-            cellImage.orgName = nameSplit[0];
+        const nameSplit = imageFQN.split("/");
+        let registry = "";
+        let orgName = "";
+        let imageName = "";
+        let imageVersion = "";
+        if (nameSplit.length === 3) {
+            registry = nameSplit[0];
+            orgName = nameSplit[1];
+            const imageNameSplit = nameSplit[2].split(":");
+            if (imageNameSplit.length != 2) {
+                throw Error("Invalid image format");
+            }
+            imageName = imageNameSplit[0];
+            imageVersion = imageNameSplit[1];
+        } else if (nameSplit.length === 2) {
+            orgName = nameSplit[0];
             const imageNameSplit = nameSplit[1].split(":");
             if (imageNameSplit.length != 2) {
                 throw Error("Invalid image format");
             }
-            cellImage.imageName = imageNameSplit[0];
-            cellImage.imageVersion = imageNameSplit[1];
+            imageName = imageNameSplit[0];
+            imageVersion = imageNameSplit[1];
         } else {
             throw Error("Invalid image format");
         }
-        return cellImage;
+        return {
+            registry: registry,
+            orgName: orgName,
+            imageName: imageName,
+            imageVersion: imageVersion
+        };
     }
 
     /**
