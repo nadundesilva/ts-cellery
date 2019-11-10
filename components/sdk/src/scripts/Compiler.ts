@@ -24,6 +24,7 @@ import * as webpack from "webpack";
 import * as fse from "fs-extra";
 import Constants from "../util/Constants";
 import ScriptsUtils from "./util/ScriptsUtils";
+import CelleryConfig from "./util/CelleryConfig";
 
 /**
  * Cellery Typescript compiler which generates the Cellery artifacts.
@@ -33,12 +34,16 @@ class Compiler {
      * Compiler a Cellery Cell in a project and generate artifacts.
      *
      * @param imageName The name of the Cell Image
+     * @param celleryConfig Cellery configuration
      */
-    public static compile(imageName: string): Promise<void> {
+    public static compile(
+        imageName: string,
+        celleryConfig: CelleryConfig
+    ): Promise<void> {
         return new Promise((resolve, reject) => {
-            const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
-            log.info(`Compiling Cell from ${celleryConfig.cell} file`);
-
+            log.debug(
+                `Removing target directory if it exists: ${celleryConfig.outputDir}`
+            );
             rimraf.sync(celleryConfig.outputDir);
             fse.ensureDirSync(celleryConfig.outputDir);
 
@@ -83,7 +88,7 @@ class Compiler {
                     ]
                 },
                 resolve: {
-                    extensions: [".tsx", ".ts", ".js"],
+                    extensions: [".tsx", ".ts", ".js", ".json"],
                     plugins: [
                         new TsconfigPathsPlugin({
                             baseUrl: path.resolve("."),
@@ -101,6 +106,8 @@ class Compiler {
                 }
             });
 
+            log.info("Compiling Cell file");
+            log.debug(`Compiling source Cell file: ${celleryConfig.cell}`);
             compiler.run((err: Error, stats: webpack.Stats) => {
                 if (err) {
                     reject(err);
@@ -111,11 +118,12 @@ class Compiler {
                             .join(", ")
                     );
                 } else {
+                    log.debug(
+                        `Saved compiled Cell into ${celleryConfig.compiledCell}`
+                    );
                     resolve();
                 }
             });
-
-            log.info(`Saved compiled Cell into ${celleryConfig.compiledCell}`);
         });
     }
 }

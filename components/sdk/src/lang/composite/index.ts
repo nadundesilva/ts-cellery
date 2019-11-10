@@ -20,6 +20,7 @@ import Component from "./Component";
 import BaseInstance from "../BaseInstance";
 import ImageMeta from "../ImageMeta";
 import LangUtils from "../util/LangUtils";
+import * as log from "log";
 
 /**
  * Cellery Composite.
@@ -35,6 +36,7 @@ abstract class Composite extends BaseInstance {
      * @param imageMetadata The image metadata passed by the invoker
      */
     protected async createImage(imageMetadata: ImageMeta) {
+        log.debug(`Creating Composite Image: ${JSON.stringify(imageMetadata)}`);
         LangUtils.saveBuildSnapshot(imageMetadata, this);
         await LangUtils.generateMetadata(imageMetadata, this);
         await LangUtils.generateReference(this);

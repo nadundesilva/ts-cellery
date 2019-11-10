@@ -21,6 +21,7 @@ import ImageMeta from "../ImageMeta";
 import Component from "./Component";
 import BaseInstance from "../BaseInstance";
 import LangUtils from "../util/LangUtils";
+import * as log from "log";
 
 /**
  * Cellery Cell.
@@ -37,6 +38,7 @@ abstract class Cell extends BaseInstance {
      * @param imageMetadata The image metadata passed by the invoker
      */
     protected async createImage(imageMetadata: ImageMeta) {
+        log.debug(`Creating Cell Image: ${JSON.stringify(imageMetadata)}`);
         LangUtils.saveBuildSnapshot(imageMetadata, this);
         await LangUtils.generateMetadata(imageMetadata, this);
         await LangUtils.generateReference(this);

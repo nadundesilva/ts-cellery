@@ -7,8 +7,11 @@
     "declaration": true,
     "declarationDir": "./target/src",
     "declarationMap": true,
+    "resolveJsonModule": true,
     "lib": [ "es2015" ],
     "baseUrl": "./"
   },
-  "include": ["*.ts"]
+  "include": [
+    "*.ts"
+  ]
 }

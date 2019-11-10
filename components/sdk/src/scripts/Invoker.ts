@@ -19,6 +19,7 @@
 import * as log from "log";
 import Constants from "../util/Constants";
 import ScriptsUtils from "./util/ScriptsUtils";
+import CelleryConfig from "./util/CelleryConfig";
 
 /**
  * Cellery Cell Lifecycle Invoker.
@@ -30,18 +31,20 @@ class CelleryInvoker {
      * @param orgName Organization name of the Cell Image
      * @param imageName Name of the Cell Image
      * @param imageVersion Version of the Cell Image
+     * @param celleryConfig Cellery configuration
      */
     public static async build(
         orgName: string,
         imageName: string,
-        imageVersion: string
+        imageVersion: string,
+        celleryConfig: CelleryConfig
     ) {
-        const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
-        log.info(`Building Cell from ${celleryConfig.compiledCell} file`);
-
         // Loading the Cell File's exported module
         let cellModule;
         try {
+            log.debug(
+                `Dynamically importing compiled Cell file: ${celleryConfig.compiledCell}`
+            );
             cellModule = await import(celleryConfig.compiledCell);
         } catch (e) {
             throw Error(
@@ -56,6 +59,10 @@ class CelleryInvoker {
                     celleryConfig.outputDir;
 
                 const cell = new cellModule[cellClassName]();
+                log.info("Invoking build function");
+                log.debug(
+                    `Invoking build function from file: ${celleryConfig.compiledCell}`
+                );
                 await cell.build({
                     org: orgName,
                     name: imageName,

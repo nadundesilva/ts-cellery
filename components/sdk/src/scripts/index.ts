@@ -25,6 +25,7 @@ import Compiler from "./Compiler";
 import Invoker from "./Invoker";
 import Utils from "../util/Utils";
 import Constants from "../util/Constants";
+import ScriptsUtils from "./util/ScriptsUtils";
 
 program
     .version(Constants.VERSION)
@@ -48,10 +49,11 @@ program.command("build <image>").action(async (image) => {
 
     // Invoking the life cycle method
     try {
-        await Compiler.compile(imageName);
-        await Invoker.build(orgName, imageName, imageVersion);
-    } catch (e) {
-        log.error(e);
+        const celleryConfig = ScriptsUtils.readCelleryConfig(imageName);
+        await Compiler.compile(imageName, celleryConfig);
+        await Invoker.build(orgName, imageName, imageVersion, celleryConfig);
+    } catch (err) {
+        log.error(`Failed to build Cell ${err}`);
     }
 });
 

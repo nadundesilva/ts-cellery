@@ -19,6 +19,10 @@
 import Cell, { Component as CellComponent, GlobalApiPublisher } from "./cell";
 import Composite, { Component as CompositeComponent } from "./composite";
 import ImageMeta from "./ImageMeta";
+import * as logNode from "log-node";
+
+// Enable NodeJS logging
+logNode();
 
 export * from "./component/source";
 export {

@@ -20,6 +20,7 @@ import Constants from "../../util/Constants";
 import * as path from "path";
 import * as fse from "fs-extra";
 import * as archiver from "archiver";
+import * as log from "log";
 import ImageMeta from "../ImageMeta";
 import Cell from "../cell";
 import Composite from "../composite";
@@ -39,6 +40,7 @@ class LangUtils {
      * @param image The image of which the build-time snapshot should be saved
      */
     public static saveBuildSnapshot(imageMetadata: ImageMeta, image: Cell | Composite) {
+        log.info("Saving build time snapshot for Image");
         let snapshot;
         if (image instanceof Cell) {
             snapshot = {
@@ -65,6 +67,7 @@ class LangUtils {
      * @param image The image of which the metadata file should be generated
      */
     public static async generateMetadata(imageMetadata: ImageMeta, image: Cell | Composite) {
+        log.info("Generating metadata for Image");
         let kind;
         const instanceIngressTypes = {};
         if (image instanceof Cell) {
@@ -181,6 +184,7 @@ class LangUtils {
      * @param image The image of which the reference file should be generated
      */
     public static generateReference(image: Cell | Composite) {
+        log.info("Generating reference for Image");
         const sanitize = (input: string) => {
             return input.toLowerCase().replace(/[^a-z0-9]/g, "_");
         };
@@ -241,6 +245,7 @@ class LangUtils {
      * @param imageMetadata Image metadata
      */
     public static saveImageToLocalRepository(imageMetadata: ImageMeta): Promise<null> {
+        log.info("Generating Image from artifacts");
         const outputDir = process.env[Constants.ENV_VAR_OUTPUT_DIR];
         const zipFileName = `${imageMetadata.name}.zip`;
         const outputZipFilePath = path.resolve(outputDir, zipFileName);
@@ -262,11 +267,13 @@ class LangUtils {
 
         return new Promise((async (resolve) => {
             outputZipFile.on("finish", function() {
+                log.info(`Generated Image: ${outputZipFilePath}`);
                 fse.removeSync(path.resolve(Constants.CELLERY_LOCAL_REPO, imageMetadata.org, imageMetadata.name,
                     imageMetadata.ver));
                 fse.copySync(outputZipFilePath, path.resolve(Constants.CELLERY_LOCAL_REPO, imageMetadata.org,
                     imageMetadata.name, imageMetadata.ver, zipFileName));
                 resolve();
+                log.info("Saved image to local repository");
             });
             await archive.finalize();
         }));

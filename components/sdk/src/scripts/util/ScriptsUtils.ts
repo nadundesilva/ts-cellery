@@ -17,6 +17,7 @@
  */
 
 import * as fse from "fs-extra";
+import * as log from "log";
 import * as path from "path";
 import Constants from "../../util/Constants";
 import CelleryConfig from "./CelleryConfig";
@@ -40,6 +41,7 @@ class ScriptsUtils {
         // Reading the package cellery content
         let packageJsonContent;
         try {
+            log.debug(`Reading Cellery Cell Project Config from file: ${packageJsonFile}`)
             packageJsonContent = JSON.parse(fse.readFileSync(packageJsonFile, "utf8"));
         } catch {
             throw Error(`Unable to read malformed ${packageJsonFile} file`);
@@ -49,6 +51,7 @@ class ScriptsUtils {
                 + `the ${packageJsonFile} file`);
         }
         const celleryConfig = packageJsonContent[Constants.Project.CELLERY_CONFIG_SECTION_KEY];
+        log.debug(`Using Cellery Cell Project Config: ${JSON.stringify(celleryConfig)}`);
         celleryConfig.imageName = imageName;
 
         // Building Cellery config object
